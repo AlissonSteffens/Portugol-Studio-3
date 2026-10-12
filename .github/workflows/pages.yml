@@ -30,20 +30,14 @@ jobs:
           cache: npm
       - name: Instalar dependências
         run: npm ci
-      - name: Testar runtime e exemplos
-        run: npm test
       - name: Preparar testes do navegador
         run: npx playwright install --with-deps chromium
-      - name: Compilar para os testes locais
-        run: npm run build
-      - name: Testar a aplicação
-        run: npx playwright test
+      - name: Executar todas as verificações
+        run: npm run test:all
       - name: Compilar para GitHub Pages
         env:
           VITE_BASE_PATH: /Portugol-Studio-3/
         run: npm run build
-      - name: Verificar a publicação em subpasta
-        run: npx playwright test --config playwright.pages.config.js
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
@@ -51,3 +45,10 @@ jobs:
       - name: Publicar site
         id: deployment
         uses: actions/deploy-pages@v4
+      - name: Guardar diagnósticos dos testes
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-failures
+          path: test-results/
+          retention-days: 7

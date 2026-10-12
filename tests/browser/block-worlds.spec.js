@@ -19,6 +19,21 @@ async function point(page, canvas, x, y) {
   await page.mouse.move(box.x + x * box.width / 900, box.y + y * box.height / 620);
 }
 
+async function resetCapturedWorld(page, canvas) {
+  // Capturing the pointer can generate a native relative movement on Linux.
+  // Reset through the game's controls after capture, and wait for the actual
+  // frame to acknowledge both key edges before mining the initial block.
+  await canvas.focus();
+  await page.keyboard.down('r');
+  await expect(value(page, 'reinicio_anterior')).toHaveText('verdadeiro');
+  await page.keyboard.up('r');
+  await expect(value(page, 'reinicio_anterior')).toHaveText('falso');
+  await expect(value(page, 'direcao')).toHaveText('0');
+  await expect(value(page, 'inclinacao')).toHaveText('-0.4');
+  await expect(value(page, 'alvo_x')).not.toHaveText('-1');
+  await expect(value(page, 'mouse_preso')).toHaveText('verdadeiro');
+}
+
 test('mundo 2D permite retirar, trocar material, colocar e reiniciar', async ({ page }) => {
   const errors = []; page.on('pageerror', error => errors.push(error.message));
   const canvas = await openWorld(page, '2D');
@@ -54,7 +69,9 @@ test('mundo 3D projeta cubos, retira e coloca na mira, move e gira a câmera', a
   await point(page, canvas, 450, 310); await page.mouse.down(); await page.mouse.up();
   await expect.poll(() => page.evaluate(() => document.pointerLockElement?.tagName)).toBe('CANVAS');
   await expect(value(page, 'mouse_preso')).toHaveText('verdadeiro');
+  await resetCapturedWorld(page, canvas);
   await canvas.dispatchEvent('mousedown', { button: 0 });
+  await expect(value(page, 'esquerdo_anterior')).toHaveText('verdadeiro');
   await expect(value(page, 'retirados')).toHaveText('1'); await canvas.dispatchEvent('mouseup', { button: 0 });
   await canvas.focus(); await page.keyboard.down('3');
   await expect(value(page, 'escolhido')).toHaveText('3'); await page.keyboard.up('3');
@@ -100,9 +117,15 @@ test('mouse gira a câmera, picareta anima e Esc solta o cursor sem parar o jogo
   await expect.poll(() => page.evaluate(() => document.pointerLockElement?.tagName)).toBe('CANVAS');
   await expect(value(page, 'retirados')).toHaveText('0'); // Activation is not mining.
   await expect(value(page, 'mouse_preso')).toHaveText('verdadeiro');
+  // Reproduce capture-time cursor warping: the camera looks away from the
+  // initial block. Recover using R before testing mining and tool animation.
+  await canvas.dispatchEvent('mousemove', { movementX: 720, movementY: -640, bubbles: true });
+  await expect(value(page, 'alvo_x')).toHaveText('-1');
+  await resetCapturedWorld(page, canvas);
   const toolPixels = () => canvas.evaluate(c => [...c.getContext('2d').getImageData(720, 350, 120, 180).data].join(','));
   const resting = await toolPixels();
   await canvas.dispatchEvent('mousedown', { button: 0 });
+  await expect(value(page, 'esquerdo_anterior')).toHaveText('verdadeiro');
   await expect(value(page, 'retirados')).toHaveText('1');
   await expect.poll(toolPixels, { intervals: [20, 50] }).not.toBe(resting); await canvas.dispatchEvent('mouseup', { button: 0 });
   await expect(value(page, 'animacao_picareta')).toHaveText('0');

@@ -94,6 +94,10 @@ programa
         camera_z = -2.0
         direcao = 0.0
         inclinacao = -0.4
+        seno = m.seno(direcao)
+        cosseno = m.cosseno(direcao)
+        seno_vertical = m.seno(inclinacao)
+        cosseno_vertical = m.cosseno(inclinacao)
         animacao_picareta = 0.0
         retirados = 0
         colocados = 0
