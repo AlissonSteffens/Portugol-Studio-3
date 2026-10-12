@@ -122,13 +122,33 @@ test('mouse gira a câmera, picareta anima e Esc solta o cursor sem parar o jogo
   await canvas.dispatchEvent('mousemove', { movementX: 720, movementY: -640, bubbles: true });
   await expect(value(page, 'alvo_x')).toHaveText('-1');
   await resetCapturedWorld(page, canvas);
-  const toolPixels = () => canvas.evaluate(c => [...c.getContext('2d').getImageData(720, 350, 120, 180).data].join(','));
-  const resting = await toolPixels();
+  // Observe each displayed frame before clicking. Inspection updates are
+  // sampled, and waiting for them can outlast the 250 ms tool animation.
+  await canvas.evaluate(c => {
+    const context = c.getContext('2d');
+    c.dataset.toolMotion = 'armed';
+    c.addEventListener('mousedown', () => {
+      const resting = context.getImageData(720, 350, 120, 180).data;
+      const deadline = performance.now() + 5000;
+      c.dataset.toolMotion = 'waiting';
+      function observe() {
+        const current = context.getImageData(720, 350, 120, 180).data;
+        if (current.some((channel, index) => channel !== resting[index])) {
+          c.dataset.toolMotion = 'changed';
+          return;
+        }
+        if (performance.now() < deadline) requestAnimationFrame(observe);
+      }
+      requestAnimationFrame(observe);
+    }, { once: true });
+  });
   await canvas.dispatchEvent('mousedown', { button: 0 });
   await expect(value(page, 'esquerdo_anterior')).toHaveText('verdadeiro');
   await expect(value(page, 'retirados')).toHaveText('1');
-  await expect.poll(toolPixels, { intervals: [20, 50] }).not.toBe(resting); await canvas.dispatchEvent('mouseup', { button: 0 });
+  await canvas.dispatchEvent('mouseup', { button: 0, bubbles: true });
   await expect(value(page, 'animacao_picareta')).toHaveText('0');
+  // The evidence remains available even after the animation has finished.
+  await expect(canvas).toHaveAttribute('data-tool-motion', 'changed');
   // Explicit relative deltas avoid OS-dependent pointer-lock warping in headless Chromium.
   await canvas.dispatchEvent('mousemove', { movementX: 35, movementY: 12, bubbles: true });
   await expect(value(page, 'direcao')).not.toHaveText('0');
