@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.data/
+playwright-report/
+test-results/
+reports/*.exe
+reports/export-*.html
+reports/dependency-audit.json

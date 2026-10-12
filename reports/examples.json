@@ -1,0 +1,1121 @@
+[
+  {
+    "caminho": "algoritmos_sequenciais/altura_media.por",
+    "status": "concluido",
+    "leituras": 3,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 1,
+    "saida": "Digite a altura da primeira pessoa: Digite a altura da segunda pessoa: Digite a altura da terceira pessoa: \nA média das alturas é: 2 metros\n"
+  },
+  {
+    "caminho": "algoritmos_sequenciais/loja_ferramentas.por",
+    "status": "concluido",
+    "leituras": 4,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 1,
+    "saida": "Digite seu nome: \nDigite a quantidade de parafusos que deseja comprar: Digite a quantidade de arruelas que deseja comprar: Digite a quantidade de porcas que deseja comprar: Cliente: teste\n===============================\nParafusos: 3\nArruelas: 1\nPorcas: 10\n===============================\nTotal a pagar:  R$ 31.5\n"
+  },
+  {
+    "caminho": "algoritmos_sequenciais/maioridade_penal.por",
+    "status": "concluido",
+    "leituras": 1,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": "Digite sua idade: Falta(m) 16 ano(s) para você atingir a maioridade\n"
+  },
+  {
+    "caminho": "algoritmos_sequenciais/quantos_dias.por",
+    "status": "concluido",
+    "leituras": 1,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": "Informe o ano atual: Já se passaram 365 dias desde 01/01/0001\n"
+  },
+  {
+    "caminho": "algoritmos_sequenciais/troca_variaveis.por",
+    "status": "concluido",
+    "leituras": 2,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": "Informe um valor para a variável A: Informe um valor para a variável B: Variáveis antes da troca: \nA = 2; B = 3\n\nVariáveis após a troca: \nA = 3; B = 2\n"
+  },
+  {
+    "caminho": "bibliotecas/arquivos/gravar_arquivo.por",
+    "status": "concluido",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 7,
+    "duracaoMs": 18,
+    "saida": ""
+  },
+  {
+    "caminho": "bibliotecas/arquivos/ler_arquivo.por",
+    "status": "concluido",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 1,
+    "saida": "Linha 1:   1| Jo�o    | 1250 pontos\nLinha 2:   2| Julia   | 1157 pontos\nLinha 3:   3| Rafael  |  981 pontos\nLinha 4:   4| Alisson |  965 pontos\nLinha 5:   5| Marcos  |  810 pontos\nLinha 6:   6| Maria   |  805 pontos\nLinha 7:   7| J�ssica |  756 pontos\nLinha 8:   8| Paulo   |  732 pontos\nLinha 9:   9| Gustavo |  640 pontos\nLinha 10:  10| Luiz    |  500 pontos\n"
+  },
+  {
+    "caminho": "bibliotecas/arquivos/ler_linha.por",
+    "status": "concluido",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 1,
+    "saida": "Linha 1:   1| Jo�o    | 1250 pontos\nLinha 2:   2| Julia   | 1157 pontos\nLinha 3:   3| Rafael  |  981 pontos\n"
+  },
+  {
+    "caminho": "bibliotecas/arquivos/loop_linhas.por",
+    "status": "concluido",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 1,
+    "saida": "Linha 1:   1| Jo�o    | 1250 pontos\nLinha 2:   2| Julia   | 1157 pontos\nLinha 3:   3| Rafael  |  981 pontos\nLinha 4:   4| Alisson |  965 pontos\nLinha 5:   5| Marcos  |  810 pontos\nLinha 6:   6| Maria   |  805 pontos\nLinha 7:   7| J�ssica |  756 pontos\nLinha 8:   8| Paulo   |  732 pontos\nLinha 9:   9| Gustavo |  640 pontos\nLinha 10:  10| Luiz    |  500 pontos\n"
+  },
+  {
+    "caminho": "bibliotecas/arquivos/ler_selecionado.por",
+    "status": "concluido",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 1,
+    "saida": "Linha 1: Portugol Studio 1.1\nLinha 2: Portugol Studio 1.2\nLinha 3: Portugol Studio 1.3\nLinha 4: Portugol Studio 1.1\nLinha 5: Portugol Studio 1.2\nLinha 6: Portugol Studio 1.3\nLinha 7: \n"
+  },
+  {
+    "caminho": "bibliotecas/arquivos/selecionar_arquivo.por",
+    "status": "concluido",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": ""
+  },
+  {
+    "caminho": "bibliotecas/arquivos/substituir_arquivo.por",
+    "status": "concluido",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 6,
+    "duracaoMs": 15,
+    "saida": "\n texto original \nO portugol é uma IDE muito maneira\nO portugol contém vários exemplos interessantes\nO portugol é realizado no LITE\n\n texto modificado \nO Portugol Studio retrata uma IDE muito maneira\nO Portugol Studio contém vários exemplos interessantes\nO Portugol Studio é realizado no LITE\n"
+  },
+  {
+    "caminho": "bibliotecas/arquivos/verificar.por",
+    "status": "concluido",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": ""
+  },
+  {
+    "caminho": "bibliotecas/calendario/relogio_analogico.por",
+    "status": "interrompido-por-limite",
+    "error": "Limite de instruções excedido.",
+    "leituras": 0,
+    "quadros": 96,
+    "escritas": 0,
+    "duracaoMs": 1618,
+    "saida": ""
+  },
+  {
+    "caminho": "bibliotecas/calendario/relogio_digital.por",
+    "status": "interrompido-por-limite",
+    "error": "EXECUCAO_INTERROMPIDA",
+    "leituras": 0,
+    "quadros": 150,
+    "escritas": 0,
+    "duracaoMs": 2507,
+    "saida": ""
+  },
+  {
+    "caminho": "bibliotecas/graficos/senoides.por",
+    "status": "interrompido-por-limite",
+    "error": "Limite de instruções excedido.",
+    "leituras": 0,
+    "quadros": 12,
+    "escritas": 0,
+    "duracaoMs": 433,
+    "saida": ""
+  },
+  {
+    "caminho": "bibliotecas/graficos/onda.por",
+    "status": "interrompido-por-limite",
+    "error": "Limite de instruções excedido.",
+    "leituras": 0,
+    "quadros": 54,
+    "escritas": 0,
+    "duracaoMs": 1776,
+    "saida": ""
+  },
+  {
+    "caminho": "bibliotecas/graficos/sphere.por",
+    "status": "interrompido-por-limite",
+    "error": "Limite de instruções excedido.",
+    "leituras": 0,
+    "quadros": 18,
+    "escritas": 0,
+    "duracaoMs": 300,
+    "saida": ""
+  },
+  {
+    "caminho": "bibliotecas/graficos/fractal_fern.por",
+    "status": "interrompido-por-limite",
+    "error": "Limite de instruções excedido.",
+    "leituras": 0,
+    "quadros": 2,
+    "escritas": 0,
+    "duracaoMs": 868,
+    "saida": ""
+  },
+  {
+    "caminho": "bibliotecas/graficos/basico/iniciando.por",
+    "status": "concluido",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": ""
+  },
+  {
+    "caminho": "bibliotecas/graficos/paint.por",
+    "status": "interrompido-por-limite",
+    "error": "EXECUCAO_INTERROMPIDA",
+    "leituras": 0,
+    "quadros": 150,
+    "escritas": 0,
+    "duracaoMs": 2508,
+    "saida": ""
+  },
+  {
+    "caminho": "bibliotecas/graficos/qr_code.por",
+    "status": "interrompido-por-limite",
+    "error": "Limite de instruções excedido.",
+    "leituras": 0,
+    "quadros": 1,
+    "escritas": 0,
+    "duracaoMs": 828,
+    "saida": ""
+  },
+  {
+    "caminho": "bibliotecas/graficos/salvar_imagem.por",
+    "status": "interrompido-por-limite",
+    "error": "EXECUCAO_INTERROMPIDA",
+    "leituras": 0,
+    "quadros": 149,
+    "escritas": 0,
+    "duracaoMs": 2503,
+    "saida": ""
+  },
+  {
+    "caminho": "bibliotecas/graficos/solar.por",
+    "status": "interrompido-por-limite",
+    "error": "EXECUCAO_INTERROMPIDA",
+    "leituras": 0,
+    "quadros": 152,
+    "escritas": 0,
+    "duracaoMs": 2515,
+    "saida": ""
+  },
+  {
+    "caminho": "bibliotecas/graficos/tela_cheia/teste_tela_cheia.por",
+    "status": "interrompido-por-limite",
+    "error": "EXECUCAO_INTERROMPIDA",
+    "leituras": 0,
+    "quadros": 150,
+    "escritas": 0,
+    "duracaoMs": 2504,
+    "saida": ""
+  },
+  {
+    "caminho": "bibliotecas/graficos/varios.por",
+    "status": "concluido",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 1,
+    "saida": "Devem ser informados três parâmetros: nome, idade e altura!"
+  },
+  {
+    "caminho": "bibliotecas/internet/gerador_palavras.por",
+    "status": "interrompido-por-limite",
+    "error": "EXECUCAO_INTERROMPIDA",
+    "leituras": 0,
+    "quadros": 4,
+    "escritas": 0,
+    "duracaoMs": 2509,
+    "saida": ""
+  },
+  {
+    "caminho": "bibliotecas/internet/obtertexto.por",
+    "status": "interrompido-por-limite",
+    "error": "EXECUCAO_INTERROMPIDA",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 2732,
+    "saida": "Endereço não encontrado, tentaremos pela 2ª vez em 5Endereço não encontrado, tentaremos pela 2ª vez em 4"
+  },
+  {
+    "caminho": "bibliotecas/internet/robos.por",
+    "status": "interrompido-por-limite",
+    "error": "EXECUCAO_INTERROMPIDA",
+    "leituras": 0,
+    "quadros": 576,
+    "escritas": 0,
+    "duracaoMs": 10002,
+    "saida": ""
+  },
+  {
+    "caminho": "bibliotecas/matematica/area_circunferencia.por",
+    "status": "concluido",
+    "leituras": 1,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 1,
+    "saida": "Informe o raio da circunferência em cm: O valor de PI é: 3.141592653589793\nA área da circunferência é: 12.57 cm²\n"
+  },
+  {
+    "caminho": "bibliotecas/matematica/arredondamento.por",
+    "status": "concluido",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 1,
+    "saida": "O número com 3 casas decimais é: 1.257\nO número com 2 casas decimais é: 1.26\nO número com 1 casa decimal é: 1.3\nO número sem casas decimais é: 1\n"
+  },
+  {
+    "caminho": "bibliotecas/matematica/funcoes_trigonometricas.por",
+    "status": "concluido",
+    "leituras": 1,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 1,
+    "saida": "Digite um número: \nO seno de 2 é: 0.9092974268256817\nO cosseno de 2 é: -0.4161468365471424\nA tangente de 2 é: -2.185039863261519\n"
+  },
+  {
+    "caminho": "bibliotecas/matematica/logaritmo.por",
+    "status": "concluido",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": "O logaritmo de 32 na base 2 é igual a: 5\nO logaritmo de 625 na base 25 é igual a: 2\n"
+  },
+  {
+    "caminho": "bibliotecas/matematica/maior_numero.por",
+    "status": "concluido",
+    "leituras": 2,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": "Informe o primeiro número: Informe o segundo número: \nO maior número é: 3\n"
+  },
+  {
+    "caminho": "bibliotecas/matematica/menor_numero.por",
+    "status": "concluido",
+    "leituras": 2,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": "Informe o primeiro número: Informe o segundo número: \nO menor número é: 2\n"
+  },
+  {
+    "caminho": "bibliotecas/matematica/potencia.por",
+    "status": "concluido",
+    "leituras": 1,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": "Informe um número: \n2 ao quadrado é igual a: 4\n2 ao cubo é igual a: 8\n"
+  },
+  {
+    "caminho": "bibliotecas/matematica/raiz.por",
+    "status": "concluido",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": "A raíz quadrada de 4 é: 2\nA raíz cúbica de 27 é: 3\n"
+  },
+  {
+    "caminho": "bibliotecas/matematica/valor_absoluto.por",
+    "status": "concluido",
+    "leituras": 1,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": "Informe um número positivo ou negativo: O valor absoluto de 2 é: 2\n"
+  },
+  {
+    "caminho": "bibliotecas/mouse/botao_pressionado.por",
+    "status": "concluido",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": ""
+  },
+  {
+    "caminho": "bibliotecas/mouse/cursor.por",
+    "status": "concluido",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": ""
+  },
+  {
+    "caminho": "bibliotecas/mouse/ler_botao.por",
+    "status": "concluido",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": ""
+  },
+  {
+    "caminho": "bibliotecas/mouse/posicao_mouse.por",
+    "status": "concluido",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": ""
+  },
+  {
+    "caminho": "bibliotecas/sons/interromper.por",
+    "status": "concluido",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": ""
+  },
+  {
+    "caminho": "bibliotecas/sons/reproduzir_um.por",
+    "status": "concluido",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": ""
+  },
+  {
+    "caminho": "bibliotecas/sons/reproduzir_varios.por",
+    "status": "concluido",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": ""
+  },
+  {
+    "caminho": "bibliotecas/teclado/ler_tecla.por",
+    "status": "concluido",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": ""
+  },
+  {
+    "caminho": "bibliotecas/teclado/tecla_pressionada.por",
+    "status": "concluido",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": ""
+  },
+  {
+    "caminho": "bibliotecas/texto/caixa_alta.por",
+    "status": "concluido",
+    "leituras": 1,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": "Digite seu nome em letras minúsculas: BEM VINDO(A) TESTE!!\n"
+  },
+  {
+    "caminho": "bibliotecas/texto/caixa_baixa.por",
+    "status": "concluido",
+    "leituras": 1,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": "Digite seu nome em letras maiúsculas: bem vindo(a) teste!!\n"
+  },
+  {
+    "caminho": "bibliotecas/texto/subtexto.por",
+    "status": "concluido",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": "PA\nREDES\n"
+  },
+  {
+    "caminho": "bibliotecas/texto/caracteres.por",
+    "status": "concluido",
+    "leituras": 1,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 2,
+    "saida": "Informe um número no formato binário (Ex.: 1101001): O número informado não é binário\n"
+  },
+  {
+    "caminho": "bibliotecas/texto/pesquisar.por",
+    "status": "concluido",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 1,
+    "saida": "A posição do texto \"CA\" na palavra \"MACACO\" é: 2\nA posição do texto \"CA\" na palavra \"MACACA\" é: 4\nA posição do texto \"CA\" na palavra \"macaca\" é: -1\n\nA frase \"MACACO GOSTA DE BANANA\" possui a letra 'A' nas seguintes posições:\n1 3 11 17 19 21 \n"
+  },
+  {
+    "caminho": "bibliotecas/texto/preencher.por",
+    "status": "concluido",
+    "leituras": 1,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": "Digite um número em binário: \nNúmero binário informado: teste\n\nNúmero binário com 8 bits: 000teste\nNúmero binário com 16 bits: 00000000000teste\nNúmero binário com 32 bits: 000000000000000000000000000teste\n"
+  },
+  {
+    "caminho": "bibliotecas/texto/substituir.por",
+    "status": "concluido",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 1,
+    "saida": "PATO --> RATO\nPATO --> GATO\nPATO --> PARTO\nPATO --> PELICANO\nPATO --> PAMONHA\nPATO --> PATO\nPATO --> PATO\nLAGARTO --> PATO\n"
+  },
+  {
+    "caminho": "bibliotecas/texto/tamanho.por",
+    "status": "concluido",
+    "leituras": 1,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": "Digite seu nome: Seu nome possui 5 caracteres\n"
+  },
+  {
+    "caminho": "bibliotecas/tipos/caracter.por",
+    "status": "concluido",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": ""
+  },
+  {
+    "caminho": "bibliotecas/tipos/inteiro.por",
+    "status": "concluido",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 1,
+    "saida": "Este valor é o número decimal: 101\nEste valor é o número binário: 5\nEste valor é o número hexadecimal: 257\n\nNúmero convertido em inteiro: 1431\nNúmero convertido em real: 1431.5\n\nValor covertido para cadeia em binário: 101100101111\nValor covertido para cadeia em decimal: 2863\nValor covertido para cadeia em hexadecimal: b2f\n"
+  },
+  {
+    "caminho": "bibliotecas/tipos/logico.por",
+    "status": "concluido",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": "A cadeia \"A\" representa um caracter\nCaracter convertido: A"
+  },
+  {
+    "caminho": "bibliotecas/tipos/real.por",
+    "status": "concluido",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": "Valor convertido em real: 9.56\nValor convertido em inteiro: 9\nValor convertido em cadeia: 14.56\n"
+  },
+  {
+    "caminho": "bibliotecas/util/aguarde.por",
+    "status": "interrompido-por-limite",
+    "error": "EXECUCAO_INTERROMPIDA",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 3028,
+    "saida": "Lançando o foguete em: 10Lançando o foguete em: 9Lançando o foguete em: 8"
+  },
+  {
+    "caminho": "bibliotecas/util/tempo.por",
+    "status": "interrompido-por-limite",
+    "error": "Limite de instruções excedido.",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 33,
+    "saida": ""
+  },
+  {
+    "caminho": "bibliotecas/util/sorteio.por",
+    "status": "concluido",
+    "leituras": 3,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 2,
+    "saida": "Informe um valor inicial: Informe um valor final: Informe quantos valores deseja sortear: \nSorteio nº 1: 3\n"
+  },
+  {
+    "caminho": "bibliotecas/util/matriz.por",
+    "status": "concluido",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 1,
+    "saida": "A matriz possui 3 linhas\nA matriz possui 4 colunas\n\n[4][2][9][3]\n[8][6][5][4]\n[9][0][1][3]\n"
+  },
+  {
+    "caminho": "bibliotecas/util/vetor.por",
+    "status": "concluido",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 1,
+    "saida": "O vetor possui 5 elementos:\n\n{ 4, 2, 9, 3, 8 }\n"
+  },
+  {
+    "caminho": "desvios_condicionais/escolha_caso.por",
+    "status": "concluido",
+    "leituras": 1,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 1,
+    "saida": "1) Elogio \n2) Ofensa \n3) Sair \n\nEscolha uma opção: Voce é um monstro!\n"
+  },
+  {
+    "caminho": "desvios_condicionais/idade.por",
+    "status": "concluido",
+    "leituras": 1,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": "Informe sua idade: Você é menor de idade\n"
+  },
+  {
+    "caminho": "desvios_condicionais/media_final.por",
+    "status": "concluido",
+    "leituras": 4,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 1,
+    "saida": "Digite seu nome: \nDigite a primeira nota: Digite a segunda nota: Digite a terceira nota: Que pena teste!\nVocê foi reprovado com a média 4.67\n"
+  },
+  {
+    "caminho": "desvios_condicionais/medias.por",
+    "status": "concluido",
+    "leituras": 3,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": "Informe a média 1: Informe a média 2: Informe a média 3: A média final é: 2\n\nA média 3 é menor que a média final\n"
+  },
+  {
+    "caminho": "desvios_condicionais/mini_calculadora.por",
+    "status": "concluido",
+    "leituras": 3,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 1,
+    "saida": "Digite o primeiro número: Digite o segundo número: \nAgora digite uma das operações ( + - * / ): Resultado:\n\n2 s 3 = 0\n"
+  },
+  {
+    "caminho": "desvios_condicionais/multiplo.por",
+    "status": "concluido",
+    "leituras": 1,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": "Digite um número: O número 2 não é multiplo de 5\n"
+  },
+  {
+    "caminho": "desvios_condicionais/numero_inteiro.por",
+    "status": "concluido",
+    "leituras": 1,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": "Digite um número inteiro: O número é positivo\n"
+  },
+  {
+    "caminho": "desvios_condicionais/numeros_iguais.por",
+    "status": "concluido",
+    "leituras": 1,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": "Informe um número de 0 a 6: Os números são diferentes!\n\nNúmero digitado: 2\nNúmero sorteado: 1\n"
+  },
+  {
+    "caminho": "desvios_condicionais/tipo_triangulo.por",
+    "status": "concluido",
+    "leituras": 3,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": "Informe o primeiro lado do triângulo: Informe o segundo lado do triângulo: Informe o terceiro lado do triângulo: \nEste triângulo é Escaleno\n"
+  },
+  {
+    "caminho": "desvios_condicionais/vogal.por",
+    "status": "concluido",
+    "leituras": 1,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": "Digite uma letra: \nA letra 's' é uma consoante\n"
+  },
+  {
+    "caminho": "entrada_saida/numero_digitado.por",
+    "status": "concluido",
+    "leituras": 1,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 1,
+    "saida": "Digite um número inteiro: O número digitado foi: 2\n"
+  },
+  {
+    "caminho": "entrada_saida/ola_mundo.por",
+    "status": "concluido",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": "Olá Mundo!\n"
+  },
+  {
+    "caminho": "entrada_saida/seu_nome.por",
+    "status": "concluido",
+    "leituras": 1,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": "Digite seu nome: "
+  },
+  {
+    "caminho": "jogos/arkanoid.por",
+    "status": "interrompido-por-limite",
+    "error": "EXECUCAO_INTERROMPIDA",
+    "leituras": 0,
+    "quadros": 102,
+    "escritas": 0,
+    "duracaoMs": 2528,
+    "saida": ""
+  },
+  {
+    "caminho": "jogos/corrida.por",
+    "status": "interrompido-por-limite",
+    "error": "EXECUCAO_INTERROMPIDA",
+    "leituras": 0,
+    "quadros": 2,
+    "escritas": 0,
+    "duracaoMs": 3192,
+    "saida": ""
+  },
+  {
+    "caminho": "jogos/medieval.por",
+    "status": "interrompido-por-limite",
+    "error": "EXECUCAO_INTERROMPIDA",
+    "leituras": 0,
+    "quadros": 35,
+    "escritas": 0,
+    "duracaoMs": 2544,
+    "saida": ""
+  },
+  {
+    "caminho": "jogos/moon_lander.por",
+    "status": "interrompido-por-limite",
+    "error": "EXECUCAO_INTERROMPIDA",
+    "leituras": 0,
+    "quadros": 140,
+    "escritas": 0,
+    "duracaoMs": 2513,
+    "saida": ""
+  },
+  {
+    "caminho": "jogos/pong.por",
+    "status": "interrompido-por-limite",
+    "error": "Limite de instruções excedido.",
+    "leituras": 0,
+    "quadros": 1,
+    "escritas": 0,
+    "duracaoMs": 1126,
+    "saida": ""
+  },
+  {
+    "caminho": "jogos/serpente.por",
+    "status": "interrompido-por-limite",
+    "error": "EXECUCAO_INTERROMPIDA",
+    "leituras": 0,
+    "quadros": 49,
+    "escritas": 11,
+    "duracaoMs": 3435,
+    "saida": ""
+  },
+  {
+    "caminho": "jogos/slide/slide.por",
+    "status": "interrompido-por-limite",
+    "error": "EXECUCAO_INTERROMPIDA",
+    "leituras": 0,
+    "quadros": 149,
+    "escritas": 0,
+    "duracaoMs": 2506,
+    "saida": ""
+  },
+  {
+    "caminho": "jogos/slide.por",
+    "status": "interrompido-por-limite",
+    "error": "EXECUCAO_INTERROMPIDA",
+    "leituras": 0,
+    "quadros": 149,
+    "escritas": 0,
+    "duracaoMs": 2501,
+    "saida": ""
+  },
+  {
+    "caminho": "jogos/colisoes/ex4_colisao_circulos.por",
+    "status": "interrompido-por-limite",
+    "error": "EXECUCAO_INTERROMPIDA",
+    "leituras": 0,
+    "quadros": 77,
+    "escritas": 0,
+    "duracaoMs": 2514,
+    "saida": ""
+  },
+  {
+    "caminho": "jogos/colisoes/ex3_colisao_retangulos.por",
+    "status": "interrompido-por-limite",
+    "error": "EXECUCAO_INTERROMPIDA",
+    "leituras": 0,
+    "quadros": 77,
+    "escritas": 0,
+    "duracaoMs": 2502,
+    "saida": ""
+  },
+  {
+    "caminho": "jogos/colisoes/ex5_colisao_circulo_retangulo.por",
+    "status": "interrompido-por-limite",
+    "error": "EXECUCAO_INTERROMPIDA",
+    "leituras": 0,
+    "quadros": 78,
+    "escritas": 0,
+    "duracaoMs": 2509,
+    "saida": ""
+  },
+  {
+    "caminho": "jogos/colisoes/ex2_colisao_ponto_circulo.por",
+    "status": "interrompido-por-limite",
+    "error": "EXECUCAO_INTERROMPIDA",
+    "leituras": 0,
+    "quadros": 77,
+    "escritas": 0,
+    "duracaoMs": 2510,
+    "saida": ""
+  },
+  {
+    "caminho": "jogos/colisoes/ex1_colisao_ponto_retangulo.por",
+    "status": "interrompido-por-limite",
+    "error": "EXECUCAO_INTERROMPIDA",
+    "leituras": 0,
+    "quadros": 78,
+    "escritas": 0,
+    "duracaoMs": 2507,
+    "saida": ""
+  },
+  {
+    "caminho": "jogos/colisoes/ex6_colisao_todos.por",
+    "status": "interrompido-por-limite",
+    "error": "Limite de instruções excedido.",
+    "leituras": 0,
+    "quadros": 66,
+    "escritas": 0,
+    "duracaoMs": 2320,
+    "saida": ""
+  },
+  {
+    "caminho": "jogos/programe/criador_de_fases.por",
+    "status": "interrompido-por-limite",
+    "error": "Limite de instruções excedido.",
+    "leituras": 0,
+    "quadros": 95,
+    "escritas": 0,
+    "duracaoMs": 1634,
+    "saida": ""
+  },
+  {
+    "caminho": "jogos/programe/programe.por",
+    "status": "interrompido-por-limite",
+    "error": "EXECUCAO_INTERROMPIDA",
+    "leituras": 0,
+    "quadros": 134,
+    "escritas": 0,
+    "duracaoMs": 2516,
+    "saida": ""
+  },
+  {
+    "caminho": "jogos/theballsaga/theballsagacriador.por",
+    "status": "interrompido-por-limite",
+    "error": "Limite de instruções excedido.",
+    "leituras": 0,
+    "quadros": 5,
+    "escritas": 0,
+    "duracaoMs": 240,
+    "saida": ""
+  },
+  {
+    "caminho": "jogos/theballsaga/theballsaga.por",
+    "status": "interrompido-por-limite",
+    "error": "Limite de instruções excedido.",
+    "leituras": 0,
+    "quadros": 4,
+    "escritas": 0,
+    "duracaoMs": 833,
+    "saida": ""
+  },
+  {
+    "caminho": "lacos_repeticao/consistencia.por",
+    "status": "concluido",
+    "leituras": 4,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 1,
+    "saida": "Informe sua idade (valores aceitos de 5 a 150): Informe sua idade (valores aceitos de 5 a 150): Informe sua idade (valores aceitos de 5 a 150): Informe sua idade (valores aceitos de 5 a 150): \nCorreto!\n"
+  },
+  {
+    "caminho": "lacos_repeticao/contagem_regressiva.por",
+    "status": "interrompido-por-limite",
+    "error": "EXECUCAO_INTERROMPIDA",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 3041,
+    "saida": "Detonação em: 10Detonação em: 9Detonação em: 8"
+  },
+  {
+    "caminho": "lacos_repeticao/eleicao.por",
+    "status": "concluido",
+    "leituras": 5,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 1,
+    "saida": " B\n  3 -> Branco\n\nQualquer número diferente de 0, 1, 2 e 3 anulará o seu voto\nDigite seu voto: Escolha seu candidato ou tecle zero para encerrar\n\n  1 -> Candidato A\n  2 -> Candidato B\n  3 -> Branco\n\nQualquer número diferente de 0, 1, 2 e 3 anulará o seu voto\nDigite seu voto: Escolha seu candidato ou tecle zero para encerrar\n\n  1 -> Candidato A\n  2 -> Candidato B\n  3 -> Branco\n\nQualquer número diferente de 0, 1, 2 e 3 anulará o seu voto\nDigite seu voto: Escolha seu candidato ou tecle zero para encerrar\n\n  1 -> Candidato A\n  2 -> Candidato B\n  3 -> Branco\n\nQualquer número diferente de 0, 1, 2 e 3 anulará o seu voto\nDigite seu voto: Escolha seu candidato ou tecle zero para encerrar\n\n  1 -> Candidato A\n  2 -> Candidato B\n  3 -> Branco\n\nQualquer número diferente de 0, 1, 2 e 3 anulará o seu voto\nDigite seu voto: Votação encerrada!\n\nTotal de votos: 4\n\nCandidato A: 1 voto(s). 25 % do total\nCandidato B: 1 voto(s). 25 % do total\nBrancos: 1 voto(s). 25 % do total\nNulos: 1 voto(s). 25 % do total\n"
+  },
+  {
+    "caminho": "lacos_repeticao/fatorial.por",
+    "status": "concluido",
+    "leituras": 1,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": "Digite um numero: O fatorial de 2 é: 2\n"
+  },
+  {
+    "caminho": "lacos_repeticao/media_dez_numeros.por",
+    "status": "concluido",
+    "leituras": 10,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": "Digite o 1º número: Digite o 2º número: Digite o 3º número: Digite o 4º número: Digite o 5º número: Digite o 6º número: Digite o 7º número: Digite o 8º número: Digite o 9º número: Digite o 10º número: A média dos números é: 3.2\n"
+  },
+  {
+    "caminho": "lacos_repeticao/soma_um_x.por",
+    "status": "concluido",
+    "leituras": 1,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 1,
+    "saida": "Digite o número até o qual deseja somar: A soma de 1 até 2 é: 3\n"
+  },
+  {
+    "caminho": "lacos_repeticao/tabuada.por",
+    "status": "concluido",
+    "leituras": 1,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 1,
+    "saida": "Informe um número para ver sua tabuada: 2 X 1 = 2\n2 X 2 = 4\n2 X 3 = 6\n2 X 4 = 8\n2 X 5 = 10\n2 X 6 = 12\n2 X 7 = 14\n2 X 8 = 16\n2 X 9 = 18\n2 X 10 = 20\n"
+  },
+  {
+    "caminho": "musica/bateria.por",
+    "status": "interrompido-por-limite",
+    "error": "EXECUCAO_INTERROMPIDA",
+    "leituras": 0,
+    "quadros": 138,
+    "escritas": 0,
+    "duracaoMs": 2512,
+    "saida": ""
+  },
+  {
+    "caminho": "musica/player.por",
+    "status": "interrompido-por-limite",
+    "error": "Limite de instruções excedido.",
+    "leituras": 0,
+    "quadros": 14,
+    "escritas": 0,
+    "duracaoMs": 421,
+    "saida": ""
+  },
+  {
+    "caminho": "operacoes_aritmeticas/divisoes_inteiras.por",
+    "status": "concluido",
+    "leituras": 1,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 1,
+    "saida": "Digite um valor: \nA metade inteira do numero é: 1\nO resto (mod) da divisão por 3 é: 2\n"
+  },
+  {
+    "caminho": "operacoes_aritmeticas/operacoes_simples.por",
+    "status": "concluido",
+    "leituras": 2,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": "Digite o primeiro número: Digite o segundo número: \nA soma dos números é igual a: 5\nA subtração dos números é igual a: -1\nA multiplicação dos números é igual a: 6\nA divisão dos números é igual a: 0.6666666666666666\n"
+  },
+  {
+    "caminho": "operacoes_aritmeticas/potencia_raiz.por",
+    "status": "concluido",
+    "leituras": 1,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 1,
+    "saida": "Digite um valor: \nO número ao cubo é: 8\nA raiz quadrada do número é: 1.4142135623730951\n"
+  },
+  {
+    "caminho": "operacoes_aritmeticas/prioridades.por",
+    "status": "concluido",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": "Operação: 5 + 4 * 2 = 13\nOperação: (5 + 4) * 2 = 18\nOperação: 1 + 2 / 3 * 4 = 3.6666666666666665\nOperação: (1 + 2) / (3 * 4) = 0.25\n"
+  },
+  {
+    "caminho": "subrotinas/lagarta.por",
+    "status": "interrompido-por-limite",
+    "error": "EXECUCAO_INTERROMPIDA",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 2583,
+    "saida": "              \\ /\n( )( )( )( )( 0.0 )\n       ( )    \\ /\n  ( )( ) ( )( 0.0 )\n                 \\ /\n   ( )( )( )( )( 0.0 )\n          ( )    \\ /\n     ( )( ) ( )( 0.0 )\n                    \\ /\n      ( )( )( )( )( 0.0 )\n"
+  },
+  {
+    "caminho": "subrotinas/grade_ruido.por",
+    "status": "interrompido-por-limite",
+    "error": "EXECUCAO_INTERROMPIDA",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 2522,
+    "saida": "+]  [*]  [#]  [@] Crista\n----------------------------------------------------------------\n: : . . . .         . . : : + + + * * + + + + : : : : : : : : : \n: . . .           . . . : : : + + + + + + + : : : : : : : : : : \n. .             . . . . . : : : : : + + + : : : : : : : : : : : \n.             . . . . . : : : : : : : : : : : : : : : : : : : . \n.           . . . . : : : : : . : : : : : + + + + + + : : : . . \n.           . . . : : : : : . . . . : : : + + + + + + + : : . . \n. . .   . . . . : : : : : : : . . : : : + + + * * * + + + : . . \n: . . . . . . : : : : : : : : : : : : : + + * * * * * + + : . . \n: : : : : : : : : : : : : : : : : : + + + * * * * * * * + : : . \n+ + + : : : : : : : : : : : : + + + + * * * * # # # * * + + : . \n+ + + + + + : : : : : : : + + + + * * * # # # # # # * * + + : : \n* * * * + + + : : : : : : + + * * * # # # # # # # * * * + + + : \n* * * * * + + : : : : : : + + * # # # @ @ # # # # * * * + + + + \n# # * * * + + : : : : : + + * * # @ @ @ @ @ # # # * * * + + + + \n"
+  },
+  {
+    "caminho": "subrotinas/fatorial_recursivo.por",
+    "status": "concluido",
+    "leituras": 1,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": "Digite um número: O fatorial de 2 é: 2\n"
+  },
+  {
+    "caminho": "subrotinas/fibonacci_recursivo.por",
+    "status": "concluido",
+    "leituras": 1,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 1,
+    "saida": "Quantos elementos da sequência de Fibonacci deseja calcular? 0 1 \n"
+  },
+  {
+    "caminho": "subrotinas/parametros_referencia.por",
+    "status": "concluido",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 1,
+    "saida": "Variavel antes:\n11 \n\nVariavel após:\n11 \n"
+  },
+  {
+    "caminho": "subrotinas/procedimento_funcao.por",
+    "status": "concluido",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 1,
+    "saida": "--------------------------------------------------\nBem Vindo\n--------------------------------------------------\nO resultado do primeiro cálculo é: 25\nO resultado do segundo cálculo é: 53\n--------------------------------------------------\nTchau\n--------------------------------------------------\n"
+  },
+  {
+    "caminho": "subrotinas/vetores_parametro.por",
+    "status": "concluido",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 2,
+    "saida": "Vetor antes da ordenação:\n12 8 12 100 66 28 64 65 5 94 \n\nVetor após a ordenação:\n5 8 12 12 28 64 65 66 94 100 \n"
+  },
+  {
+    "caminho": "vetores_matrizes/diagonal_principal.por",
+    "status": "concluido",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 1,
+    "saida": "[*][ ][ ][ ][ ]\n[ ][*][ ][ ][ ]\n[ ][ ][*][ ][ ]\n[ ][ ][ ][*][ ]\n[ ][ ][ ][ ][*]\n"
+  },
+  {
+    "caminho": "vetores_matrizes/exibe_matriz.por",
+    "status": "concluido",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 1,
+    "saida": "[6][5][7][8][4]\n[3][3][2][7][5]\n[3][6][6][6][8]\n[4][6][9][9][5]\n[7][4][7][4][4]\n"
+  },
+  {
+    "caminho": "vetores_matrizes/pesquisa_vetor.por",
+    "status": "concluido",
+    "leituras": 1,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 0,
+    "saida": "Qual número deseja procurar? O número não está no vetor\n"
+  },
+  {
+    "caminho": "vetores_matrizes/preenche_vetor.por",
+    "status": "concluido",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 1,
+    "saida": "Vetor na ordem original:\n15 100 31 97 21 9 60 22 44 24 \n\nVetor na ordem inversa:\n24 44 22 60 9 21 97 31 100 15 "
+  },
+  {
+    "caminho": "vetores_matrizes/tabela_dados.por",
+    "status": "concluido",
+    "leituras": 0,
+    "quadros": 0,
+    "escritas": 0,
+    "duracaoMs": 1,
+    "saida": "--------------------\n       TABELA       \n--------------------\nAndre\t\t1.71\nThiago\t\t1.78\nBruno\t\t1.75\nCarlos\t\t1.87\nCassio\t\t1.71\n"
+  }
+]
