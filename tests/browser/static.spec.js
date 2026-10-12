@@ -8,7 +8,7 @@ test('site estático persiste recursos de abas, executa e exporta sem API', asyn
   page.on('request', request => { if (new URL(request.url()).pathname.includes('/api/')) apiRequests.push(request.url()); });
   await page.goto('./');
   await expect(page.locator('.brand-logo')).toBeVisible();
-  expect(await page.locator('.brand-logo').evaluate(image => image.complete && image.naturalWidth > 0)).toBe(true);
+  await expect.poll(() => page.locator('.brand-logo').evaluate(image => image.complete && image.naturalWidth > 0)).toBe(true);
   await page.getByRole('button', { name: 'Mostrar editor', exact: true }).click();
   const pixels = await page.evaluate(() => { const c = document.createElement('canvas'); c.width = c.height = 4; c.getContext('2d').fillStyle = '#ff0000'; c.getContext('2d').fillRect(0, 0, 4, 4); return c.toDataURL().split(',')[1]; });
   await page.locator('input[type=file][multiple]').setInputFiles({ name: 'persistida.png', mimeType: 'image/png', buffer: Buffer.from(pixels, 'base64') });
