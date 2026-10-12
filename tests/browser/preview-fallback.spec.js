@@ -9,13 +9,14 @@ test('prévia indisponível usa a apresentação de exemplo sem imagem', async (
   await page.route('**/exemplos/missing.png', route => route.fulfill({ status: 404, body: '' }));
   await page.route('**/exemplos/valid.svg', route => route.fulfill({ contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"><rect width="10" height="10" fill="yellow"/></svg>' }));
   await page.goto('/');
+  await page.getByLabel('Categorias dos exemplos').getByRole('button', { name: /^Jogos/ }).click();
   const catalog = page.locator('.welcome-example-list');
-  const broken = catalog.getByRole('button', { name: 'Imagem indisponível Jogos' });
+  const broken = catalog.getByRole('button', { name: /Imagem indisponível/ });
   await broken.scrollIntoViewIfNeeded();
   await expect(broken.locator('.welcome-file-icon')).toBeVisible();
   await expect(broken.locator('img')).toHaveCount(0);
   await expect(broken.locator('.welcome-catalog-preview')).toHaveCount(0);
-  await expect(catalog.getByRole('button', { name: 'Sem imagem Jogos' }).locator('.welcome-file-icon')).toBeVisible();
+  await expect(catalog.getByRole('button', { name: 'Sem imagem', exact: true }).locator('.welcome-file-icon')).toBeVisible();
   await expect(catalog.getByRole('button', { name: /Imagem válida/ }).locator('.welcome-catalog-preview img')).toBeVisible();
   await expect(page.locator('.welcome-featured img')).toHaveCount(0);
   await page.getByLabel('Buscar exemplos').fill('Imagem indisponível');

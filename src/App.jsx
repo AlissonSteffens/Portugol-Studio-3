@@ -78,7 +78,10 @@ export default function App() {
     runtimeRef.current?.setMasterVolume(settings.muted ? 0 : settings.volume);
   }
   const [canvas] = useState(() => { const node = document.createElement('canvas'); node.width = 800; node.height = 600; node.tabIndex = 0; node.setAttribute('aria-label', 'Tela gráfica Portugol'); return node; });
+  const outputDocument = useRef(store.active.id);
   useEffect(() => {
+    if (outputDocument.current === store.active.id) return;
+    outputDocument.current = store.active.id;
     canvas.width = 800; canvas.height = 600;
     terminalRef.current?.replaceChildren();
     setTitle('Modo gráfico'); setResolution('800 × 600');

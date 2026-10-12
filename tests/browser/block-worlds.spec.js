@@ -53,12 +53,13 @@ test('mundo 3D projeta cubos, retira e coloca na mira, move e gira a câmera', a
   await writeFile('test-results/blocos-3d-full.png', Buffer.from(await canvas.evaluate(c => c.toDataURL('image/png').split(',')[1]), 'base64'));
   await point(page, canvas, 450, 310); await page.mouse.down(); await page.mouse.up();
   await expect.poll(() => page.evaluate(() => document.pointerLockElement?.tagName)).toBe('CANVAS');
-  await point(page, canvas, 450, 310); await page.mouse.down();
-  await expect(value(page, 'retirados')).toHaveText('1'); await page.mouse.up();
+  await expect(value(page, 'mouse_preso')).toHaveText('verdadeiro');
+  await canvas.dispatchEvent('mousedown', { button: 0 });
+  await expect(value(page, 'retirados')).toHaveText('1'); await canvas.dispatchEvent('mouseup', { button: 0 });
   await canvas.focus(); await page.keyboard.down('3');
   await expect(value(page, 'escolhido')).toHaveText('3'); await page.keyboard.up('3');
-  await point(page, canvas, 450, 310); await page.mouse.down({ button: 'right' });
-  await expect(value(page, 'colocados')).toHaveText('1'); await page.mouse.up({ button: 'right' });
+  await canvas.dispatchEvent('mousedown', { button: 2 });
+  await expect(value(page, 'colocados')).toHaveText('1'); await canvas.dispatchEvent('mouseup', { button: 2 });
   const before = await value(page, 'camera_z').innerText();
   await canvas.focus(); await page.keyboard.down('w');
   await expect(value(page, 'camera_z')).not.toHaveText(before); await page.keyboard.up('w');
@@ -101,12 +102,12 @@ test('mouse gira a câmera, picareta anima e Esc solta o cursor sem parar o jogo
   await expect(value(page, 'mouse_preso')).toHaveText('verdadeiro');
   const toolPixels = () => canvas.evaluate(c => [...c.getContext('2d').getImageData(720, 350, 120, 180).data].join(','));
   const resting = await toolPixels();
-  await page.mouse.down();
+  await canvas.dispatchEvent('mousedown', { button: 0 });
   await expect(value(page, 'retirados')).toHaveText('1');
-  await expect.poll(toolPixels).not.toBe(resting); await page.mouse.up();
+  await expect.poll(toolPixels, { intervals: [20, 50] }).not.toBe(resting); await canvas.dispatchEvent('mouseup', { button: 0 });
   await expect(value(page, 'animacao_picareta')).toHaveText('0');
-  const box = await canvas.boundingBox();
-  await page.mouse.move(box.x + box.width / 2 + 35, box.y + box.height / 2 + 12);
+  // Explicit relative deltas avoid OS-dependent pointer-lock warping in headless Chromium.
+  await canvas.dispatchEvent('mousemove', { movementX: 35, movementY: 12, bubbles: true });
   await expect(value(page, 'direcao')).not.toHaveText('0');
   await expect(value(page, 'inclinacao')).not.toHaveText('-0.4');
   await page.keyboard.press('Escape');
@@ -127,8 +128,8 @@ test('controle do mouse também funciona na aba gráfica destacada', async ({ pa
   await point(popup, canvas, 450, 310); await popup.mouse.down(); await popup.mouse.up();
   await expect.poll(() => popup.evaluate(() => document.pointerLockElement?.tagName)).toBe('CANVAS');
   const frame = () => canvas.evaluate(c => [...c.getContext('2d').getImageData(100, 100, 200, 200).data].join(','));
-  const before = await frame(), box = await canvas.boundingBox();
-  await popup.mouse.move(box.x + box.width / 2 + 30, box.y + box.height / 2);
+  const before = await frame();
+  await canvas.dispatchEvent('mousemove', { movementX: 100, movementY: 0, bubbles: true });
   await expect.poll(frame).not.toBe(before);
   await popup.keyboard.press('Escape');
   await expect.poll(() => popup.evaluate(() => document.pointerLockElement === null)).toBe(true);
