@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { restoreExecutionWindow } from './helpers/execution-window.js';
 
 test('fix discreto no painel e menu de correção no hover', async ({ page }) => {
   await page.goto('/');
@@ -86,7 +87,7 @@ test('aba de execução anima com o editor suspenso, recebe leia e restaura os e
   await expect(popup.getByLabel('Terminal de execução')).toContainText('Recebido: 42');
   await expect(popup.locator('header')).toContainText('Concluído');
   await page.evaluate(() => { window.requestAnimationFrame = window.originalFrame; });
-  await popup.getByRole('button', { name: 'Trazer para o editor' }).click();
+  await restoreExecutionWindow(popup);
   await expect(page.locator('canvas')).toBeVisible();
   await expect(page.getByLabel('Terminal de execução')).toContainText('Recebido: 42');
   expect(errors).toEqual([]);

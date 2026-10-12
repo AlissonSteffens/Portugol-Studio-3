@@ -1,5 +1,6 @@
 import { writeFile } from 'node:fs/promises';
 import { test, expect } from '@playwright/test';
+import { restoreExecutionWindow } from './helpers/execution-window.js';
 
 async function openWorld(page, dimension) {
   await page.setViewportSize({ width: 1440, height: 1000 });
@@ -176,7 +177,7 @@ test('controle do mouse também funciona na aba gráfica destacada', async ({ pa
   await expect.poll(frame).not.toBe(before);
   await popup.keyboard.press('Escape');
   await expect.poll(() => popup.evaluate(() => document.pointerLockElement === null)).toBe(true);
-  await popup.getByRole('button', { name: 'Trazer para o editor' }).click();
+  await restoreExecutionWindow(popup);
   await expect(page.locator('canvas')).toBeVisible();
   await expect(page.getByText('● Executando')).toBeVisible();
   await page.getByRole('button', { name: 'Parar execução', exact: true }).click();
