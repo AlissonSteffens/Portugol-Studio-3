@@ -6,33 +6,50 @@ export const valueMethods = {
     if (value === undefined) throw Object.assign(runtimeError('ErroVariavelNaoInicializada', `A variável “${name}” não foi inicializada. Atribua um valor ou utilize leia(${name}) antes de usá-la.`), { from, to });
     return value;
   },
+  arrayAccess(array, index, matrix, from, to) {
+    const metadata = this.__arrayMetadata?.get(array), target = metadata?.target || array;
+    if (!Array.isArray(target) || !Number.isInteger(index) || index < 0 || index >= target.length) throw Object.assign(runtimeError(matrix ? 'ErroIndiceMatrizInvalido' : 'ErroIndiceVetorInvalido', `O índice [${index}] é inválido para ${matrix ? 'a matriz' : 'o vetor'}. Os índices começam em 0 e devem ser menores que ${target?.length ?? 0}.`), { from, to });
+    return metadata || { target };
+  },
+  readElement(array, index, matrix, from, to) {
+    const metadata = this.arrayAccess(array, index, matrix, from, to), value = metadata.target[index];
+    if (value === undefined) throw Object.assign(runtimeError('ErroValorVetorMatrizNaoInicializado', `O elemento na posição [${index}] não foi inicializado. Atribua um valor antes de utilizá-lo.`), { from, to });
+    return value;
+  },
   element(array, index, matrix, from, to) {
-    const error = message => Object.assign(runtimeError(matrix ? 'ErroIndiceMatrizInvalido' : 'ErroIndiceVetorInvalido', message), { from, to });
-    if (!Array.isArray(array) || !Number.isInteger(index) || index < 0 || index >= array.length) throw error(`O índice [${index}] é inválido para ${matrix ? 'a matriz' : 'o vetor'}. Os índices começam em 0 e devem ser menores que ${array?.length ?? 0}.`);
-    return this.reference(() => {
-      const value = array[index];
-      if (value === undefined) throw Object.assign(runtimeError('ErroValorVetorMatrizNaoInicializado', `O elemento na posição [${index}] não foi inicializado. Atribua um valor antes de utilizá-lo.`), { from, to });
-      return value;
-    }, value => { array[index] = value; });
+    const metadata = this.arrayAccess(array, index, matrix, from, to), runtime = this;
+    return {
+      get value() {
+        const value = metadata.target[index];
+        if (value === undefined) throw Object.assign(runtimeError('ErroValorVetorMatrizNaoInicializado', `O elemento na posição [${index}] não foi inicializado. Atribua um valor antes de utilizá-lo.`), { from, to });
+        return value;
+      },
+      set value(value) { metadata.target[index] = metadata.type && metadata.dimensions === 1 ? runtime.cast(value, metadata.type) : value; },
+    };
   },
   increment(reference, amount, postfix) {
     const before = this.readValue(reference.value, 'incrementada');
     reference.value = before + amount;
     return postfix ? before : reference.value;
   },
-  async setObjectProperty(args, type, from, to) {
-    await this.callLibrary('Objetos', 'atribuir_propriedade', args, from, to);
+  setObjectProperty(args, type, from, to) {
+    this.callLibrarySync('Objetos', 'atribuir_propriedade', args, from, to);
     this.tagObjectProperty(args[0], args[1], type);
   },
-  async callLibrary(library, name, args, from, to) {
-    try { validateLibraryCall(library, name, args); return await this[library][name](...args); }
-    catch (error) {
+  async callLibrary(...args) { return this.callLibrarySync(...args); },
+  callLibrarySync(library, name, args, from, to) {
+    const translate = error => {
       if (error.message === 'EXECUCAO_INTERROMPIDA') throw error;
       error.code ??= 'ErroExecucao.ErroExecucaoBiblioteca';
       error.from ??= from; error.to ??= to;
       if (error instanceof TypeError || error instanceof RangeError) error = Object.assign(runtimeError('ErroExecucaoBiblioteca', `Não foi possível executar ${library}.${name}. Verifique os parâmetros e recursos informados.`), { from, to, cause: error });
       throw error;
-    }
+    };
+    try {
+      validateLibraryCall(library, name, args);
+      const value = this[library][name](...args);
+      return value && typeof value.then === 'function' ? value.catch(translate) : value;
+    } catch (error) { return translate(error); }
   },
   translateError(error) {
     if (error.message === 'EXECUCAO_INTERROMPIDA') return error;
@@ -45,6 +62,15 @@ export const valueMethods = {
     error.from ??= this.sourcePosition ?? 0;
     error.to ??= this.sourceEnd ?? error.from + 1;
     return error;
+  },
+  shouldInspect(force = false) {
+    if (force || !this.options.inspectionInterval) return true;
+    if (this.__inspectionCountdown > 0) { this.__inspectionCountdown--; return false; }
+    this.__inspectionCountdown = 64;
+    const now = performance.now();
+    if (now < (this.__nextInspection || 0)) return false;
+    this.__nextInspection = now + this.options.inspectionInterval;
+    return true;
   },
   defaultValue(type) { return { cadeia: '', caracter: '\0', logico: false, inteiro: 0, real: 0 }[type]; },
   cast(value, type) {
@@ -70,14 +96,14 @@ export const valueMethods = {
     if (this.__depth > (this.options.maxCallDepth || 256)) { this.__depth--; throw runtimeError('ErroEstouroPilha', 'Limite de chamadas recursivas excedido. A função está chamando a si mesma sem uma condição de parada ou com profundidade excessiva.'); }
   },
   leaveFunction() { this.__depth--; this.debugger?.leave(); },
-  async checkInterrupt() {
+  checkInterrupt(allowYield = true) {
     if (this.__aborted) throw new Error('EXECUCAO_INTERROMPIDA');
     this.__steps = (this.__steps || 0) + 1;
     if (this.__steps > (this.options.stepLimit || Infinity)) throw new Error('Limite de instruções excedido.');
-    if (performance.now() - (this.__lastYield || this.__startTime) > 12) {
-      await this.waitForDelay(0); this.__lastYield = performance.now();
+    if (allowYield && performance.now() - (this.__lastYield || this.__startTime) > 12) return this.waitForDelay(0).then(() => {
+      this.__lastYield = performance.now();
       if (this.__aborted) throw new Error('EXECUCAO_INTERROMPIDA');
-    }
+    });
   },
   checkedArray(values, type, dimensions) {
     if (values.length > (this.options.maxArrayElements || 2_000_000)) throw runtimeError('ErroMemoriaInsuficiente', 'Limite de memória dos vetores excedido. Reduza o tamanho do vetor ou matriz.');
@@ -87,13 +113,15 @@ export const valueMethods = {
       const value = Number(property);
       if (!Number.isInteger(value) || value < 0 || value >= values.length) throw runtimeError('ErroIndiceInvalido', 'Índice fora dos limites do vetor: ' + property + '. Os índices começam em 0 e devem ser menores que ' + values.length + '.');
     }
-    return new Proxy(values, {
+    const proxy = new Proxy(values, {
       get(target, property, receiver) { index(property); return Reflect.get(target, property, receiver); },
       set(target, property, value, receiver) {
         index(property);
         return Reflect.set(target, property, dimensions > 1 ? value : runtime.cast(value, type), receiver);
       },
     });
+    this.__arrayMetadata ||= new WeakMap(); this.__arrayMetadata.set(proxy, { target: values, type, dimensions });
+    return proxy;
   },
   array(dimensions, type) {
     const length = dimensions[0];

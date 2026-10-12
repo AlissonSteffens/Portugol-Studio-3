@@ -1,3 +1,5 @@
+import { installMouseCapture } from './mouse-capture.js';
+import { installGraphicsBuffers } from './graphics-buffers.js';
 import { presentationMethods } from './presentation.js';
 import { installExtendedLibraries } from './extended-libraries.js';
 import { runtimeError } from './diagnostics.js';
@@ -39,6 +41,7 @@ import { recordingContext } from './recording-context.js';
                     width: 800,
                     height: 600,
                     getContext: () => ({
+                        save: () => {}, restore: () => {}, resetTransform: () => {}, translate: () => {}, rotate: () => {},
                         clearRect: () => {},
                         drawImage: () => {},
                         fillRect: () => {},
@@ -58,6 +61,7 @@ import { recordingContext } from './recording-context.js';
                     })
                 };
             };
+            this.createCanvas = createOffscreen;
             this.bufferCanvas = createOffscreen();
             this.bufferWidth = 800;
             this.bufferHeight = 600;
@@ -90,10 +94,13 @@ import { recordingContext } from './recording-context.js';
             this._setupLibraries();
             installBrowserLibraries(this);
             installExtendedLibraries(this);
+            installGraphicsBuffers(this);
+            installMouseCapture(this);
         }
 
         abort() {
             this.__aborted = true;
+            this.__releaseMouseCapture?.();
             this.debugger?.abort();
             for (const pending of this.__presentationWaits || []) pending.abort();
             this.__networkController?.abort();
@@ -112,6 +119,12 @@ import { recordingContext } from './recording-context.js';
             if (typeof window === 'undefined') return;
 
             this._onKeyDown = (e) => {
+                if (e.code === 'Escape' && this.canvas?.ownerDocument.pointerLockElement === this.canvas) {
+                    this.__ignoreEscapeUntil = performance.now() + 200;
+                    this.__releaseMouseCapture?.(false);
+                    return;
+                }
+                if (e.code === 'Escape' && this.__ignoreEscapeUntil > performance.now()) return;
                 const code = this._mapKeyCode(e);
                 this.__keyStates.set(code, true);
                 this.__lastKey = code;
@@ -136,7 +149,7 @@ import { recordingContext } from './recording-context.js';
             };
 
             this._onMouseMove = (e) => {
-                if (!this.canvas) return;
+                if (!this.canvas || this.canvas.ownerDocument.pointerLockElement === this.canvas) return;
                 const rect = this.canvas.getBoundingClientRect();
                 const scaleX = this.bufferWidth / rect.width;
                 const scaleY = this.bufferHeight / rect.height;
@@ -145,6 +158,7 @@ import { recordingContext } from './recording-context.js';
             };
 
             this._onMouseDown = (e) => {
+                if (this.__requestMouseCapture?.()) return;
                 const btnIdx = e.button === 0 ? 0 : (e.button === 2 ? 1 : 2);
                 this.__mouseButtons[btnIdx] = true;
             };
@@ -159,6 +173,20 @@ import { recordingContext } from './recording-context.js';
                 e.preventDefault();
             };
 
+            this._onRelativeMouseMove = (e) => {
+                if (this.canvas?.ownerDocument.pointerLockElement !== this.canvas || (e.target.ownerDocument || e.target) !== this.canvas.ownerDocument) return;
+                this.__mouseDeltaX = (this.__mouseDeltaX || 0) + (e.movementX || 0);
+                this.__mouseDeltaY = (this.__mouseDeltaY || 0) + (e.movementY || 0);
+            };
+            this._onPointerLockChange = (e) => {
+                if (e.target !== this.canvas?.ownerDocument) return;
+                const captured = this.canvas.ownerDocument.pointerLockElement === this.canvas;
+                if (this.__wasCaptured && !captured) this.__ignoreEscapeUntil = performance.now() + 200;
+                this.__wasCaptured = captured;
+                this.__capturePending = false; this.__mouseDeltaX = 0; this.__mouseDeltaY = 0;
+                this.__mouseButtons.fill(false); this.__keyStates.clear();
+            };
+            this._onPointerLockError = () => { this.__capturePending = false; };
             this.__inputWindows = new Set();
             this.bindInputWindow(window);
             if (this.canvas?.ownerDocument.defaultView !== window) this.bindInputWindow(this.canvas.ownerDocument.defaultView);
@@ -174,6 +202,7 @@ import { recordingContext } from './recording-context.js';
         destroy() {
             this.abort();
             this.__disposeMedia?.();
+            this.__disposeBuffers?.();
             if (typeof window !== 'undefined') {
                 for (const target of this.__inputWindows) this.unbindInputWindow(target);
                 if (this.canvas) {
@@ -190,8 +219,11 @@ import { recordingContext } from './recording-context.js';
             target.addEventListener('keydown', this._onKeyDown);
             target.addEventListener('keyup', this._onKeyUp);
             target.addEventListener('mouseup', this._onMouseUp);
-            this._onBlur ||= () => { this.__keyStates.clear(); this.__mouseButtons.fill(false); };
+            this._onBlur ||= () => { this.__keyStates.clear(); this.__mouseButtons.fill(false); this.__mouseDeltaX = 0; this.__mouseDeltaY = 0; };
             target.addEventListener('blur', this._onBlur);
+            target.document.addEventListener('mousemove', this._onRelativeMouseMove);
+            target.document.addEventListener('pointerlockchange', this._onPointerLockChange);
+            target.document.addEventListener('pointerlockerror', this._onPointerLockError);
         }
 
         unbindInputWindow(target) {
@@ -199,6 +231,9 @@ import { recordingContext } from './recording-context.js';
             target.removeEventListener('keyup', this._onKeyUp);
             target.removeEventListener('mouseup', this._onMouseUp);
             target.removeEventListener('blur', this._onBlur);
+            target.document.removeEventListener('mousemove', this._onRelativeMouseMove);
+            target.document.removeEventListener('pointerlockchange', this._onPointerLockChange);
+            target.document.removeEventListener('pointerlockerror', this._onPointerLockError);
             this.__inputWindows.delete(target);
             this._onBlur();
         }
@@ -237,18 +272,12 @@ import { recordingContext } from './recording-context.js';
         _colorToCss(val) {
             if (typeof val === 'string') return val;
             val = val | 0; // força 32 bits
-            let a = (val >>> 24) & 0xFF;
             let r = (val >>> 16) & 0xFF;
             let g = (val >>> 8) & 0xFF;
             let b = val & 0xFF;
 
-            if (a === 0 && val !== 0) {
-                a = 255;
-            } else if (val === 0) {
-                a = 255;
-            }
-            const alphaFactor = a / 255;
-            return `rgba(${r}, ${g}, ${b}, ${alphaFactor.toFixed(3)})`;
+            // Java's Color(int) ignores the upper byte; opacity is a separate setting.
+            return `rgba(${r}, ${g}, ${b}, 1)`;
         }
 
         _setupLibraries() {
@@ -351,7 +380,7 @@ import { recordingContext } from './recording-context.js';
                 },
 
                 limpar() {
-                    self.bCtx.fillRect(0, 0, self.bufferWidth, self.bufferHeight);
+                    self.bCtx.fillRect(0, 0, self.__drawingWidth || self.bufferWidth, self.__drawingHeight || self.bufferHeight);
                 },
 
                 async renderizar() {
@@ -361,7 +390,7 @@ import { recordingContext } from './recording-context.js';
                         self.ctx.clearRect(0, 0, self.canvas.width, self.canvas.height);
                         self.ctx.drawImage(self.bufferCanvas, 0, 0, self.canvas.width, self.canvas.height);
                     }
-                    self.__drawing.clear();
+                    (self.__mainDrawing || self.__drawing).clear();
                     // Aguarda o próximo frame de animação
                     await self.waitForFrame();
                     if (self.__aborted) throw new Error("EXECUCAO_INTERROMPIDA");

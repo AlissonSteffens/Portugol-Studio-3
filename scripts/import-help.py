@@ -40,5 +40,13 @@ for p in sorted((source/'topicos').rglob('*.html')):
  index.append({'title':title,'group':category,'path':'/ajuda/'+rel,'search':re.sub(r'\s+',' ',plain).strip()})
 order = {path: position for position, path in enumerate(names)}
 index.sort(key=lambda topic: order.get(topic['path'].removeprefix('/ajuda/'), len(order)))
+for topic in json.loads((Path(__file__).parent/'web-help.json').read_text(encoding='utf-8')):
+ article = Path('public')/topic['path'].lstrip('/')
+ content = article.read_text(encoding='utf-8')
+ content = re.sub(r'<style\b[^>]*>.*?</style>', '', content, flags=re.S)
+ plain = html.unescape(re.sub('<[^>]+>', ' ', content))
+ index.append({**topic, 'search': re.sub(r'\s+', ' ', plain).strip()})
 (target/'index.json').write_text(json.dumps(index,ensure_ascii=False),encoding='utf-8')
+with (target/'ORIGEM.md').open('a', encoding='utf-8') as origin:
+ origin.write('\nO guia Buffer gráfico foi escrito para esta versão Web e documenta suas extensões gráficas. Os tópicos locais estão registrados em scripts/web-help.json e são preservados ao importar novamente a ajuda original.\n')
 print(f'{len(index)} tópicos importados com exemplos incorporados.')

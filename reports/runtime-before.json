@@ -1,0 +1,18 @@
+[
+  {
+    "example": "2d",
+    "milliseconds": 762,
+    "frames": 12,
+    "inspections": 160083,
+    "libraryCalls": 28143,
+    "interrupts": 13415
+  },
+  {
+    "example": "3d",
+    "milliseconds": 23209,
+    "frames": 12,
+    "inspections": 1188652,
+    "libraryCalls": 30004,
+    "interrupts": 141783
+  }
+]

@@ -5,7 +5,7 @@ import LibraryHelp, { libraryTopics } from './LibraryHelp.jsx';
 
 const normalize = text => text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('pt-BR');
 
-export default function Help() {
+export default function Help({ onOpenExample, disabled }) {
   const [topics, setTopics] = useState([]);
   const [query, setQuery] = useState('');
   const [selected, setSelected] = useState(null);
@@ -25,6 +25,28 @@ export default function Help() {
     });
     return () => controller.abort();
   }, [retry]);
+  function prepareArticle(event) {
+    const document = event.currentTarget.contentDocument;
+    if (!document) return;
+    for (const block of document.querySelectorAll('.code-example pre')) {
+      const source = block.textContent.trim();
+      if (!source || block.parentElement.querySelector('.open-example')) continue;
+      const title = block.closest('.code-example').querySelector('h3')?.textContent || selected.title;
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'open-example';
+      button.textContent = '↗ Abrir no editor';
+      button.title = 'Criar uma cópia para editar e executar';
+      button.disabled = disabled;
+      button.addEventListener('click', () => onOpenExample(source, title));
+      const header = document.createElement('div');
+      header.className = 'code-example-header';
+      const heading = block.closest('.code-example').querySelector('h3');
+      block.before(header);
+      if (heading) header.append(heading);
+      header.append(button);
+    }
+  }
   const filtered = useMemo(() => topics.filter(topic => (!topic.member || query.trim()) && normalize(topic.title + ' ' + topic.group + ' ' + topic.search).includes(normalize(query.trim()))), [topics, query]);
   const groups = [...new Set(filtered.map(topic => topic.group))];
   return <section className="help-area" aria-label="Ajuda do Portugol">
@@ -37,7 +59,7 @@ export default function Help() {
         {!topics.length && <p role="status">Carregando ajuda…</p>}
         {topics.length > 0 && !filtered.length && <p>Nenhum assunto encontrado.</p>}
       </aside>
-      <div className="help-reader" key={selected?.path}>{selected && (selected.library ? <LibraryHelp topic={selected}/> : <iframe src={assetUrl(selected.path)} title={'Ajuda: ' + selected.title} sandbox=""/>)}</div>
+      <div className="help-reader" key={selected?.path}>{selected && (selected.library ? <LibraryHelp topic={selected}/> : <iframe src={assetUrl(selected.path)} title={'Ajuda: ' + selected.title} sandbox="allow-same-origin" onLoad={prepareArticle}/>)}</div>
     </div>}
   </section>;
 }

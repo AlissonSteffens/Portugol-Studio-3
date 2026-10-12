@@ -53,7 +53,7 @@ export default function Graphics({ onCollapse, canvas, runtimeRef, terminalRef, 
     runtimeRef.current?.bindInputWindow(target);
     runtimeRef.current?.setPresentationWindow(target);
     target.addEventListener('pagehide', onClose, { once: true });
-    canvas.focus(); setDetached(true); onDetachedChange?.(true);
+    target.focus(); canvas.focus(); setDetached(true); onDetachedChange?.(true);
   }
   useEffect(() => { if (external.current) external.current.target.document.title = title + ' — Portugol Studio'; }, [title]);
   return <section className="panel overflow-hidden">

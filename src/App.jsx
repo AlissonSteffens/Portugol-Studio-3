@@ -78,6 +78,13 @@ export default function App() {
     runtimeRef.current?.setMasterVolume(settings.muted ? 0 : settings.volume);
   }
   const [canvas] = useState(() => { const node = document.createElement('canvas'); node.width = 800; node.height = 600; node.tabIndex = 0; node.setAttribute('aria-label', 'Tela gráfica Portugol'); return node; });
+  useEffect(() => {
+    canvas.width = 800; canvas.height = 600;
+    terminalRef.current?.replaceChildren();
+    setTitle('Modo gráfico'); setResolution('800 × 600');
+    setStatus('Pronto'); setError(''); setJs(null);
+    setExecutionDetached(false); setView('closed'); setMobileTab('editor');
+  }, [store.active.id, canvas]);
   const report = useCallback(error => { console.error(error); setError(error.message); }, []);
   const refresh = useCallback(async () => setEntries(await repository.list()), []);
   useEffect(() => { refresh().catch(report); loadCatalog().then(setExamples).catch(report); return () => runtimeRef.current?.destroy(); }, [refresh, report]);
@@ -105,6 +112,13 @@ export default function App() {
   function save(document = store.active, name = document.filename) {
     download(new Blob([serializeStudioDocument(document)], { type: 'text/plain;charset=utf-8' }), name);
     store.update({ filename: name, savedCode: document.code }, document.id);
+  }
+  function openHelpExample(source, title) {
+    if (busy || loadingExample || !store.ready) return;
+    ++exampleRequest.current;
+    const name = title.replace(/[<>:"/\\|?*\u0000-\u001f]/g, '').trim() || 'Exemplo da ajuda';
+    store.create({ code: source.replaceAll('\r\n', '\n'), filename: name + '.por' });
+    setHome(false); setMobileTab('editor'); setError('');
   }
   function newFile() { if (busy || loadingExample) return; ++exampleRequest.current; store.create(); setHome(false); setMobileTab('editor'); setError(''); }
   function closeFile(document) {
@@ -134,14 +148,15 @@ export default function App() {
       const compiled = transpilePortugol(code, { inspect: true, debug: true });
       files = await createRuntimeFiles(refresh, report, examples.find(example => example.id === selected), localFiles);
       if (cancel.current) throw new Error('EXECUCAO_INTERROMPIDA');
-      runtime = new PortugolRuntime(canvas, terminalRef.current, { files, masterVolume: audioRef.current.muted ? 0 : audioRef.current.volume, onResize: (w, h) => setResolution(w + ' × ' + h), onTitleChange: setTitle });
-      runtime.debugger = new ExecutionDebugger({ breakpoints: editorRef.current?.breakpoints(), lineAt: from => code.slice(0, from).split('\n').length, onPause: state => { setPaused(state); publishInspection(); setStatus('Pausado'); setShowInspector(true); setSidebarTab('symbols'); setMobileTab('editor'); } });
+      runtime = new PortugolRuntime(canvas, terminalRef.current, { files, inspectionInterval: 80, masterVolume: audioRef.current.muted ? 0 : audioRef.current.volume, onResize: (w, h) => setResolution(w + ' × ' + h), onTitleChange: setTitle });
+      runtime.debugger = new ExecutionDebugger({ breakpoints: editorRef.current?.breakpoints(), lineAt: from => code.slice(0, from).split('\n').length, onPause: state => { runtime.__releaseMouseCapture?.(false); setPaused(state); publishInspection(); setStatus('Pausado'); setShowInspector(true); setSidebarTab('symbols'); setMobileTab('editor'); } });
       if (!debugMode) runtime.debugger.mode = 'continue';
+      const globalSymbols = new Set(analysis.symbols.filter(item => item.kind === 'variable').map(item => item.from));
       runtime.inspect = (scope, from, symbols) => {
         runtime.debugger?.inspect(scope, from, symbols);
         runtime.sourcePosition = from;
         for (const symbol of symbols) {
-          const owner = analysis.symbols.some(item => item.kind === 'variable' && item.from === symbol.from && item.name === symbol.name) ? 'programa' : scope;
+          const owner = globalSymbols.has(symbol.from) ? 'programa' : scope;
           inspection.current[`${owner}:${symbol.from}`] = symbol.value;
         }
         if (!inspectionFrame.current) inspectionFrame.current = requestAnimationFrame(() => { inspectionFrame.current = null; publishInspection(); });
@@ -171,6 +186,7 @@ export default function App() {
       if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'o') { event.preventDefault(); openPicker(); }
       if ((event.ctrlKey || event.metaKey) && event.shiftKey && event.key.toLowerCase() === 'e') { event.preventDefault(); if (!busy && !loadingExample) setExporting(true); }
       if (event.altKey && event.key.toLowerCase() === 'n') { event.preventDefault(); newFile(); }
+      if (event.key === 'Escape' && (canvas.ownerDocument.pointerLockElement === canvas || runtimeRef.current?.__ignoreEscapeUntil > performance.now())) return;
       if (event.key === 'Escape') { stop(); setJs(null); }
     };
     const unload = event => { if (store.documents.some(document => document.code !== document.savedCode || Object.keys(document.localFiles || {}).length)) { event.preventDefault(); event.returnValue = ''; } };
@@ -249,7 +265,7 @@ export default function App() {
         <button aria-label="Mostrar gráfico" title="Modo gráfico" onClick={() => { setHome(false); setMobileTab('execucao'); setView(view === 'grafico' ? 'closed' : 'grafico'); }}><Monitor size={20}/></button>
       </aside>
       <div className="ide-main">
-    {home && <Welcome section={homeSection} onSectionChange={setHomeSection} examples={examples} documents={store.documents} onNew={newFile} onOpen={openPicker} onExample={selectExample} onContinue={id => { store.activate(id); setHome(false); setMobileTab('editor'); }} loading={locked}/>}
+    {home && <Welcome section={homeSection} onSectionChange={setHomeSection} examples={examples} documents={store.documents} onNew={newFile} onOpen={openPicker} onExample={selectExample} onHelpExample={openHelpExample} onContinue={id => { store.activate(id); setHome(false); setMobileTab('editor'); }} loading={locked}/>}
     {(error || store.storageError) && <div role="alert" className="m-4 flex items-center justify-between gap-3 rounded-lg border border-red-400/40 bg-red-950/30 p-3 text-sm text-red-200"><span>{error || store.storageError}</span><button aria-label="Fechar aviso" onClick={() => setError('')}>×</button></div>}
     {!home && <nav className="mobile-tools" aria-label="Área de trabalho">{[{ id: 'editor', label: 'Editor', icon: Code2 }, { id: 'recursos', label: 'Ferramentas', icon: ListTree }, { id: 'execucao', label: 'Execução', icon: TerminalSquare }].map(tool => <button key={tool.id} aria-pressed={mobileTab === tool.id} onClick={() => { setMobileTab(tool.id); if (tool.id === 'recursos') setShowInspector(true); if (tool.id === 'execucao') setView(current => current === 'closed' ? 'terminal' : current); }}><tool.icon size={15}/>{tool.label}</button>)}</nav>}
     <main ref={workspaceRef} style={{ '--repository-width': repositoryWidth + 'px', '--editor-weight': (1 - outputRatio) + 'fr', '--output-weight': outputRatio + 'fr' }} data-output={view === 'closed' ? 'closed' : 'open'} className={(home ? 'hidden ' : '') + 'ide-workspace'} data-mobile-tab={mobileTab} data-repository={showRepository ? 'open' : 'closed'}>
@@ -257,7 +273,7 @@ export default function App() {
       {view !== 'closed' && <ResizeHandle label="Tamanho dos painéis de execução" className="output-resizer" orientation={stacked ? 'horizontal' : 'vertical'} value={outputRatio} onChange={setOutputRatio} min={.2} max={.65} getValue={resizeOutput}/>}
       <div ref={outputRef} className={"workspace-output " + (view === 'closed' ? 'hidden' : '')} style={{ '--graphics-weight': graphicsRatio + 'fr', '--terminal-weight': (1 - graphicsRatio) + 'fr' }} data-view={view}>
         <nav className="output-tabs" aria-label="Painéis de execução">{['ambos', 'grafico', 'terminal'].map(mode => <button key={mode} aria-pressed={view === mode} className={view === mode ? 'active-button' : ''} onClick={() => setView(mode)}>{{ ambos: 'Ambos', grafico: 'Gráfico', terminal: 'Terminal' }[mode]}</button>)}<button className="collapse-output" aria-label="Recolher painéis de execução" title="Recolher painéis de execução" onClick={() => { setView('closed'); setMobileTab('editor'); }}><PanelRight size={15}/></button></nav>
-        <div className={"graphic-tool " + (view === 'terminal' ? 'hidden' : '')}><Graphics terminalRef={terminalRef} status={status} busy={busy} onStop={stop} onDetachedChange={detached => { setExecutionDetached(detached); if (!detached) { setView('ambos'); setMobileTab('execucao'); } }} onCollapse={() => collapsePanel('grafico')} canvas={canvas} runtimeRef={runtimeRef} title={title} resolution={resolution} onError={report}/></div>
+        <div className={"graphic-tool " + (view === 'terminal' ? 'hidden' : '')}><Graphics key={store.active.id} terminalRef={terminalRef} status={status} busy={busy} onStop={stop} onDetachedChange={detached => { setExecutionDetached(detached); if (!detached) { setView('ambos'); setMobileTab('execucao'); } }} onCollapse={() => collapsePanel('grafico')} canvas={canvas} runtimeRef={runtimeRef} title={title} resolution={resolution} onError={report}/></div>
         {view === 'ambos' && <ResizeHandle label="Divisão entre gráfico e terminal" className="panels-resizer" orientation={stacked ? 'vertical' : 'horizontal'} value={graphicsRatio} onChange={setGraphicsRatio} min={.2} max={.8} getValue={resizeGraphics}/>}
         <div className={'terminal-tool ' + (view === 'grafico' ? 'hidden' : '')}><Terminal detached={executionDetached} onFocusExecution={() => canvas.ownerDocument.defaultView.focus()} onCollapse={() => collapsePanel('terminal')} terminalRef={terminalRef} clear={() => terminalRef.current.replaceChildren()}/></div>
       </div>

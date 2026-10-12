@@ -77,6 +77,7 @@ export function installBrowserLibraries(runtime) {
   for (const method of ['desenhar_retangulo', 'desenhar_elipse', 'desenhar_linha', 'desenhar_ponto', 'desenhar_poligono', 'desenhar_texto', 'desenhar_imagem', 'desenhar_porcao_imagem']) {
     const original = g[method];
     g[method] = (...args) => {
+      if (!runtime.__rotation && runtime.currentOpacity === 255) return original(...args);
       runtime.bCtx.save();
       try { runtime.bCtx.globalAlpha = runtime.currentOpacity / 255; if (runtime.__rotation) { const x = Number(args[0]) || 0, y = Number(args[1]) || 0; runtime.bCtx.translate(x, y); runtime.bCtx.rotate(runtime.__rotation * Math.PI / 180); runtime.bCtx.translate(-x, -y); } return original(...args); }
       finally { runtime.bCtx.restore(); }

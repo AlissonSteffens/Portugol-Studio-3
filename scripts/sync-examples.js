@@ -35,6 +35,8 @@ for (const file of files) {
   const resources = files.filter(resource => resource.startsWith(directory + path.sep) && !['.por', '.properties'].includes(path.extname(resource))).map(resource => path.relative(directory, resource).replaceAll('\\', '/'));
   examples.push({ id: relative.slice(0, -4).replaceAll('/', '_'), ...descriptions.get(file), nome: descriptions.get(file)?.nome || path.basename(file, '.por'), categoria: category || 'Outros', arquivo: path.basename(file), caminho: relative, recursos: resources, ajustes: repaired.ajustes });
 }
+// Keep examples created for the web app when syncing the Java catalog.
+examples.push(...JSON.parse(await readFile(new URL('./web-examples.json', import.meta.url), 'utf8')));
 examples.sort((a, b) => a.categoria.localeCompare(b.categoria, 'pt-BR') || a.nome.localeCompare(b.nome, 'pt-BR'));
 await writeFile(path.join(destination, 'index.json'), JSON.stringify(examples, null, 2) + '\n');
 console.log(`${examples.length} exemplos e ${files.filter(file => !file.endsWith('.properties') && !file.endsWith('.por')).length} recursos sincronizados de ${source}.`);

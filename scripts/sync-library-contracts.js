@@ -59,5 +59,5 @@ for (const library of libraries) {
   }
 }
 runtime.destroy();
-await writeFile('runtime/core/library-contracts.js', '// Contratos gerados a partir das bibliotecas Java do projeto.\nexport default ' + JSON.stringify(contracts, null, 2) + ';\nexport const libraryConstants = ' + JSON.stringify(constants, null, 2) + ';\n');
+await writeFile('runtime/core/library-contracts.js', "// Contratos gerados a partir das bibliotecas Java do projeto.\nimport { webGraphicsContracts, webMouseContracts } from './web-library-contracts.js';\nconst contracts = " + JSON.stringify(contracts, null, 2) + ';\nObject.assign(contracts.Graficos, webGraphicsContracts);\nObject.assign(contracts.Mouse, webMouseContracts);\nexport default contracts;\nexport const libraryConstants = ' + JSON.stringify(constants, null, 2) + ';\n');
 

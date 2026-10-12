@@ -231,7 +231,7 @@ test('extensões de parâmetros opcionais do web continuam disponíveis', () => 
   assert.doesNotThrow(() => transpilePortugol('programa { inclua biblioteca Graficos --> g funcao inicio() { g.iniciar_modo_grafico() escreva(g.criar_cor(1,2,3,255)) } }'));
 });
 
-test('os 120 exemplos continuam passando pela análise', async () => {
+test('todos os exemplos do catálogo continuam passando pela análise', async () => {
   const catalog = JSON.parse(await readFile('public/exemplos/index.json', 'utf8'));
   for (const entry of catalog) {
     const source = await readFile('public/exemplos/' + entry.caminho, 'utf8');

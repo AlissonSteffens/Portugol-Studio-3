@@ -1,5 +1,6 @@
+import { webGraphicsContracts, webMouseContracts } from './web-library-contracts.js';
 // Contratos gerados a partir das bibliotecas Java do projeto.
-export default {
+const contracts = {
   "Objetos": {
     "finalizar": {
       "type": "vazio",
@@ -3325,6 +3326,9 @@ export default {
     }
   }
 };
+Object.assign(contracts.Graficos, webGraphicsContracts);
+Object.assign(contracts.Mouse, webMouseContracts);
+export default contracts;
 export const libraryConstants = {
   "Objetos": {
     "TIPO_INTEIRO": {

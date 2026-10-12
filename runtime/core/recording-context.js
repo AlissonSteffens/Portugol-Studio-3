@@ -3,17 +3,17 @@
 export function recordingContext(context) {
   const operations = [], properties = ['fillStyle', 'strokeStyle', 'globalAlpha', 'globalCompositeOperation', 'lineWidth', 'lineCap', 'lineJoin', 'miterLimit', 'font', 'textAlign', 'textBaseline', 'imageSmoothingEnabled', 'shadowBlur', 'shadowColor', 'shadowOffsetX', 'shadowOffsetY'];
   const methods = new Set(['save', 'restore', 'translate', 'rotate', 'scale', 'transform', 'setTransform', 'resetTransform', 'beginPath', 'closePath', 'moveTo', 'lineTo', 'rect', 'roundRect', 'ellipse', 'arc', 'arcTo', 'bezierCurveTo', 'quadraticCurveTo', 'clip', 'fill', 'stroke', 'fillRect', 'strokeRect', 'clearRect', 'fillText', 'strokeText', 'drawImage', 'setLineDash']);
-  let initial;
+  let initial; const wrappers = new Map();
   const start = () => { if (!initial) initial = Object.fromEntries(properties.map(key => [key, context[key]])); };
   return {
     context: context && new Proxy(context, {
       get(target, key) {
         const value = target[key];
         if (typeof value !== 'function') return value;
-        if (!methods.has(key)) return value.bind(target);
-        return (...args) => { start(); operations.push({ key, args }); return value.apply(target, args); };
+        if (!wrappers.has(key)) wrappers.set(key, methods.has(key) ? (...args) => { start(); operations.push({ key, args }); return value.apply(target, args); } : value.bind(target));
+        return wrappers.get(key);
       },
-      set(target, key, value) { start(); operations.push({ key, value }); target[key] = value; return true; },
+      set(target, key, value) { if (target[key] === value) return true; start(); operations.push({ key, value }); target[key] = value; return true; },
     }),
     clear() { operations.length = 0; initial = null; },
     render(target) {

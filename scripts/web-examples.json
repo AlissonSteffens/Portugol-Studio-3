@@ -1,0 +1,24 @@
+[
+  {
+    "id": "web_blocos_2d",
+    "nome": "Mundo de blocos 2D (Terraria)",
+    "descricao": "Um mundo 2D com personagem, gravidade, pulo, colisão e estoque de materiais. A/D ou setas movem, Espaço pula. Mouse esquerdo minera ao alcance do personagem e direito constrói; 1 a 4 escolhem o material e R reinicia. Cenário e interface reutilizam buffers gráficos.",
+    "imagem": "web/blocos_2d.png",
+    "categoria": "Jogos",
+    "arquivo": "blocos_2d.por",
+    "caminho": "web/blocos_2d.por",
+    "recursos": [],
+    "ajustes": []
+  },
+  {
+    "id": "web_blocos_3d",
+    "nome": "Mundo de blocos 3D (Minecraft)",
+    "descricao": "Um mundo de cubos em primeira pessoa com picareta animada. Clique no jogo para capturar o cursor e mova o mouse para olhar; Esc solta o cursor. WASD move, Espaço/Shift sobem e descem. Esquerdo minera, direito coloca; 1 a 4 escolhem o material e R reinicia. Modo criativo com projeção e buffers em Portugol.",
+    "imagem": "web/blocos_3d.png",
+    "categoria": "Jogos",
+    "arquivo": "blocos_3d.por",
+    "caminho": "web/blocos_3d.por",
+    "recursos": [],
+    "ajustes": []
+  }
+]

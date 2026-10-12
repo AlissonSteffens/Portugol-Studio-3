@@ -1,3 +1,4 @@
+import { isSynchronousLibraryCall, synchronousFunctions } from './execution-policy.js';
 import { librarySignature } from './library-signatures.js';
 import { diagnostic, diagnosticError, lexicalDiagnostics, reservedWords } from './diagnostics.js';
 import { semanticDiagnostics } from './semantic-analysis.js';
@@ -154,6 +155,7 @@ class Parser {
 class Generator {
   constructor(program, options = {}) {
     this.inspect = options.inspect; this.debug = options.debug;
+    this.syncFunctions = synchronousFunctions(program);
     this.program = program; this.scopes = [new Map()]; this.currentFunction = null;
     this.functions = new Map(program.functions.map(fn => [fn.name, fn]));
     this.libraries = program.libraries;
@@ -169,6 +171,7 @@ class Generator {
   cast(code, type, dimensions = 0) { return dimensions ? code : `__runtime.cast(${code}, ${literal(type)})`; }
   convert(node, type, dimensions = 0) {
     const value = this.expression(node);
+    if (value.type === type && value.dimensions === dimensions && ['name', 'index'].includes(node.kind)) return value.code;
     return this.cast(value.code, type, dimensions);
   }
   ref(expression) {
@@ -180,6 +183,7 @@ class Generator {
   expression(node, write = false) {
     try {
       const value = this.readExpression(node);
+      if (!write && node.kind === 'index') value.code = value.code.replace('__runtime.element(', '__runtime.readElement(').slice(0, -6);
       if (!write && node.kind === 'name' && !value.dimensions) value.code = `__runtime.readValue(${value.code}, ${literal(node.name)}, ${node.from || 0}, ${node.to || 0})`;
       return value;
     } catch (error) { error.from ??= node.from; error.to ??= node.to; throw error; }
@@ -221,22 +225,28 @@ class Generator {
           const fn = this.functions.get(name); if (!fn) throw new Error('Função desconhecida: ' + name);
           if (node.args.length !== fn.parameters.length) throw new Error('Quantidade de parâmetros inválida: ' + name);
           const args = node.args.map((arg, i) => { const parameter = fn.parameters[i]; return parameter.ref ? this.ref(arg) : this.convert(arg, parameter.type, parameter.dimensions.length); });
-          return result(`(await __fn_${name}(${args.join(',')}))`, fn.type, fn.dimensions.length);
+          const invocation = args.join(',');
+          if (this.syncFunctions.has(name)) return result(this.synchronous || !this.debug ? `__fn_fast_${name}(${invocation})` : `(__runtime.debugger?.needsInstrumentation() ? (await __fn_${name}(${invocation})) : __fn_fast_${name}(${invocation}))`, fn.type, fn.dimensions.length);
+          return result(`(await __fn_${name}(${invocation}))`, fn.type, fn.dimensions.length);
         }
         const member = node.target, library = this.libraries[member.object?.name];
         const contract = librarySignature(library, member.name);
         if (!contract) throw new Error('Método de biblioteca desconhecido: ' + library + '.' + member.name);
-        const args = node.args.map((arg, i) => { const value = this.expression(arg), parameter = contract.parameters[i]; return parameter ? this.cast(value.code, parameter.type, parameter.dimensions) : value.code; });
-        const call = `(await __runtime.callLibrary(${literal(library)}, ${literal(member.name)}, [${args.join(',')}], ${node.from || 0}, ${node.to || 0}))`;
+        const args = node.args.map((arg, i) => { const value = this.expression(arg), parameter = contract.parameters[i]; return parameter ? this.convert(arg, parameter.type, parameter.dimensions) : value.code; });
+        const call = `(${isSynchronousLibraryCall(library, member.name) ? '__runtime.callLibrarySync' : 'await __runtime.callLibrary'}(${literal(library)}, ${literal(member.name)}, [${args.join(',')}], ${node.from || 0}, ${node.to || 0}))`;
         if (library === 'Objetos' && member.name === 'atribuir_propriedade' && node.args.length === 3) {
           const type = this.expression(node.args[2]).type;
-          return result(`(await __runtime.setObjectProperty([${args.join(',')}], ${literal(type)}, ${node.from || 0}, ${node.to || 0}))`, contract.type);
+          return result(`(__runtime.setObjectProperty([${args.join(',')}], ${literal(type)}, ${node.from || 0}, ${node.to || 0}))`, contract.type);
         }
         return result(call, contract.type);
       }
       case 'unary': case 'postfix': {
         const op = node.op === 'nao' ? '!' : node.op, value = this.expression(node.value, ['++', '--'].includes(op));
         if (['++', '--'].includes(op) && (!value.assignable || value.constant)) throw new Error('Incremento exige uma variável modificável.');
+        if (['++', '--'].includes(op) && node.value.kind === 'name' && !this.lookup(node.value.name).ref) {
+          const before = this.expression(node.value).code;
+          return result(`((__before) => (${value.code} = ${this.cast(`__before ${op === '++' ? '+' : '-'} 1`, value.type)}, ${node.kind === 'postfix' ? '__before' : value.code}))(${before})`, value.type);
+        }
         if (['++', '--'].includes(op)) return result(`__runtime.increment(${this.ref(node.value)}, ${op === '++' ? 1 : -1}, ${node.kind === 'postfix'})`, value.type);
         return result(node.kind === 'postfix' ? `(${value.code}${op})` : `(${op}${value.code})`, op === '!' ? 'logico' : value.type);
       }
@@ -244,6 +254,11 @@ class Generator {
         const op = node.op, left = this.expression(node.left, PRECEDENCE[op] === 1), right = this.expression(node.right);
         if (PRECEDENCE[op] === 1) {
           if (!left.assignable || left.constant) throw new Error('Atribuição exige uma variável modificável.');
+          if (node.left.kind === 'name' && !this.lookup(node.left.name).ref) {
+            if (op === '=') return result(`(${left.code} = ${this.cast(right.code, left.type, left.dimensions)})`, left.type, left.dimensions);
+            const combined = this.operation(op[0], this.expression(node.left), { ...right, code: '__right' }, node);
+            return result(`((__right) => (${left.code} = ${this.cast(combined.code, left.type, left.dimensions)}))(${right.code})`, left.type, left.dimensions);
+          }
           const convertedValue = op === '=' ? { ...right, code: '__right' } : this.operation(op[0], { ...left, code: '__target.value' }, { ...right, code: '__right' }, node);
           const value = convertedValue.code;
           return result(`((__target, __right) => (__target.value = ${this.cast(value, left.type, left.dimensions)}))(${this.ref(node.left)}, ${right.code})`, left.type, left.dimensions);
@@ -261,24 +276,28 @@ class Generator {
     const operator = { e: '&&', ou: '||', '==': '===', '!=': '!==' }[op] || op;
     return { code: `(${left.code} ${operator} ${right.code})`, type, dimensions: 0 };
   }
-  snapshot(node) {
+  snapshot(node, force = 'false') {
     const symbols = this.scopes.flatMap(scope => [...scope.values()]).filter(symbol => symbol.initialized !== false);
-    return `__runtime.inspect?.(${JSON.stringify(this.currentFunction?.name || 'programa')}, ${node.from || 0}, [${symbols.map(symbol => `{name:${literal(symbol.name)},from:${symbol.from || 0},type:${literal(symbol.type)},value:(() => { try { return ${symbol.code}${symbol.ref ? '.value' : ''}; } catch { return undefined; } })()}`).join(',')}]);`;
+    return `if (__runtime.shouldInspect?.(${force}) ?? true) { __runtime.inspect?.(${JSON.stringify(this.currentFunction?.name || 'programa')}, ${node.from || 0}, [${symbols.map(symbol => `{name:${literal(symbol.name)},from:${symbol.from || 0},type:${literal(symbol.type)},value:(() => { try { return ${symbol.code}${symbol.ref ? '.value' : ''}; } catch { return undefined; } })()}`).join(',')}]); }`;
   }
+  checkpoint(node) {
+    return this.debug ? `if (__runtime.debugger?.shouldPause(${node.from || 0})) { ${this.snapshot(node, 'true')} await __runtime.debugger.checkpoint(${node.from || 0}, ${node.to || (node.from || 0) + 1}); }` : '';
+  }
+  interrupt() { return '{ const __interruption = __runtime.checkInterrupt(); if (__interruption) await __interruption; }'; }
   statement(node, globals = false) {
     try {
-      const before = this.debug && !['block', 'empty', 'while', 'for', 'do'].includes(node.kind) ? this.snapshot(node) + `await __runtime.debugger?.checkpoint(${node.from || 0}, ${node.to || (node.from || 0) + 1});` : '';
+      const before = !['block', 'empty', 'while', 'for', 'do'].includes(node.kind) ? this.checkpoint(node) : '';
       const code = this.readStatement(node, globals);
       const location = before + `__runtime.sourcePosition = ${node.from || 0}; __runtime.sourceEnd = ${node.to || (node.from || 0) + 1};`;
       if (['block', 'empty'].includes(node.kind)) return code;
       if (!this.inspect) return node.kind === 'declaration' ? location + code : '{' + location + code + '}';
-      if (['break', 'return'].includes(node.kind)) return '{' + location + this.snapshot(node) + code + '}';
-      return node.kind === 'declaration' ? location + code + this.snapshot(node) : '{' + location + this.snapshot(node) + code + this.snapshot(node) + '}';
+      if (['break', 'return'].includes(node.kind)) return '{' + location + this.snapshot(node, '__runtime.__depth <= 1') + code + '}';
+      return node.kind === 'declaration' ? location + code + this.snapshot(node) : '{' + location + this.snapshot(node, node.value?.kind === 'call' && node.value.target?.name === 'leia' ? 'true' : 'false') + code + this.snapshot(node) + '}';
     } catch (error) { error.from ??= node.from; error.to ??= node.to; throw error; }
   }
   readStatement(node, globals = false) {
     const expression = value => this.expression(value).code;
-    const condition = value => this.debug ? `(await (async () => { ${this.snapshot(node)} await __runtime.debugger?.checkpoint(${node.from || 0}, ${node.to || 0}); return ${value ? expression(value) : 'true'}; })())` : value ? expression(value) : 'true';
+    const condition = value => { const code = value ? expression(value) : 'true'; return this.debug ? `(__runtime.debugger?.shouldPause(${node.from || 0}) ? (await (async () => { ${this.checkpoint(node)} return ${code}; })()) : ${code})` : code; };
     switch (node.kind) {
       case 'empty': return ';';
       case 'declaration': return node.items.map(item => {
@@ -291,15 +310,15 @@ class Generator {
         symbol.initialized = true;
         return `${item.constant ? 'const' : 'let'} ${symbol.code} = ${value};`;
       }).join('\n');
-      case 'block': this.scopes.push(new Map()); { const code = '{\n' + node.statements.map(statement => this.statement(statement)).join('\n') + '\n}'; this.scopes.pop(); return code; }
+      case 'block': this.scopes.push(new Map()); { const code = '{\n' + node.statements.map(statement => this.statement(statement)).join('\n') + (this.inspect && node === this.currentFunction?.body ? this.snapshot(node, '__runtime.__depth <= 1') : '') + '\n}'; this.scopes.pop(); return code; }
       case 'expression': return expression(node.value) + ';';
       case 'if': return `if (${expression(node.condition)}) ${this.statement(node.yes)}${node.no ? ' else ' + this.statement(node.no) : ''}`;
-      case 'while': return `while (${condition(node.condition)}) { await __runtime.checkInterrupt(); ${this.statement(node.body)} }`;
-      case 'do': return `do { await __runtime.checkInterrupt(); ${this.statement(node.body)} } while (${condition(node.condition)});`;
+      case 'while': return `while (${condition(node.condition)}) { ${this.interrupt()} ${this.statement(node.body)} }`;
+      case 'do': return `do { ${this.interrupt()} ${this.statement(node.body)} } while (${condition(node.condition)});`;
       case 'for': {
         this.scopes.push(new Map());
         const init = node.init?.kind === 'declaration' ? this.readStatement(node.init).replace(/;\n(?:let|const) /g, ', ').replace(/;$/, '') : node.init ? expression(node.init) : '';
-        const code = `for (${init}; ${condition(node.condition)}; ${node.update ? expression(node.update) : ''}) { await __runtime.checkInterrupt(); ${this.statement(node.body)} }`;
+        const code = `for (${init}; ${condition(node.condition)}; ${node.update ? expression(node.update) : ''}) { ${this.interrupt()} ${this.statement(node.body)} }`;
         this.scopes.pop(); return code;
       }
       case 'switch': return `switch (${expression(node.value)}) { ${node.cases.map(item => (item.value ? 'case ' + expression(item.value) : 'default') + ':\n' + item.statements.map(statement => this.statement(statement)).join('\n')).join('\n')} }`;
@@ -310,13 +329,17 @@ class Generator {
   }
   generate() {
     const globals = this.program.globals.map(node => this.statement(node, true)).join('\n');
-    const functions = this.program.functions.map(fn => {
-      this.currentFunction = fn; this.scopes.push(new Map()); for (const parameter of fn.parameters) this.declare(parameter);
+    const debug = this.debug;
+    const generateFunction = (fn, synchronous) => {
+      this.currentFunction = fn; this.synchronous = synchronous; this.debug = debug && !synchronous;
+      this.scopes.push(new Map()); for (const parameter of fn.parameters) this.declare(parameter);
       const entry = this.inspect ? this.snapshot(fn) : '';
       const body = this.statement(fn.body); this.scopes.pop();
-      return `async function __fn_${fn.name}(${fn.parameters.map(p => '__v_' + p.name).join(',')}) { __runtime.enterFunction(${literal(fn.name)}); try { await __runtime.checkInterrupt(); ${entry}${body} } catch (__error) { throw __runtime.translateError(__error); } finally { __runtime.leaveFunction(); } }`;
-    }).join('\n');
-    return `return (async () => { try {\n${globals}\n${functions}\n${this.functions.has('inicio') ? (this.functions.get('inicio').parameters.length ? 'await __fn_inicio(__runtime.options.arguments || []);' : 'await __fn_inicio();') : ''}\n} catch (__error) { throw __runtime.translateError(__error); } })();`;
+      return `${synchronous ? '' : 'async '}function __fn_${synchronous ? 'fast_' : ''}${fn.name}(${fn.parameters.map(p => '__v_' + p.name).join(',')}) { __runtime.enterFunction(${literal(fn.name)}); try { ${synchronous ? '__runtime.checkInterrupt(false);' : this.interrupt()} ${entry}${body} } catch (__error) { throw __runtime.translateError(__error); } finally { __runtime.leaveFunction(); } }`;
+    };
+    const functions = this.program.functions.flatMap(fn => this.syncFunctions.has(fn.name) ? [generateFunction(fn, true), ...(debug ? [generateFunction(fn, false)] : [])] : [generateFunction(fn, false)]).join('\n');
+    this.debug = debug; this.synchronous = false;
+    return `return (async () => { try {\n${globals}\n${functions}\n${this.functions.has('inicio') ? (this.functions.get('inicio').parameters.length ? `await __fn_${this.syncFunctions.has('inicio') && !debug ? 'fast_' : ''}inicio(__runtime.options.arguments || []);` : `await __fn_${this.syncFunctions.has('inicio') && !debug ? 'fast_' : ''}inicio();`) : ''}\n} catch (__error) { throw __runtime.translateError(__error); } })();`;
   }
 }
 

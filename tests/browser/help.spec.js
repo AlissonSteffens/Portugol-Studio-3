@@ -1,5 +1,45 @@
 import { test, expect } from '@playwright/test';
 
+test('exemplo da ajuda abre uma cópia editável sem modificar o documento', async ({ page, request }) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: /Precisa de uma mão/ }).click();
+  await page.getByLabel('Buscar na ajuda').fill('buffer');
+  await page.getByRole('button', { name: 'Buffer gráfico', exact: true }).click();
+  const article = page.frameLocator('.help-reader iframe');
+  const source = (await article.locator('pre').first().textContent()).trim();
+  await expect(article.getByRole('button', { name: 'Abrir no editor' })).toHaveCount(3);
+  await article.getByRole('button', { name: 'Abrir no editor' }).first().click();
+  await expect(page.locator('.cm-editor')).toBeVisible();
+  await expect(page.getByRole('tab', { name: /céu e chão/ })).toBeVisible();
+  await expect(page.locator('.cm-content')).toContainText('g.renderizar()');
+  await page.locator('.cm-content').fill('programa { funcao inicio() { escreva("Minha cópia") } }');
+  const response = await request.get('/ajuda/topicos/graficos/buffer_grafico.html');
+  expect(await response.text()).toContain(source.split('\n')[0]);
+  expect(await response.text()).not.toContain('Minha cópia');
+  await page.getByRole('tab', { name: 'Início', exact: true }).click();
+  await page.getByRole('navigation', { name: 'Conteúdo da home' }).getByRole('button', { name: 'Ajuda', exact: true }).click();
+  await page.getByLabel('Buscar na ajuda').fill('buffer');
+  await page.getByRole('button', { name: 'Buffer gráfico', exact: true }).click();
+  await expect(page.frameLocator('.help-reader iframe').locator('pre').first()).toHaveText(source);
+});
+
+test('guia de buffers é encontrado pela busca e pode ser lido no celular', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: /Precisa de uma mão/ }).click();
+  await page.getByLabel('Buscar na ajuda').fill('transparencia');
+  await page.getByRole('button', { name: 'Buffer gráfico', exact: true }).click();
+  const article = page.frameLocator('.help-reader iframe');
+  await expect(article.getByRole('heading', { name: 'Buffer gráfico', exact: true })).toBeVisible();
+  await expect(article.locator('pre[data-example="complete"]')).toHaveCount(3);
+  await article.getByRole('link', { name: 'Resolver problemas' }).click();
+  await expect(article.getByRole('heading', { name: '7. Problemas comuns' })).toBeInViewport();
+  await page.setViewportSize({ width: 390, height: 844 });
+  const body = article.locator('body');
+  expect(await body.evaluate(node => node.ownerDocument.documentElement.scrollWidth <= node.ownerDocument.defaultView.innerWidth)).toBe(true);
+  await article.getByRole('heading', { name: 'Buffer gráfico', exact: true }).scrollIntoViewIfNeeded();
+  await page.screenshot({ path: 'test-results/buffer-help-mobile.png' });
+});
+
 test('home abre ajuda, busca sem acentos e apresenta exemplos incorporados', async ({ page, request }) => {
   await page.goto('/');
   await page.getByRole('button', { name: /Precisa de uma mão/ }).click();
@@ -16,7 +56,7 @@ test('home abre ajuda, busca sem acentos e apresenta exemplos incorporados', asy
   await page.getByLabel('Buscar na ajuda').fill('');
   const response = await request.get('/ajuda/index.json');
   const topics = await response.json();
-  expect(topics).toHaveLength(48);
+  expect(topics).toHaveLength(49);
   for (const topic of topics) {
     const article = await request.get(topic.path);
     expect(article.ok(), topic.path).toBe(true);

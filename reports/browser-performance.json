@@ -1,0 +1,26 @@
+[
+  {
+    "example": "2D",
+    "mode": "parado",
+    "frames": 90,
+    "durationMs": 1504,
+    "fps": 59.8,
+    "p95FrameMs": 19
+  },
+  {
+    "example": "3D",
+    "mode": "parado",
+    "frames": 90,
+    "durationMs": 1507,
+    "fps": 59.7,
+    "p95FrameMs": 23
+  },
+  {
+    "example": "3D",
+    "mode": "movendo",
+    "frames": 85,
+    "durationMs": 1504,
+    "fps": 56.5,
+    "p95FrameMs": 25
+  }
+]

@@ -16,6 +16,13 @@ export class ExecutionDebugger {
     const release = this.release; this.release = null; release?.();
   }
   abort() { this.aborted = true; this.release?.(); this.release = null; }
+  needsInstrumentation() { return this.mode !== 'continue' || this.breakpoints.size > 0; }
+  shouldPause(from) {
+    if (this.aborted) throw new Error('EXECUCAO_INTERROMPIDA');
+    const depth = this.frames.length;
+    return this.mode === 'into' || this.mode === 'over' && depth <= this.depth || this.mode === 'out' && depth < this.depth
+      || this.breakpoints.size > 0 && this.breakpoints.has(this.lineAt(from));
+  }
   async checkpoint(from, to) {
     if (this.aborted) throw new Error('EXECUCAO_INTERROMPIDA');
     const depth = this.frames.length, line = this.lineAt(from);

@@ -1,5 +1,11 @@
 :root { color-scheme: dark; }
 * { box-sizing: border-box; }
+.code-example-header { display: flex; align-items: flex-start; justify-content: flex-end; flex-wrap: wrap; gap: 8px 12px; padding-top: 12px; }
+.code-example-header h3 { flex: 1 1 140px; margin: 4px 0 0; }
+.open-example { display: inline-flex; align-items: center; flex-shrink: 0; margin-left: auto; padding: 6px 10px; border: 1px solid #494336; border-radius: 5px; background: #29261e; color: #ffc200; font: 12px/1.5 "Segoe UI", system-ui, sans-serif; cursor: pointer; }
+.open-example:hover { background: #393322; border-color: #ffc200; }
+.open-example:focus-visible { outline: 2px solid #ffc200; outline-offset: 3px; }
+.open-example:disabled { opacity: .5; cursor: default; }
 body { margin: 0; padding: 24px; background: #1e1e1e; color: #d4d4d4; font: 14px/1.8 "Segoe UI", system-ui, sans-serif; overflow-wrap: anywhere; }
 h1, h2 { color: #eeeeee; line-height: 1.4; font-weight: 600; border-left: 3px solid #ffc200; padding-left: 12px; }
 h1 { font-size: 24px; } h2 { font-size: 19px; } h3 { font-size: 13px; color: #ffc200; }

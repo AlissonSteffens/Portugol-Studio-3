@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Buffer gráfico</title>
+  <link rel="stylesheet" href="../../reader.css">
+  <style>
+    body { max-width: 940px; margin: auto; }
+    code { font-family: Consolas, monospace; color: #e6d39a; }
+    pre code { color: inherit; }
+    .note { border-left: 3px solid #69b7da; background: #252b30; padding: 12px 16px; margin: 20px 0; }
+    .flow { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin: 20px 0; }
+    .flow span { flex: 1 1 160px; padding: 14px; background: #272727; border: 1px solid #444; border-radius: 8px; }
+    .flow b { color: #ffc200; }
+    .table-wrap { overflow-x: auto; }
+    nav a { display: inline-block; margin: 4px 12px 4px 0; }
+  </style>
+</head>
+<body>
+<h1>Buffer gráfico</h1>
+<p>Para desenhar um jogo, o programa precisa preparar o cenário, o personagem e outros objetos. Um <strong>buffer gráfico</strong> é uma área de memória que guarda um desenho. Pense nele como uma folha de papel: você pode desenhar nessa folha antes de mostrar o resultado na janela.</p>
+<p>Este guia começa com um desenho parado e chega a uma animação. Você só precisa conhecer variáveis, funções e o laço <code>enquanto</code>. Cada exemplo completo pode ser copiado para um novo programa e executado sem arquivos de imagem.</p>
+<nav aria-label="Neste guia">
+  <a href="#quadro">Montar um quadro</a><a href="#primeiro">Primeiro exemplo</a><a href="#reutilizar">Reutilizar desenhos</a><a href="#animacao">Animar</a><a href="#erros">Resolver problemas</a><a href="#exercicios">Praticar</a>
+</nav>
+
+<h2 id="quadro">1. Montar o desenho antes de mostrar</h2>
+<p>Imagine uma apresentação com várias figuras. Você prepara uma página inteira e depois a mostra para a turma. Se mostrasse a página enquanto ainda estivesse desenhando, as pessoas veriam partes faltando.</p>
+<p>Na biblioteca <code>Graficos</code>, o programa desenha primeiro no buffer da janela. A função <code>g.renderizar()</code> apresenta o resultado na tela. Assim, você escolhe quando o quadro está pronto. Um <strong>quadro</strong> é uma imagem completa da animação em determinado instante.</p>
+<div class="flow" aria-label="Etapas de um quadro">
+  <span><b>1. Preparar</b><br>Limpar o desenho anterior.</span>
+  <span><b>2. Desenhar</b><br>Colocar cenário, personagem e texto.</span>
+  <span><b>3. Apresentar</b><br>Chamar g.renderizar().</span>
+</div>
+<p>Você já usa esse buffer quando chama funções como <code>desenhar_retangulo</code>. Não precisa criar um buffer extra para fazer seu primeiro desenho.</p>
+
+<h2 id="primeiro">2. Seu primeiro quadro</h2>
+<section class="code-example"><h3>Exemplo completo: céu e chão</h3><pre data-example="complete"><code>programa
+{
+    inclua biblioteca Graficos --> g
+
+    funcao inicio()
+    {
+        g.iniciar_modo_grafico()
+        g.definir_dimensoes_janela(640, 360)
+
+        // A cor atual será usada para preencher o fundo.
+        g.definir_cor(g.criar_cor(110, 190, 240))
+        g.limpar()
+
+        // Primeiro desenhamos; só depois mostramos o quadro.
+        g.definir_cor(g.criar_cor(70, 150, 70))
+        g.desenhar_retangulo(0, 280, 640, 80, falso, verdadeiro)
+        g.renderizar()
+    }
+}</code></pre></section>
+<p><code>inclua biblioteca Graficos --> g</code> permite usar o nome curto <code>g</code>. <code>criar_cor</code> combina vermelho, verde e azul, com valores de 0 a 255. <code>limpar()</code> preenche o destino atual com a cor escolhida. No retângulo, os quatro primeiros valores são posição horizontal, posição vertical, largura e altura; <code>falso</code> desativa cantos arredondados e <code>verdadeiro</code> preenche a figura.</p>
+<p>A posição <code>(0, 0)</code> fica no canto superior esquerdo. O eixo <code>x</code> cresce para a direita e o eixo <code>y</code> cresce para baixo. As medidas são em <strong>pixels</strong>, os pequenos pontos que formam uma imagem. Neste exemplo, o chão começa em <code>y = 280</code>.</p>
+
+<h2 id="reutilizar">3. Guardar um desenho para reutilizar</h2>
+<p>Agora imagine que o cenário tenha centenas de blocos, mas quase nunca mude. Redesenhar todos os blocos a cada quadro repete trabalho. Você pode desenhá-los uma vez em um buffer extra e copiar esse desenho pronto para cada quadro.</p>
+<div class="note">As funções <code>criar_buffer</code>, <code>usar_buffer</code>, <code>desenhar_buffer</code>, <code>limpar_buffer</code> e <code>liberar_buffer</code> são extensões desta versão Web. Exemplos com essas funções podem não funcionar no Portugol Studio original em Java.</div>
+<div class="table-wrap"><table>
+<thead><tr><th>Função</th><th>O que faz</th></tr></thead>
+<tbody>
+<tr><td><code>criar_buffer(largura, altura)</code></td><td>Cria uma folha transparente e retorna um número inteiro que a identifica. As dimensões devem ser positivas.</td></tr>
+<tr><td><code>usar_buffer(id)</code></td><td>Escolhe a folha que receberá os próximos desenhos. O número <code>0</code> escolhe o buffer da janela.</td></tr>
+<tr><td><code>desenhar_buffer(x, y, id)</code></td><td>Copia o desenho da folha identificada por <code>id</code> para o destino atual, na posição indicada.</td></tr>
+<tr><td><code>limpar_buffer(id)</code></td><td>Apaga o conteúdo da folha, deixando-a transparente. Preserva seu tamanho e seu identificador.</td></tr>
+<tr><td><code>liberar_buffer(id)</code></td><td>Libera a memória de uma folha criada pelo programa. Depois disso, seu identificador não pode mais ser usado.</td></tr>
+</tbody></table></div>
+<p>Em <code>inteiro fundo = g.criar_buffer(640, 360)</code>, a variável <code>fundo</code> guarda o <strong>identificador</strong> da imagem na memória. Ela não contém os pixels nem um nome de arquivo. É como o número de uma gaveta: o número permite encontrar o desenho guardado.</p>
+<section class="code-example"><h3>Exemplo completo: preparar e copiar um cenário</h3><pre data-example="complete"><code>programa
+{
+    inclua biblioteca Graficos --> g
+
+    funcao inicio()
+    {
+        g.iniciar_modo_grafico()
+        g.definir_dimensoes_janela(640, 360)
+        inteiro fundo = g.criar_buffer(640, 360)
+
+        // Os próximos desenhos vão para o buffer fundo.
+        g.usar_buffer(fundo)
+        g.definir_cor(g.criar_cor(110, 190, 240))
+        g.limpar()
+        g.definir_cor(g.criar_cor(70, 150, 70))
+        g.desenhar_retangulo(0, 280, 640, 80, falso, verdadeiro)
+
+        // Volte ao buffer da janela antes de montar o quadro.
+        g.usar_buffer(0)
+        g.desenhar_buffer(0, 0, fundo)
+        g.renderizar()
+
+        // A cópia já apresentada continua na janela.
+        g.liberar_buffer(fundo)
+    }
+}</code></pre></section>
+<p><code>usar_buffer</code> muda o <strong>destino</strong>. <code>desenhar_buffer</code> usa uma <strong>origem</strong>, mas não muda esse destino e não apaga a origem. Por isso, você pode copiar a mesma folha muitas vezes. Não é permitido copiar um buffer para ele mesmo.</p>
+<p><code>renderizar()</code> apresenta o buffer da janela, mesmo se outro buffer estiver selecionado. Para aparecer na tela, um desenho guardado precisa ser copiado para o buffer da janela.</p>
+
+<h2>4. Transparência, posição e camadas</h2>
+<p>Um buffer recém-criado é transparente: nas partes em que você não desenha, o fundo continua aparecendo. Isso permite guardar só um personagem em uma folha pequena e colocá-lo sobre o cenário.</p>
+<p>Se você desenha um personagem em <code>(0, 0)</code> dentro de uma folha de 24 por 40 pixels e copia essa folha com <code>g.desenhar_buffer(100, 240, personagem)</code>, o canto superior esquerdo do personagem aparece em <code>(100, 240)</code> na janela. As coordenadas dentro da folha são locais; a posição da cópia determina onde ela aparece no destino.</p>
+<p>A ordem dos desenhos cria as <strong>camadas</strong>: desenhe primeiro o cenário, depois o personagem e por último o texto da interface. O que for desenhado depois pode cobrir o que veio antes. Não há uma função especial de camadas nesses exemplos; a ordem das chamadas define a sobreposição.</p>
+<div class="note"><code>g.limpar()</code> pinta todo o destino com a cor atual. <code>g.limpar_buffer(id)</code> apaga para transparente. Para uma folha que guarda apenas um personagem, evite pintar o fundo inteiro: isso produziria uma caixa opaca em volta dele.</div>
+
+<h2 id="animacao">5. Animar um personagem sem redesenhar o cenário</h2>
+<p>Uma animação mostra quadros em sequência. Neste exemplo, criamos o cenário e o personagem uma vez, antes do laço. Dentro do laço, mudamos a posição, copiamos as duas folhas e apresentamos o quadro. Pressione <strong>Esc</strong> para encerrar.</p>
+<section class="code-example"><h3>Exemplo completo: personagem andando</h3><pre data-example="complete"><code>programa
+{
+    inclua biblioteca Graficos --> g
+    inclua biblioteca Teclado --> t
+
+    funcao inicio()
+    {
+        g.iniciar_modo_grafico()
+        g.definir_dimensoes_janela(640, 360)
+        inteiro fundo = g.criar_buffer(640, 360)
+        inteiro personagem = g.criar_buffer(24, 40)
+
+        g.usar_buffer(fundo)
+        g.definir_cor(g.criar_cor(110, 190, 240))
+        g.limpar()
+        g.definir_cor(g.criar_cor(70, 150, 70))
+        g.desenhar_retangulo(0, 280, 640, 80, falso, verdadeiro)
+
+        // As áreas não desenhadas permanecem transparentes.
+        g.usar_buffer(personagem)
+        g.definir_cor(g.criar_cor(240, 190, 140))
+        g.desenhar_retangulo(4, 0, 16, 14, falso, verdadeiro)
+        g.definir_cor(g.criar_cor(60, 80, 200))
+        g.desenhar_retangulo(0, 14, 24, 26, falso, verdadeiro)
+
+        g.usar_buffer(0)
+        inteiro x = 0
+        enquanto (nao t.tecla_pressionada(t.TECLA_ESC))
+        {
+            // Copiar o cenário cobre a posição anterior.
+            g.desenhar_buffer(0, 0, fundo)
+            g.desenhar_buffer(x, 240, personagem)
+            g.renderizar()
+
+            x = x + 2
+            se (x &gt; 616)
+            {
+                x = 0
+            }
+        }
+
+        g.liberar_buffer(personagem)
+        g.liberar_buffer(fundo)
+    }
+}</code></pre></section>
+<p>O personagem tem 40 pixels de altura e fica em <code>y = 240</code>, então seus pés chegam ao chão em <code>280</code>. O limite horizontal é <code>640 - 24 = 616</code>, para manter a figura inteira dentro da janela.</p>
+<p>O cenário cobre toda a janela e é opaco. Copiá-lo a cada quadro apaga visualmente a posição antiga do personagem. Se seu cenário tiver áreas transparentes ou for menor que a janela, preencha o buffer da janela com <code>g.limpar()</code> antes de copiar as camadas.</p>
+<p>Para manter o exemplo simples, o personagem avança dois pixels por quadro. A velocidade pode variar conforme a frequência de atualização da tela. Em um jogo mais elaborado, calcule o movimento pelo tempo decorrido: velocidade em pixels por segundo multiplicada pelo tempo desde o quadro anterior.</p>
+
+<h2>6. Quando atualizar e quando liberar</h2>
+<p>Um buffer guarda os pixels desenhados, não as instruções que os criaram. Se uma variável de cor mudar, o desenho já guardado não muda sozinho. Quando o jogador retirar um bloco, por exemplo, atualize a região do cenário ou redesenhe seu buffer. Depois volte com <code>g.usar_buffer(0)</code> e copie o cenário atualizado.</p>
+<p>Crie os buffers antes da repetição e reutilize-os. Criar uma nova folha a cada quadro consome memória e tempo. Quanto maior a largura e a altura, maior o espaço ocupado: dobrar as duas dimensões quadruplica a quantidade de pixels.</p>
+<p>Use <code>limpar_buffer</code> quando quiser redesenhar na mesma folha. Use <code>liberar_buffer</code> quando não precisar mais dela. Não libere uma folha que ainda será usada no próximo quadro, nem tente liberar o identificador reservado <code>0</code>. Ao encerrar a execução, o ambiente também descarta os buffers restantes.</p>
+<p>Reutilizar imagens reduz o trabalho repetido de desenho, mas não elimina o custo de cálculos, laços ou imagens muito grandes. Guarde partes que mudam pouco; continue atualizando as partes que realmente mudaram.</p>
+
+<h2 id="erros">7. Problemas comuns</h2>
+<ul>
+  <li><strong>A janela ficou vazia:</strong> confira se chamou <code>g.renderizar()</code>, se voltou ao destino <code>0</code> e se copiou seu buffer para a janela.</li>
+  <li><strong>O personagem deixa rastros:</strong> a posição anterior continua desenhada. Refaça o fundo do quadro antes de desenhar a nova posição.</li>
+  <li><strong>Há uma caixa colorida em volta do personagem:</strong> você pode ter usado <code>g.limpar()</code> na folha dele. Apague com <code>g.limpar_buffer(personagem)</code> e desenhe apenas a figura.</li>
+  <li><strong>Apaguei a folha, mas a cópia antiga continua na tela:</strong> limpar a origem não altera cópias já feitas. Monte e apresente um novo quadro.</li>
+  <li><strong>O cenário recebe desenhos que deveriam estar na janela:</strong> faltou <code>g.usar_buffer(0)</code> depois de preparar o cenário.</li>
+  <li><strong>Erro de buffer inexistente:</strong> confira se guardou o identificador retornado por <code>criar_buffer</code> e se ainda não chamou <code>liberar_buffer</code> para ele.</li>
+  <li><strong>Erro ao copiar para o próprio buffer:</strong> escolha outro destino com <code>usar_buffer</code> antes de copiar a origem.</li>
+  <li><strong>O jogo fica lento ou usa muita memória:</strong> confira se os buffers estão sendo criados dentro do laço e se suas dimensões são maiores que o necessário.</li>
+</ul>
+
+<h2 id="exercicios">8. Experimente por conta própria</h2>
+<ol>
+  <li>Troque a cor do céu no primeiro exemplo. Observe que a cor precisa ser definida antes de limpar.</li>
+  <li>Acrescente uma árvore ao buffer do cenário da animação, antes do laço.</li>
+  <li>Copie o mesmo personagem duas vezes, em posições diferentes. Você não precisa criar uma segunda folha.</li>
+  <li>Troque a posição automática por teclas esquerda e direita usando <code>t.tecla_pressionada</code> e as constantes <code>t.TECLA_SETA_ESQUERDA</code> e <code>t.TECLA_SETA_DIREITA</code>.</li>
+  <li>Desenhe um texto depois do personagem e depois mova essa chamada para antes do cenário. Compare o resultado para entender a ordem das camadas.</li>
+</ol>
+<p>Para consultar parâmetros de outras funções, abra a biblioteca <strong>Graficos</strong> na ajuda. Os exemplos <strong>Blocos 2D</strong> e <strong>Blocos 3D</strong> da biblioteca de exemplos mostram o uso de buffers em jogos maiores.</p>
+</body>
+</html>
