@@ -1,3 +1,4 @@
+import { serializeStudioDocument } from './services/studio-metadata.js';
 import { ExecutionDebugger } from '../runtime/core/debugger.js';
 import CodeInspector from './components/CodeInspector.jsx';
 import { analyzeCode } from './services/analysis.js';
@@ -102,7 +103,7 @@ export default function App() {
     } catch (error) { report(error); }
   }
   function save(document = store.active, name = document.filename) {
-    download(new Blob([document.code], { type: 'text/plain;charset=utf-8' }), name);
+    download(new Blob([serializeStudioDocument(document)], { type: 'text/plain;charset=utf-8' }), name);
     store.update({ filename: name, savedCode: document.code }, document.id);
   }
   function newFile() { if (busy || loadingExample) return; ++exampleRequest.current; store.create(); setHome(false); setMobileTab('editor'); setError(''); }

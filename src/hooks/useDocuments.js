@@ -1,3 +1,4 @@
+import { normalizeStudioDocument, splitStudioMetadata } from '../services/studio-metadata.js';
 import { documentFiles } from '../services/storage.js';
 import { useEffect, useState } from 'react';
 import { readStored } from './useStoredState.js';
@@ -5,7 +6,10 @@ const KEY = 'portugol-studio-documents-v1';
 const validSession = value => Array.isArray(value?.documents) && value.documents.length > 0 && value.documents.every(document => typeof document.id === 'string' && typeof document.filename === 'string' && typeof document.code === 'string' && typeof document.savedCode === 'string');
 const blank = 'programa\n{\n    funcao inicio()\n    {\n        \n    }\n}\n';
 export default function useDocuments(starter) {
-  const [session] = useState(() => readStored(KEY, { documents: [{ id: 'initial', filename: 'programa.por', code: starter, savedCode: starter, exampleId: '' }], activeId: 'initial' }, validSession));
+  const [session] = useState(() => {
+    const stored = readStored(KEY, { documents: [{ id: 'initial', filename: 'programa.por', code: starter, savedCode: starter, exampleId: '' }], activeId: 'initial' }, validSession);
+    return { ...stored, documents: stored.documents.map(normalizeStudioDocument) };
+  });
   const [documents, setDocuments] = useState(session.documents);
   const [activeId, setActiveId] = useState(session.activeId);
   const [ready, setReady] = useState(false);
@@ -19,7 +23,7 @@ export default function useDocuments(starter) {
   }, [session]);
   useEffect(() => {
     const persist = () => {
-      try { localStorage.setItem(KEY, JSON.stringify({ activeId, documents: documents.map(({ id, filename, code, savedCode, exampleId }) => ({ id, filename, code, savedCode, exampleId })) })); }
+      try { localStorage.setItem(KEY, JSON.stringify({ activeId, documents: documents.map(({ id, filename, code, savedCode, exampleId, studioMetadata }) => ({ id, filename, code, savedCode, exampleId, studioMetadata })) })); }
       catch (error) { console.warn('Não foi possível guardar os códigos desta sessão.', error); }
     };
     const timer = setTimeout(persist, 300);
@@ -28,6 +32,11 @@ export default function useDocuments(starter) {
   }, [documents, activeId]);
   const active = documents.find(document => document.id === activeId) || documents[0];
   function update(patch, id = active.id) {
+    if (Object.hasOwn(patch, 'code')) {
+      const source = splitStudioMetadata(patch.code);
+      patch = { ...patch, code: source.code, ...(source.studioMetadata ? { studioMetadata: source.studioMetadata } : {}) };
+    }
+    if (Object.hasOwn(patch, 'savedCode')) patch = { ...patch, savedCode: splitStudioMetadata(patch.savedCode).code };
     const apply = () => setDocuments(current => current.map(document => document.id === id ? { ...document, ...patch } : document));
     if (Object.hasOwn(patch, 'localFiles')) return documentFiles.write(id, patch.localFiles).then(apply);
     apply();
@@ -37,7 +46,7 @@ export default function useDocuments(starter) {
     setDocuments(current => {
       let index = 1;
       while (current.some(document => document.filename === `sem_titulo_${index}.por`)) index++;
-      return [...current, { id, filename: filename || `sem_titulo_${index}.por`, code, savedCode: code, exampleId }];
+      return [...current, normalizeStudioDocument({ id, filename: filename || `sem_titulo_${index}.por`, code, savedCode: code, exampleId })];
     });
     setActiveId(id); return id;
   }
