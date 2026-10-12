@@ -1,0 +1,70 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>ou</title><link rel="stylesheet" href="../../../../reader.css"></head><body>
+        <div>
+            <h1>ou</h1>
+            <p>Em algumas situações, necessitamos que alguma instrução seja executada se uma entre várias condições forem verdadeiras. Por exemplo, se você quisesse testar se pelo menos uma entre duas variáveis distintas têm valor igual a 2, como faria? Para isso podemos utilizar o operador lógico <span class="palavra-reservada">ou</span>.</p>
+            <p>Quando usamos o operador <span class="palavra-reservada">ou</span> o resultado de uma operação lógica será verdadeiro sempre que UM dos operandos for verdadeiro. A tabela verdade a seguir ilustra o comportamento do operador <span class="palavra-reservada">ou</span>.</p>
+
+            <table>
+                <tr>
+                    <th>Operação 1</th>
+                    <th>Operação 2</th>
+                    <th>Operação 1 <span class="palavra-reservada">ou</span> Operação 2</th>
+                </tr>
+                <tr>
+                    <td>Verdadeiro</td>
+                    <td>Verdadeiro</td>
+                    <td>Verdadeiro</td>
+                </tr>
+                <tr>
+                    <td>Verdadeiro</td>
+                    <td>Falso</td>
+                    <td>Verdadeiro</td>
+                </tr>
+                <tr>
+                    <td>Falso</td>
+                    <td>Verdadeiro</td>
+                    <td>Verdadeiro</td>
+                </tr>
+                <tr>
+                    <td>Falso</td>
+                    <td>Falso</td>
+                    <td>Falso</td>
+                </tr>
+
+            </table>
+
+            <p>Em geral, os operadores lógicos são utilizados em conjunto com as Estruturas de Controle.</p>
+            <section class="code-example"><h3>Exemplo de Sintaxe</h3><pre><code>se (5 &gt; 4 ou 7 == 6) //Operação logica &#x27;ou&#x27; junto com operações relacionais.
+{ 
+	//comandos
+}
+
+enquanto(falso ou 5 &gt; 4) //Operação logica &#x27;ou&#x27; junto com operações relacionais e tipo logico.
+{
+	//comandos
+}
+
+logico saida = 5 &gt; 8 ou 4 &lt; 12 ou 34 &lt; 7 //Operação lógica &#x27;ou&#x27; junto com operações relacionais.</code></pre></section>
+            <p>Para melhor compreensão deste conceito, confira o exemplo abaixo.</p>
+            <section class="code-example"><h3>Exemplo</h3><pre><code>programa
+{
+    funcao inicio()
+    {
+    	//Teste utilizando o operador lógico &quot;ou&quot; onde a deve ser igual a 2 ou pelo menos b deve ser igual a 2, qualquer um destes satisfaz o teste oferecendo-lhe verdadeiro como resposta
+        inteiro a = 2, b = 2
+        se(a == 2 ou b == 2)
+		{
+        	escreva(&quot;Teste positivo&quot;)
+        }
+        
+        //Neste caso c é igual a 2, entretanto d não é igual a 2, mas qualquer uma das condições oferece ao teste como resposta: verdadeiro
+        inteiro c = 2, d = 3
+        se(c == 2 ou d == 2)
+		{
+        	escreva(&quot;Teste positivo&quot;)
+        }
+        
+    }
+}</code></pre></section>
+        </div>
+    </body></html>

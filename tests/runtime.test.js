@@ -3,6 +3,17 @@ import assert from 'node:assert/strict';
 import { PortugolRuntime } from '../js/runtime.js';
 import { transpilePortugol } from '../js/transpiler.js';
 
+test('Internet acessa o endereço diretamente e explica bloqueios do navegador', async t => {
+  const calls = [];
+  t.mock.method(globalThis, 'fetch', async url => { calls.push(url); return new Response('Texto remoto'); });
+  const runtime = new PortugolRuntime(null, null);
+  assert.equal(await runtime.Internet.obter_texto('https://exemplo.test/texto'), 'Texto remoto');
+  assert.deepEqual(calls, ['https://exemplo.test/texto']);
+  globalThis.fetch = async () => { throw new TypeError('Failed to fetch'); };
+  await assert.rejects(runtime.Internet.obter_texto('https://exemplo.test/bloqueado'), /CORS/);
+  runtime.destroy();
+});
+
 test('Portugol escreve e lê arquivos pelo repositório e aguarda imagens reais', async () => {
   const writes = [], image = { width: 7, height: 9 };
   const files = { files: Object.create(null), normalizePath: p => p.replace(/^\.\//, ''), write: (path, text) => writes.push([path, text]), image: async path => { assert.equal(path, 'imagens/teste.png'); return image; } };

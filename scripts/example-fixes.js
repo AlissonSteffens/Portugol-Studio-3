@@ -1,4 +1,9 @@
+import { repairSphere } from './sphere-fix.js';
 export function repairExample(relative, source) {
+  if (relative === 'bibliotecas/graficos/sphere.por') return {
+    source: repairSphere(source),
+    ajustes: ['Iluminação calculada pela normal de cada face, com luz ambiente e difusa; removido o cálculo baseado na posição na tela.'],
+  };
   if (relative === 'bibliotecas/tipos/logico.por') return {
     source: source.replace(/caso\s*\r?\n/, 'caso \'A\':\n                    escreva("\\nCaracter convertido: ", car)\n                    pare\n'),
     ajustes: ['Completado o caso vazio no exemplo original.'],

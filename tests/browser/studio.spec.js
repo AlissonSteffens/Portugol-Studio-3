@@ -2,12 +2,12 @@ import { test, expect } from '@playwright/test';
 test('editor executa, recebe entrada e restaura o mesmo canvas da aba gráfica', async ({ page }) => {
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
-  await page.goto('/');
-  await page.getByRole('button', { name: '▶ Executar' }).click();
+  await page.goto('/'); await page.getByRole('button', { name: 'Mostrar editor', exact: true }).click();
+  await page.getByRole('button', { name: 'Executar programa', exact: true }).click();
   await expect(page.getByLabel('Terminal de execução')).toContainText('Olá, mundo!');
   await expect(page.getByText('● Concluído')).toBeVisible();
-  await page.getByLabel('Código Portugol').fill('programa {\n funcao inicio() {\n cadeia nome\n escreva("Nome: ")\n leia(nome)\n escreva("Olá, ", nome)\n }\n }');
-  await page.getByRole('button', { name: '▶ Executar' }).click();
+  await page.locator('.cm-content').fill('programa {\n funcao inicio() {\n cadeia nome\n escreva("Nome: ")\n leia(nome)\n escreva("Olá, ", nome)\n }\n }');
+  await page.getByRole('button', { name: 'Executar programa', exact: true }).click();
   const input = page.getByLabel('Terminal de execução').locator('input');
   await input.fill('Maria'); await input.press('Enter');
   await expect(page.getByLabel('Terminal de execução')).toContainText('Olá, Maria');
@@ -16,8 +16,8 @@ test('editor executa, recebe entrada e restaura o mesmo canvas da aba gráfica',
   const popup = await popupPromise;
   await expect(popup.locator('canvas')).toBeVisible();
   await expect(page.locator('canvas')).toHaveCount(0);
-  await page.getByLabel('Código Portugol').fill('programa {\n inclua biblioteca Graficos --> g\n inclua biblioteca Teclado --> t\n inclua biblioteca Util --> u\n funcao inicio() {\n g.iniciar_modo_grafico()\n enquanto (nao t.tecla_pressionada(t.TECLA_A)) {\n u.aguarde(10)\n }\n escreva("Tecla recebida")\n }\n }');
-  await page.getByRole('button', { name: '▶ Executar' }).click();
+  await page.locator('.cm-content').fill('programa {\n inclua biblioteca Graficos --> g\n inclua biblioteca Teclado --> t\n inclua biblioteca Util --> u\n funcao inicio() {\n g.iniciar_modo_grafico()\n enquanto (nao t.tecla_pressionada(t.TECLA_A)) {\n u.aguarde(10)\n }\n escreva("Tecla recebida")\n }\n }');
+  await page.getByRole('button', { name: 'Executar programa', exact: true }).click();
   await expect(page.getByText('● Executando')).toBeVisible();
   await popup.locator('canvas').focus(); await popup.keyboard.down('a');
   await expect(page.getByLabel('Terminal de execução')).toContainText('Tecla recebida');
@@ -29,21 +29,24 @@ test('editor executa, recebe entrada e restaura o mesmo canvas da aba gráfica',
 
 test('arquivo gerado pelo Portugol persiste após recarregar; imagem enviada é desenhada', async ({ page, request }) => {
   const source = 'programa {\n inclua biblioteca Arquivos --> a\n funcao inicio() {\n inteiro h = a.abrir_arquivo("resultado-teste.txt", a.MODO_ESCRITA)\n a.escrever_linha("Persistente!", h)\n a.fechar_arquivo(h)\n }\n }';
-  await page.goto('/'); await page.getByLabel('Código Portugol').fill(source);
-  await page.getByRole('button', { name: '▶ Executar' }).click();
+  await page.goto('/'); await page.getByRole('button', { name: 'Mostrar editor', exact: true }).click(); await page.locator('.cm-content').fill(source);
+  await page.getByRole('button', { name: 'Executar programa', exact: true }).click();
   await expect(page.getByText('● Concluído')).toBeVisible();
   await expect(page.getByText('resultado-teste.txt', { exact: true })).toBeVisible();
   await page.reload(); await expect(page.getByText('resultado-teste.txt', { exact: true })).toBeVisible();
   const data = await page.evaluate(() => { const c = document.createElement('canvas'); c.width = c.height = 4; const ctx = c.getContext('2d'); ctx.fillStyle = '#ff0000'; ctx.fillRect(0, 0, 4, 4); return c.toDataURL().split(',')[1]; });
   await page.locator('input[type=file][multiple]').setInputFiles({ name: 'teste.png', mimeType: 'image/png', buffer: Buffer.from(data, 'base64') });
   await expect(page.getByText('teste.png', { exact: true })).toBeVisible();
-  await page.getByLabel('Código Portugol').fill('programa {\n inclua biblioteca Graficos --> g\n funcao inicio() {\n g.iniciar_modo_grafico()\n inteiro img = g.carregar_imagem("teste.png")\n g.desenhar_imagem(0, 0, img)\n g.renderizar()\n g.salvar_imagem(img, "copia-teste.png")\n }\n }');
-  await page.getByRole('button', { name: '▶ Executar' }).click();
+  await page.locator('.cm-content').fill('programa {\n inclua biblioteca Graficos --> g\n funcao inicio() {\n g.iniciar_modo_grafico()\n inteiro img = g.carregar_imagem("teste.png")\n g.desenhar_imagem(0, 0, img)\n g.renderizar()\n g.salvar_imagem(img, "copia-teste.png")\n }\n }');
+  await page.getByRole('button', { name: 'Executar programa', exact: true }).click();
   await expect(page.getByText('● Concluído')).toBeVisible();
   const pixel = await page.locator('canvas').evaluate(canvas => Array.from(canvas.getContext('2d').getImageData(0, 0, 1, 1).data));
   expect(pixel).toEqual([255, 0, 0, 255]);
   await expect(page.getByText('copia-teste.png', { exact: true })).toBeVisible();
-  const saved = await request.get('/api/files?path=copia-teste.png');
-  expect((await saved.body()).subarray(1, 4).toString()).toBe('PNG');
-  await request.delete('/api/files?path=resultado-teste.txt'); await request.delete('/api/files?path=teste.png'); await request.delete('/api/files?path=copia-teste.png');
+  const bytes = await page.evaluate(async () => {
+    const db = await new Promise((resolve, reject) => { const request = indexedDB.open('portugol-studio', 1); request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error); });
+    const record = await new Promise((resolve, reject) => { const request = db.transaction('files').objectStore('files').get('copia-teste.png'); request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error); });
+    db.close(); return Array.from(new Uint8Array(await record.blob.arrayBuffer()));
+  });
+  expect(Buffer.from(bytes).subarray(1, 4).toString()).toBe('PNG');
 });

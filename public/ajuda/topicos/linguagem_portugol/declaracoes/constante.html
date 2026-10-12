@@ -1,0 +1,25 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Declaração de Constante</title><link rel="stylesheet" href="../../../reader.css"></head><body>
+        <div>
+            <h1>Declaração de Constante</h1>
+            <p>Existem algumas situações em que precisamos que um determinado parâmetro não tenha seu valor alterado durante a execução do programa. Para isso, existem as constantes. Constante é um identificador cujo valor associado não pode ser alterado pelo programa durante a sua execução.</p>
+            <p>Para declarar uma constante basta adicionar a palavra reservada <span class="palavra-reservada">const</span> seguida do tipo de dado, pelo nome da constante e atribuir um valor a ela.</p>
+			<section class="code-example"><h3>Exemplo de Sintaxe</h3><pre><code>const inteiro NOME_DA_CONSTANTE = 3
+const real NOME_DA_CONSTANTE2 = 45</code></pre></section>            
+			<p>Por uma questão de convenção, é aconselhável deixar o nome da sua constante em caixa alta (todas as letras em maiúsculo)</p>
+            <p>Para melhor compreensão deste conceito, confira o exemplo abaixo.</p>
+        </div>
+		<section class="code-example"><h3>Exemplo</h3><pre><code>programa
+{
+    //Constante global do tipo de dado real 
+    const real ACELERACAO_GRAVIDADE = 9.78
+
+    funcao inicio()
+    {
+        //Vetor constante local do tipo de dado caracter
+        const caracter VOGAIS[5] = {&#x27;a&#x27;,&#x27;e&#x27;,&#x27;i&#x27;,&#x27;o&#x27;,&#x27;u&#x27;}
+
+        //Matriz constante local do tipo de dado inteiro
+        const inteiro TECLADO_NUMERICO[][] = {{1,2,3},{4,5,6},{7,8,9}}
+    }
+}</code></pre></section>
+    </body></html>

@@ -6,21 +6,12 @@ const selected = process.env.EXAMPLES_FILTER ? examples.filter(example => exampl
 const browser = await chromium.launch({ args: ['--autoplay-policy=no-user-gesture-required'] });
 const page = await browser.newPage();
 // As gravações de exemplos destrutivos ficam isoladas; nenhum arquivo do usuário é alterado.
-let storage = new Map();
-await page.route('**/api/files*', async route => {
-  const request = route.request(), name = new URL(request.url()).searchParams.get('path');
-  if (request.method() === 'GET' && !name) return route.fulfill({ json: [...storage].map(([path, content]) => ({ path, type: 'text/plain', size: content.length })) });
-  if (request.method() === 'GET') return route.fulfill({ body: storage.get(name) || '' });
-  if (request.method() === 'PUT') storage.set(name, request.postDataBuffer());
-  if (request.method() === 'DELETE') storage.delete(name);
-  await route.fulfill({ status: 204 });
-});
 await page.goto(baseURL);
 const results = [];
 for (const example of selected) {
-  storage = new Map();
   const result = await page.evaluate(async example => {
-    const [{ transpilePortugol, tokenize }, { PortugolRuntime }, { createRuntimeFiles }, { loadExample }] = await Promise.all([import('/js/transpiler.js'), import('/js/runtime.js'), import('/src/services/repository.js'), import('/src/services/examples.js')]);
+    const [{ transpilePortugol, tokenize }, { PortugolRuntime }, { createRuntimeFiles, repository }, { loadExample }] = await Promise.all([import('/js/transpiler.js'), import('/js/runtime.js'), import('/src/services/repository.js'), import('/src/services/examples.js')]);
+    for (const entry of await repository.list()) await repository.remove(entry.path);
     const source = await loadExample(example), canvas = document.createElement('canvas'); canvas.width = 800; canvas.height = 600;
     const files = await createRuntimeFiles(() => {}, console.error, example);
     const runtime = new PortugolRuntime(canvas, null, { files, stepLimit: 50000 });

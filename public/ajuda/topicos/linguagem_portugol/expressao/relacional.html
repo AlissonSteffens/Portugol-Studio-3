@@ -1,0 +1,112 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Operações Relacionais</title><link rel="stylesheet" href="../../../reader.css"></head><body>
+        <div>
+			<h1>Operações Relacionais</h1>
+			<p>Vamos imaginar que você precise verificar se um número digitado pelo usuário é positivo ou negativo. Como poderíamos verificar isto? Através de uma operação relacional. As operações relacionais também são nossas conhecidas da Matemática. Em algoritmos, os operadores relacionais são importantes, pois permitem realizar comparações que terão como resultado um valor lógico (verdadeiro ou falso).</p>
+			<p>Os símbolos que usamos para os operadores também mudam um pouco em relação ao que usamos no papel. Os símbolos para diferente, maior ou igual e menor ou igual mudam pois não existem nos teclados convencionais. A tabela a seguir mostra todas as operações relacionais e os símbolos que o Portugol utiliza.</p>
+			
+			<table>
+				<tr>
+					<th>Operação</th>
+					<th>Símbolo</th>
+				</tr>
+				<tr>
+					<td>Maior</td>
+					<td>&gt;</td>
+				</tr>
+				<tr>
+					<td>Menor</td>
+					<td>&lt;</td>
+				</tr>
+				<tr>
+					<td>Maior ou igual</td>
+					<td>&gt;=</td>
+				</tr>
+				<tr>
+					<td>Menor ou igual</td>
+					<td>&lt;=</td>
+				</tr>
+				<tr>
+					<td>Igual</td>
+					<td>==</td>
+				</tr>
+				<tr>
+					<td>Diferente</td>
+					<td>!=</td>
+				</tr>
+			</table>
+			
+			<p>A tabela a seguir apresenta a estrutura de algumas dessas operações.</p>
+			
+			<table>
+				<tr>
+					<th>Operação</th>
+					<th>Resultado</th>
+				</tr>
+				<tr>
+					<td>3 > 4</td>
+					<td>Falso</td>
+				</tr>
+				<tr>
+					<td>7 != 7</td>
+					<td>Falso</td>
+				</tr>
+				<tr>
+					<td>9 == 10 - 1</td>
+					<td>Verdadeiro</td>
+				</tr>
+				<tr>
+					<td>33 &lt;= 100</td>
+					<td>Verdadeiro</td>
+				</tr>
+				<tr>
+					<td>6 &gt;= 5 + 1</td>
+					<td>Verdadeiro</td>
+				</tr>
+				<tr>
+					<td>5 + 4 &lt;= 11 - 2</td>
+					<td>Verdadeiro</td>
+				</tr>
+			</table>
+			
+			<p>Nos dois últimos exemplos, temos operadores aritméticos e relacionais juntos. Nestes casos, realiza-se primeiro a operação aritmética e depois a relacional.</p>
+			<p>Em geral, as operações relacionais são utilizadas em conjunto com as Estruturas de Controle. Veja a sintaxe:</p>
+			<section class="code-example"><h3>Exemplo de Sintaxe</h3><pre><code>se (5 &gt; 3) // Estrutura de controle: &quot;se (...)&quot;, Operação relacional: &quot;5 &gt; 3&quot;
+{
+	//conjunto de comandos se for verdadeiro
+}
+
+para (i = 0; i &lt; 5; i++) // Estrutura de controle: &quot;para(...)&quot;, Operação relacional: &quot;i &lt; 5&quot;
+{
+	//conjunto de comandos a serem repetidos até a Expressão se tornar falsa
+}
+
+faca // Estrutura de controle &quot;faca{}enquanto(...)&quot;, Operação relacional: &quot;6 &lt; 2&quot;
+{
+	//conjunto de comandos a serem repetidos enquanto a condicao for verdadeira após a primeira execução.
+} enquanto ( 6 &lt; 2 );</code></pre></section>
+			<p>Para melhor compreensão deste conceito, confira o exemplo abaixo.</p>
+			<section class="code-example"><h3>Exemplo</h3><pre><code>programa
+{
+    funcao inicio()
+    {
+        //Comparação entre valor A e B utilizando o operador maior que
+        inteiro a = 5, b = 3
+        se(a &gt; b){
+        	escreva(&quot;A é maior que B&quot;)
+        }
+        
+        //Comparação entre A e B utilizando o operador igual a
+        se(a == b){
+        	escreva(&quot;A é igual a B&quot;)
+        }
+        
+        //Comparação entre A e B utilizando o operador maior ou igual a
+        se(a &gt;= b){
+        	escreva(&quot;A é maior ou igual a B&quot;)
+        }
+        
+        //Nos testes acima somente o primeiro teste A &gt; B é verdadeiro, deste modo somente esta mensagem será exibida
+    }
+}</code></pre></section>
+        </div>
+    </body></html>

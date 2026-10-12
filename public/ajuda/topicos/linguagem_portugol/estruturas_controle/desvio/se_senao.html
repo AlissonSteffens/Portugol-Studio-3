@@ -1,0 +1,41 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Se senao</title><link rel="stylesheet" href="../../../../reader.css"></head><body>
+        <div>
+            <h1>Se-senao</h1>
+            <p>Agora vamos imaginar que se a condição for falsa um outro conjunto de comandos deve ser executado. Quando iremos encontrar esta situação? </p>
+            <p>Imagine um programa onde um aluno com média final igual ou maior a 6 é aprovado. Se quisermos construir um algoritmo onde após calculada a média, seja mostrada na tela uma mensagem indicando se o aluno foi aprovado ou reprovado. Como fazer isto? Utilizando o comando <span class="palavra-reservada">se</span> junto com o <span class="palavra-reservada">senao</span>.</p>
+			<p>Sua sintaxe é simples, basta no termino do comando se ao lado do fechamento de chaves, colocar o comando <span class="palavra-reservada">senao</span> e entre chaves colocar as instruções a serem executadas caso o comando <span class="palavra-reservada">se</span> for falso</p>
+			<section class="code-example"><h3>Exemplo de Sintaxe</h3><pre><code>logico condicao = falso
+se (condicao) 
+{
+	//Instruções a serem executadas se o desvio for verdadeiro
+}
+senao
+{
+	//Instruções a serem executadas se o desvio for falso
+}</code></pre></section>
+			<img src="../../../../recursos/imagens/${tema}/se_senao.png" alt='Fluxograma ilustrando o funcionamento do se senao'>
+			<p>O exemplo a seguir ilustra em portugol o mesmo algoritmo do fluxograma acima.</p>
+			<section class="code-example"><h3>Exemplo</h3><pre><code>programa
+{
+	funcao inicio()
+	{
+					  
+		inteiro hora
+
+		escreva (&quot;Digite a hora: &quot;)
+		leia (hora)
+		
+		se (hora &gt;= 6 e hora &lt;= 18)
+		{
+			escreva (&quot;É dia&quot;)
+		}
+		senao
+		{
+			escreva (&quot;É noite&quot;)
+		}
+		
+	}
+}</code></pre></section>
+
+		</div>
+	</body></html>

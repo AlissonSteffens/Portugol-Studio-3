@@ -10,18 +10,18 @@ import { tokenize } from '../../js/transpiler.js';
 import { Save, Sparkles } from 'lucide-react';
 
 const theme = EditorView.theme({
-  '&': { height: '100%', color: '#bcbec4', backgroundColor: '#1e1f22' },
+  '&': { height: '100%', color: '#bcbec4', backgroundColor: 'var(--color-background)' },
   '.cm-content': { fontFamily: '"JetBrains Mono", Consolas, monospace', fontSize: '13px', padding: '14px 0', caretColor: '#dfe1e5' },
   '.cm-scroller': { overflow: 'auto', fontFamily: '"JetBrains Mono", Consolas, monospace', lineHeight: '1.75' },
-  '.cm-gutters': { background: '#1e1f22', color: '#6f737a', borderRight: '1px solid #2b2d30', paddingRight: '6px' },
-  '.cm-activeLine, .cm-activeLineGutter': { background: '#26282d' },
+  '.cm-gutters': { background: 'var(--color-background)', color: '#6f737a', borderRight: '1px solid var(--color-surface-raised)', paddingRight: '6px' },
+  '.cm-activeLine, .cm-activeLineGutter': { background: 'var(--color-surface)' },
   '.cm-cursor, .cm-dropCursor': { borderLeftColor: '#dfe1e5' },
-  '&.cm-focused .cm-selectionBackground, .cm-selectionBackground, ::selection': { background: '#214283 !important' },
-  '.cm-tooltip': { background: '#2b2d30', color: '#dfe1e5', border: '1px solid #43454a', borderRadius: '6px' },
-  '.cm-tooltip-autocomplete > ul > li[aria-selected]': { background: '#214283', color: '#fff' },
+  '&.cm-focused .cm-selectionBackground, .cm-selectionBackground, ::selection': { background: 'var(--color-primary-muted) !important' },
+  '.cm-tooltip': { background: 'var(--color-surface-raised)', color: '#dfe1e5', border: '1px solid var(--color-border-strong)', borderRadius: '6px' },
+  '.cm-tooltip-autocomplete > ul > li[aria-selected]': { background: 'var(--color-primary)', color: 'var(--color-on-primary)' },
   '.cm-completionDetail': { color: '#9da0a8', fontSize: '11px' },
-  '.cm-search': { background: '#2b2d30', fontSize: '12px' },
-  '.cm-panels': { background: '#2b2d30', color: '#dfe1e5' },
+  '.cm-search': { background: 'var(--color-surface-raised)', fontSize: '12px' },
+  '.cm-panels': { background: 'var(--color-surface-raised)', color: '#dfe1e5' },
   '.cm-completionInfo': { whiteSpace: 'pre-wrap', maxWidth: '320px', fontSize: '12px', lineHeight: '1.5' },
 }, { dark: true });
 

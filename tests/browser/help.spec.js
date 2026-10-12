@@ -1,0 +1,53 @@
+import { test, expect } from '@playwright/test';
+
+test('home abre ajuda, busca sem acentos e apresenta exemplos incorporados', async ({ page, request }) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: /Precisa de uma mão/ }).click();
+  await expect(page.getByRole('heading', { name: 'Ajuda do Portugol' })).toBeVisible();
+  await expect(page.frameLocator('.help-reader iframe').getByRole('heading', { name: 'Linguagem Portugol', exact: true })).toBeVisible();
+  await page.getByLabel('Buscar na ajuda').fill('inteiro');
+  await page.getByRole('button', { name: 'Inteiro', exact: true }).click();
+  await expect(page.frameLocator('.help-reader iframe').getByRole('heading', { name: 'Tipo Inteiro' })).toBeVisible();
+  await expect(page.frameLocator('.help-reader iframe').locator('pre').first()).toContainText('inteiro');
+  await page.getByLabel('Buscar na ajuda').fill('repeticao');
+  await expect(page.getByRole('button', { name: 'Laços de Repetição', exact: true })).toBeVisible();
+  await page.getByLabel('Buscar na ajuda').fill('zzzinexistente');
+  await expect(page.getByText('Nenhum assunto encontrado.')).toBeVisible();
+  await page.getByLabel('Buscar na ajuda').fill('');
+  const response = await request.get('/ajuda/index.json');
+  const topics = await response.json();
+  expect(topics).toHaveLength(48);
+  for (const topic of topics) {
+    const article = await request.get(topic.path);
+    expect(article.ok(), topic.path).toBe(true);
+    expect(await article.text()).not.toContain('data-file=');
+  }
+  await expect(page.locator('.welcome-hero')).toHaveCount(0);
+  const layout = await page.locator('.welcome-content-help').boundingBox();
+  const help = await page.locator('.help-area').boundingBox();
+  expect(Math.abs(layout.width - help.width)).toBeLessThan(2);
+  expect(Math.abs(layout.height - help.height)).toBeLessThan(2);
+  await page.getByRole('navigation', { name: 'Tópicos da ajuda' }).getByRole('button', { name: 'Graficos', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Biblioteca Graficos' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'iniciar_modo_grafico', exact: true })).toBeVisible();
+  await page.getByLabel('Buscar na ajuda').fill('definir_dimensoes_janela');
+  await page.getByRole('button', { name: 'Graficos.definir_dimensoes_janela', exact: true }).click();
+  await expect(page.locator('.library-docs')).toContainText('largura');
+  await expect(page.locator('.library-docs')).toContainText('altura');
+  await expect(page.getByRole('heading', { name: 'Retorno · vazio' })).toBeVisible();
+  await page.getByLabel('Buscar na ajuda').fill('');
+  await page.locator('.welcome-content').evaluate(node => { node.scrollTop = 0; });
+  await page.screenshot({ path: 'test-results/help-desktop.png' });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(page.getByLabel('Buscar na ajuda')).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.screenshot({ path: 'test-results/help-mobile.png' });
+  await page.getByRole('navigation', { name: 'Conteúdo da home' }).getByRole('button', { name: 'Exemplos', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Biblioteca de exemplos' })).toBeVisible();
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page.locator('.welcome-content').evaluate(node => { node.scrollTop = 0; });
+  await page.screenshot({ path: 'test-results/home-desktop.png' });
+  await page.getByRole('button', { name: /Novo programa/ }).click();
+  await expect(page.locator('.cm-editor')).toBeVisible();
+  await page.screenshot({ path: 'test-results/editor-desktop.png' });
+});

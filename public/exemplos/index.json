@@ -275,7 +275,7 @@
   {
     "id": "bibliotecas_graficos_sphere",
     "nome": "Esfera 3D",
-    "descricao": "Este exemplo renderiza 3d.",
+    "descricao": "Esfera 3D com iluminação por face. Use A e D para mudar o sentido da rotação.",
     "imagem": "bibliotecas/graficos/esfera.png",
     "categoria": "Bibliotecas / Graficos",
     "arquivo": "sphere.por",
@@ -306,7 +306,9 @@
       "solar.png",
       "tela_cheia/dog.jpg"
     ],
-    "ajustes": []
+    "ajustes": [
+      "Iluminação calculada pela normal de cada face, com luz ambiente e difusa; removido o cálculo baseado na posição na tela."
+    ]
   },
   {
     "id": "bibliotecas_graficos_fractal_fern",

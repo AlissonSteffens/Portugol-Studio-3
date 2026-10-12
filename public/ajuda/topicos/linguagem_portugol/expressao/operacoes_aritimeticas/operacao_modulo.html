@@ -1,0 +1,48 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Operação de Modulo</title><link rel="stylesheet" href="../../../../reader.css"></head><body>
+        <div>
+            <h1>Operação de Módulo</h1>
+            <p>Em algumas situações faz-se necessário manipular o resto de algumas divisões. Por exemplo, se você quiser saber se um determinado valor é par ou ímpar, como faria? Para isso podemos utilizar o módulo. A operação módulo encontra o resto da divisão de um número por outro.</p>
+            <p>Dados dois números a (o dividendo) e b o divisor, a modulo b (a <span class="operador">%</span> b) é o resto da divisão de a por b. Por exemplo, <span class="inteiro">7</span> <span class="operador">%</span> <span class="inteiro">3</span> seria <span class="inteiro">1</span>, enquanto <span class="inteiro">9</span> <span class="operador">%</span> <span class="inteiro">3</span> seria <span class="inteiro">0</span>.</p>
+			<section class="code-example"><h3>Exemplo de Sintaxe</h3><pre><code>escreva(13 % 5) //Operação Aritmética 13 % 5 sendo escrita na tela
+
+real numero = 50 % 4 //Operação Aritmética 50 % 4 sendo armazenada na variável numero</code></pre></section>
+			<p>Note que você poderá atribuir o resultado desta operação a uma variável, ou mesmo executar diretamente através do comando escreva.</p>
+			<h2>Tabela de compatibilidade de tipos da operação de módulo</h2>
+			
+				<table>
+					<thead>
+						<tr>
+							<td>Operando Esquerdo</td>
+							<td>Operando Direito</td>
+							<td>Tipo Resultado</td>
+							<td>Exemplo</td>
+							<td>Resultado</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><span class="tipo">inteiro</span></td>
+							<td><span class="tipo">inteiro</span></td>
+							<td><span class="tipo">inteiro</span></td>
+							<td><span class="inteiro">45</span> <span class="operador">%</span> <span class="inteiro">7</span></td>
+							<td><span class="inteiro">3</span></td>
+						</tr>
+					</tbody>
+				</table>
+			
+			<p>Para melhor compreensão deste conceito, confira o exemplo abaixo.</p>
+			<section class="code-example"><h3>Exemplo</h3><pre><code>programa
+{
+    funcao inicio()
+    {
+	inteiro valor
+
+	escreva (7%3, &quot;\n&quot;)
+
+	valor = 7%3
+
+	escreva (valor)
+    }
+}</code></pre></section>
+        </div>
+    </body></html>

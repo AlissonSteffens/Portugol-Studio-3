@@ -1,0 +1,38 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Bibliotecas</title><link rel="stylesheet" href="../../../reader.css"></head><body>
+        <div>
+            <h1>Bibliotecas</h1>
+            <p>Em todo o algoritmo que se possa elaborar, existe a possibilidade da utilização de um conjunto de funções e comandos já existentes. A estes conjuntos de funções e comandos, dá-se o nome de Bibliotecas.</p>
+            <p>As bibliotecas contém códigos e dados auxiliares, que provém serviços a programas independentes, o que permite o compartilhamento e a alteração de código e dados de forma modular. Existem diversos tipos de bibliotecas, cada uma com funções para atender a determinados problemas.</p>
+            <p>Para se utilizar uma biblioteca é necessário primeiro importa-la para o seu programa. </p>
+            <p>No portugol para importar uma biblioteca usa-se as palavras reservadas <span class ="palavra-reservada">inclua biblioteca</span> seguido do nome da biblioteca que se deseja usar, e opcionalmente pode-se atribuir um apelido a ela usando do operador "-->" sem aspas seguido do apelido.</p>
+            <p>Para usar um recurso da biblioteca deve-se escrever o nome da biblioteca (ou apelido), seguido por um ponto e o nome do recurso a ser chamado como demonstrado abaixo.</p>
+            <section class="code-example"><h3>Exemplo de Sintaxe</h3><pre><code>inclua biblioteca Mouse
+inclua biblioteca Graficos --&gt; g
+Mouse.ocultar_cursor()
+g.iniciar_modo_grafico(verdadeiro)</code></pre></section>        
+            <p>No portugol, existem as seguintes bibliotecas:</p>
+            <ul>
+                <li>Arquivos</li>
+                <li>Graficos</li>
+                <li>Matematica</li>
+                <li>Mouse</li>
+                <li>Sons</li>
+                <li>Teclado</li>
+                <li>Texto</li>
+                <li>Tipos</li>
+                <li>Util</li>
+            </ul>
+            <section class="code-example"><h3>Exemplo</h3><pre><code>programa  
+{  
+	inclua biblioteca Matematica  
+	inclua biblioteca Texto --&gt; t  
+	funcao inicio()  
+	{  
+          real resultado  
+		resultado = Matematica.arredondar(Matematica.PI,5)  
+		escreva(resultado)    
+		escreva(t.caixa_alta(&quot;texto&quot;))   
+	}  
+}</code></pre></section>
+        </div>
+    </body></html>

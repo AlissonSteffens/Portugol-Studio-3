@@ -1,19 +1,26 @@
 import { decodeSource } from './examples.js';
+import { storedOperation } from './storage.js';
+import { assetUrl } from './assets.js';
 export function normalizePath(value) {
   const path = String(value).replaceAll('\\', '/').replace(/^(\.\/)+/, '').replace(/\/{2,}/g, '/');
   if (!path || path.startsWith('/') || /^[a-z]:/i.test(path) || path.split('/').some(p => !p || p === '.' || p === '..')) throw new Error('Use um caminho relativo válido.');
   return path;
 }
-async function request(path, options) {
-  const response = await fetch('/api/files' + (path ? '?path=' + encodeURIComponent(normalizePath(path)) : ''), options);
-  if (!response.ok) throw new Error((await response.json()).error || 'Falha ao acessar os arquivos.');
-  return response;
-}
 export const repository = {
-  async list() { return (await request()).json(); },
-  async read(path) { return (await request(path)).blob(); },
-  async write(path, blob) { await request(path, { method: 'PUT', body: blob, headers: { 'Content-Type': blob.type || 'text/plain' } }); },
-  async remove(path) { await request(path, { method: 'DELETE' }); },
+  async list() {
+    const files = await storedOperation('files', 'readonly', store => store.getAll());
+    return files.map(({ path, size, type, updatedAt }) => ({ path, size, type, updatedAt })).sort((a, b) => a.path.localeCompare(b.path, 'pt-BR'));
+  },
+  async read(path) {
+    const file = await storedOperation('files', 'readonly', store => store.get(normalizePath(path)));
+    if (!file) throw new Error('Arquivo não encontrado no navegador: ' + path);
+    return file.blob;
+  },
+  async write(path, blob) {
+    path = normalizePath(path);
+    await storedOperation('files', 'readwrite', store => store.put({ path, blob, size: blob.size, type: blob.type || 'application/octet-stream', updatedAt: Date.now() }));
+  },
+  async remove(path) { await storedOperation('files', 'readwrite', store => store.delete(normalizePath(path))); },
 };
 export function download(blob, name) {
   const url = URL.createObjectURL(blob), link = document.createElement('a');
@@ -23,7 +30,7 @@ export function download(blob, name) {
 // A API síncrona usa um snapshot; as alterações são persistidas em ordem.
 export async function createRuntimeFiles(onChange, onError = console.error, example, localFiles = {}) {
   const files = Object.create(null), blobs = new Map();
-  const base = example ? '/exemplos/' + example.caminho.slice(0, example.caminho.lastIndexOf('/') + 1) : null;
+  const base = example ? assetUrl('exemplos/' + example.caminho.slice(0, example.caminho.lastIndexOf('/') + 1)) : null;
   async function blobFor(path) {
     path = normalizePath(path);
     if (blobs.has(path)) return blobs.get(path);

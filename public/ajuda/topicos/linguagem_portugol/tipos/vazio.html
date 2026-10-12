@@ -1,0 +1,46 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Vazio</title><link rel="stylesheet" href="../../../reader.css"></head><body>
+        <div>
+            <h1>Tipo Vazio</h1>
+            <p>Vazio é usado para o resultado de uma função que retorna normalmente, mas não fornece um valor de resultado ao seu chamada.<p>
+            <p>Normalmente, essas funções de tipo <span class="palavra-reservada">vazio</span> são chamados por seus efeitos colaterais, como a realização de alguma tarefa ou escrevendo os seus parâmetros na saída de dados.</p>
+            <p>A função com o tipo <span class="palavra-reservada">vazio</span> termina ou por atingir o final da função ou executando um comando retorne sem valor retornado.</p>
+            <section class="code-example"><h3>Exemplo</h3><pre><code>programa
+{	
+    funcao inicio()
+    {
+        imprime_linha()
+        informacoes(&quot;Portugol&quot;,2.0,&quot;UNIVALI&quot;)
+        imprime_linha()
+        informacoes(&quot;Java&quot;,1.7,&quot;Oracle&quot;)		
+        imprime_linha()
+        informacoes(&quot;Ruby&quot;,2.0,&quot;ruby-lang.org&quot;)
+        imprime_linha()
+		informacoes(&quot;Visual Basic&quot;,6.0,&quot;Microsoft&quot;)
+        imprime_linha()
+
+    }
+
+    //Função de retorno vazio que dezenha uma linha no console
+    funcao vazio imprime_linha() 
+    {
+        escreva(&quot;\n---------------------------------------------------------------------------------------------&quot;)
+    }
+
+    //Função de retorno vazio que formata uma saida com base em seus parâmetros
+    funcao vazio informacoes(cadeia nome, real versao, cadeia fornecedor)
+    {
+        se (nome == &quot;Visual Basic&quot;)
+        {
+            retorne
+        }
+        escreva(&quot;\n&quot;)
+        escreva(&quot;A linguagem &quot;)
+        escreva(nome)
+        escreva(&quot; encontra-se em sua versão &quot;)
+        escreva(versao)
+        escreva(&quot; e é fornecida pelo(a) &quot;)
+        escreva(fornecedor)
+    }
+}</code></pre></section>           
+        </div>
+    </body></html>

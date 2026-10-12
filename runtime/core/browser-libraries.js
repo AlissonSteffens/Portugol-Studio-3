@@ -151,10 +151,10 @@ export function installBrowserLibraries(runtime) {
   let timeout = 10000;
   runtime.__networkController = new AbortController();
   async function remote(url) {
-    const target = runtime.options.networkMode === 'direct' || url.startsWith('/') ? url : '/api/internet?url=' + encodeURIComponent(url) + '&timeout=' + timeout;
+    const target = url;
     let response;
     try { response = await fetch(target, { signal: AbortSignal.any([AbortSignal.timeout(timeout + 1000), runtime.__networkController.signal]) }); }
-    catch (error) { if (runtime.__aborted) throw new Error('EXECUCAO_INTERROMPIDA'); throw error; }
+    catch (error) { if (runtime.__aborted) throw new Error('EXECUCAO_INTERROMPIDA'); if (error.name === 'TimeoutError') throw new Error('Tempo limite excedido ao acessar: ' + url); throw new Error('Não foi possível acessar ' + url + '. O site precisa permitir acesso pelo navegador (CORS).', { cause: error }); }
     if (!response.ok) throw new Error('Endereço indisponível: ' + url); return response;
   }
   runtime.Internet = {

@@ -1,0 +1,40 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Se</title><link rel="stylesheet" href="../../../../reader.css"></head><body>
+        <div>
+            <h1>Se</h1>
+            <p>Aqui veremos como dizer a um algoritmo quando um conjunto de instruções deve ser executado. Esta determinação é estabelecida se uma condição for verdadeira. Mas o que seria esta condição? Ao executar um teste lógico teremos como resultado um valor verdadeiro ou falso. A condição descrita anteriormente nada mais é que um teste lógico.</p>
+            <p>Se este teste lógico resultar verdadeiro, as instruções definidas dentro do desvio condicional serão executadas. Se o teste for falso, o algoritmo pulará o trecho e continuará sua execução a partir do ponto onde o desvio condicional foi finalizado.</p>
+            <p>O desvio condicional que foi acima apresentado é considerado simples e conhecido como o comando <span class="palavra-reservada">se</span>. </p>
+			<p>A sintaxe é respectivamente a palavra reservada <span class="palavra-reservada">se</span>, a condição a ser testada entre parenteses e as instruções que devem ser executadas entre chaves caso o desvio seja verdadeiro.</p>
+			<section class="code-example"><h3>Exemplo de Sintaxe</h3><pre><code>logico condicao = verdadeiro
+se (condicao)
+{
+	//Instruções a serem executadas se o desvio for verdadeiro
+}
+
+inteiro x = 5
+se (x &gt; 3)
+{
+	//Instruções a serem executadas se o desvio for verdadeiro
+}</code></pre></section>
+			<p>A figura abaixo ilustra um algoritmo que verifica se o número digitado pelo usuário é zero. Ele faz isso usando um desvio condicional. Note que se o teste for verdadeiro exibirá uma mensagem, no caso falso nenhuma ação é realizada.</p>
+			<img src="../../../../recursos/imagens/${tema}/Se.png" alt='Fluxograma ilustrando o funcionamento do se'>
+			<p>O exemplo a seguir ilustra em portugol o mesmo algoritmo do fluxograma acima.</p>
+			<section class="code-example"><h3>Exemplo</h3><pre><code>programa
+{
+        funcao inicio()
+        {
+					  
+			inteiro num
+
+			escreva (&quot;Digite um número: &quot;)
+			leia (num)
+
+			se (num==0)
+			{
+				escreva (&quot;O número digitado é 0&quot;)
+			}
+  
+		}
+}</code></pre></section>
+        </div>
+    </body></html>

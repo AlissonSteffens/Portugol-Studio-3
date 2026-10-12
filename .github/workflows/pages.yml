@@ -1,0 +1,53 @@
+name: Publicar GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    env:
+      ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Instalar dependências
+        run: npm ci
+      - name: Testar runtime e exemplos
+        run: npm test
+      - name: Preparar testes do navegador
+        run: npx playwright install --with-deps chromium
+      - name: Compilar para os testes locais
+        run: npm run build
+      - name: Testar a aplicação
+        run: npx playwright test
+      - name: Compilar para GitHub Pages
+        env:
+          VITE_BASE_PATH: /Portugol-Studio-3/
+        run: npm run build
+      - name: Verificar a publicação em subpasta
+        run: npx playwright test --config playwright.pages.config.js
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+      - name: Publicar site
+        id: deployment
+        uses: actions/deploy-pages@v4

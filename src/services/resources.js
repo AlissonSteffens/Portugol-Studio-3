@@ -1,3 +1,4 @@
+import { assetUrl } from './assets.js';
 import { tokenize } from '../../js/transpiler.js';
 import { parseProgram } from '../../js/compiler.js';
 import { normalizePath, repository } from './repository.js';
@@ -61,7 +62,7 @@ export function resourcePatterns(code, requiredOnly = false) {
 
 export function collectResources(code, example, entries, localFiles) {
   const result = new Map(), available = new Set([...(example?.recursos || []), ...entries.map(entry => entry.path), ...Object.keys(localFiles)]);
-  const base = example ? '/exemplos/' + example.caminho.slice(0, example.caminho.lastIndexOf('/') + 1) : '';
+  const base = example ? assetUrl('exemplos/' + example.caminho.slice(0, example.caminho.lastIndexOf('/') + 1)) : '';
   const addOriginal = path => {
     const originalURL = base + path.split('/').map(encodeURIComponent).join('/');
     result.set(path, { path, source: 'original', originalURL, read: async () => { const response = await fetch(originalURL); if (!response.ok) throw new Error('Não foi possível carregar ' + path); return response.blob(); } });
@@ -74,7 +75,7 @@ export function collectResources(code, example, entries, localFiles) {
     } else if (example?.recursos.includes(path)) addOriginal(path);
     else result.set(path, { path, source: 'missing' });
   }
-  for (const entry of entries) result.set(entry.path, { ...result.get(entry.path), ...entry, source: 'server', read: () => repository.read(entry.path) });
+  for (const entry of entries) result.set(entry.path, { ...result.get(entry.path), ...entry, source: 'browser', read: () => repository.read(entry.path) });
   for (const [path, blob] of Object.entries(localFiles)) result.set(path, { ...result.get(path), path, size: blob.size, type: blob.type, blob, source: 'local', read: async () => blob });
   return [...result.values()].sort((a, b) => a.path.localeCompare(b.path, 'pt-BR'));
 }

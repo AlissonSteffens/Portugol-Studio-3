@@ -6,42 +6,42 @@ programa
 	inclua biblioteca Tipos --> tp
 	inclua biblioteca Matematica --> m
 
-	/* Dimens�es da tela do jogo */ 
+	/* Dimensões da tela do jogo */
 	const inteiro LARGURA_TELA = 800, ALTURA_TELA = 600
 
-	
-	/* Define quantos quadros ser�o desenhados por segundo (FPS) */
-	/* Mude o valor para 0 para rodar com a velocidade m�xima */
-	const inteiro TAXA_ATUALIZACAO = 60
-	
 
-	/* Vari�veis utilizadas para fazer o controle de FPS e contabilizar o tempo de jogo */
+	/* Define quantos quadros serão desenhados por segundo (FPS) */
+	/* Mude o valor para 0 para rodar com a velocidade máxima */
+	const inteiro TAXA_ATUALIZACAO = 60
+
+
+	/* Variáveis utilizadas para fazer o controle de FPS e contabilizar o tempo de jogo */
 	inteiro tempo_inicio_fps = 0, tempo_fps = 0, frames = 0, fps = 0
 
 	inteiro tempo_inicio = 0, tempo_decorrido = 0, tempo_restante = 0
 
 	inteiro tempo_inicio_jogo = 0, tempo_total_jogo = 0
-	
+
 	inteiro tempo_quadro = 1000 / tp.real_para_inteiro(m.maior_numero(1.0, tp.inteiro_para_real(TAXA_ATUALIZACAO)))
 
 	inteiro cor = 1986630
 	real scale =-45
-	
+
 	real projx = 0
 	real projy = 0
 
 	real z_index = 0
 
 	logico horario = verdadeiro
-	
+
 	funcao inicio()
 	{
 		inicializar()
-		loop()		
+		loop()
 		finalizar()
 	}
 
-	real vertices[] = 
+	real vertices[] =
 	{0.017268,-0.988219,-0.009926,
 0.740875,-0.435438,0.515799,
 -0.259120,-0.435438,0.840723,
@@ -169,16 +169,16 @@ programa
 14, 2, 15
 
 	}
-	
+
 	real rot = 0.0
-	real cosr = 0.0
+	real cosr = 1.0
 	real senr = 0.0
-	
+
 	funcao loop()
 	{
 		tempo_inicio_fps = u.tempo_decorrido()
 		tempo_inicio_jogo = u.tempo_decorrido() - tempo_total_jogo
-		
+
 		enquanto (nao t.tecla_pressionada(t.TECLA_ESC))
 		{
 			tempo_total_jogo = u.tempo_decorrido() - tempo_inicio_jogo
@@ -186,7 +186,7 @@ programa
 
 			g.definir_cor(0x000000)
 			g.limpar()
-			
+
 			desenhar()
 			desenhar_fps()
 			g.renderizar()
@@ -205,7 +205,7 @@ programa
 			senr = m.seno(rot)
 			//escreva(cosr," ",senr,"\n")
 
-			atualizar_fps()			
+			atualizar_fps()
 
 			tempo_decorrido = u.tempo_decorrido() - tempo_inicio
 			tempo_restante = tempo_quadro - tempo_decorrido
@@ -216,16 +216,16 @@ programa
 			se(t.tecla_pressionada(t.TECLA_D)){
 				horario = falso
 			}
-			
+
 			enquanto (TAXA_ATUALIZACAO > 0 e tempo_restante > 0 e nao t.tecla_pressionada(t.TECLA_ESC))
 			{
 				tempo_decorrido = u.tempo_decorrido() - tempo_inicio
 				tempo_restante = tempo_quadro - tempo_decorrido
-			}			
+			}
 		}
 
 
-		
+
 	}
 
 	funcao desenhar_fps()
@@ -247,7 +247,7 @@ programa
 			fps = frames
 			tempo_inicio_fps = u.tempo_decorrido() - (tempo_fps - 1000)
 			frames = 0
-			//cor = u.sorteia(0,16000000)			
+			//cor = u.sorteia(0,16000000)
 		}
 	}
 
@@ -261,97 +261,103 @@ programa
 		g.definir_gradiente(g.GRADIENTE_INFERIOR_DIREITO, 0xFC466B, 0x3F5EFB)
 		g.desenhar_retangulo(0, 0, 800, 600, falso, verdadeiro)
 		g.definir_cor(0xffffff)
-		
-		
-		
+
+
+
 		inteiro faces = u.numero_elementos(tris)/3
 		para(inteiro count = 0;count < faces;count ++)
 		{
-			
-			
+
+
 			inteiro f = count*3
 			inteiro v0 = tris[f+0]-1
 			inteiro v1 = tris[f+1]-1
 			inteiro v2 = tris[f+2]-1
 			//escreva("\nf ",f+0,":",v0," ",f+1,":",v1," ",f+2,":",v2)
-			
+
 			//linha3d(v0,v1)
 			//linha3d(v2,v0)
-			poligon3d(v0,v1,v2,falso)
-			poligon3d(v0,v1,v2,verdadeiro)
-			
-			
+			poligon3d(v0,v1,v2)
+
+
 			//linha3d(v2,v0)
 			//g.renderizar()
 		}
 	}
 
 	inteiro tempo_inicio_cor = u.tempo_decorrido()
-	
-	funcao poligon3d(inteiro v1,inteiro v2, inteiro v3, logico frente){
-		inteiro pontos[3][2]
-		_proj(v1)
-		pontos[0][0] = scale * projx * ALTURA_TELA +  LARGURA_TELA/2
-		pontos[0][1] = scale * projy * ALTURA_TELA + ALTURA_TELA/2
-		real pz1 = scale * z_index
-		
-		_proj(v2)
-		pontos[1][0] = scale * projx * ALTURA_TELA +  LARGURA_TELA/2
-		pontos[1][1] = scale * projy * ALTURA_TELA + ALTURA_TELA/2
-		real pz2 = scale * z_index
 
-		_proj(v3)
-		pontos[2][0] = scale * projx * ALTURA_TELA +  LARGURA_TELA/2
-		pontos[2][1] = scale * projy * ALTURA_TELA + ALTURA_TELA/2
-		real pz3 = scale * z_index
-		se(frente){
-			se(pz1 >= 0 e pz2 >= 0 e pz3 >= 0){
-				inteiro index = 1
-				inteiro somax = pontos[0][0] + pontos[1][0] + pontos[2][0]
-				inteiro somay = pontos[0][1] + pontos[1][1] + pontos[2][1]
-				somax = somax/3
-				somax = somax/scale
-				somay = somay/3
-				
-				inteiro px =  somax*-20
-				g.definir_cor((px*65536*index)+(px*256*index)+(px*1*index))
-				
-				g.desenhar_poligono(pontos, verdadeiro)
-				
-				g.desenhar_poligono(pontos, falso)
-			}
-		}senao{
-			se(pz1 >= 0 ou pz2 >= 0 ou pz3 >= 0){
-				inteiro index = 1
-				inteiro menor = pontos[0][0]/scale
-				se(v1>v2){
-					menor = pontos[1][0]/scale
-				}senao se(menor>v3){
-					menor = pontos[2][0]/scale
-				}
-				inteiro px =  menor*-20
-				g.definir_cor((px*65536*index)+(px*256*index)+(px*1*index))
-				g.desenhar_poligono(pontos, verdadeiro)
-			}
+	// A normal da face determina tanto a visibilidade quanto a iluminação.
+	funcao poligon3d(inteiro v1, inteiro v2, inteiro v3)
+	{
+		real ax = vertices[v2*3] - vertices[v1*3]
+		real ay = vertices[v2*3+2] - vertices[v1*3+2]
+		real az = vertices[v2*3+1] - vertices[v1*3+1]
+		real bx = vertices[v3*3] - vertices[v1*3]
+		real by = vertices[v3*3+2] - vertices[v1*3+2]
+		real bz = vertices[v3*3+1] - vertices[v1*3+1]
+
+		// A troca dos eixos Y e Z inverte a orientação dos triângulos.
+		real nx = by*az - bz*ay
+		real ny = bz*ax - bx*az
+		real nz = bx*ay - by*ax
+		real normal_x = nz*senr + nx*cosr
+		real normal_z = nz*cosr - nx*senr
+
+		real centro_x = (vertices[v1*3] + vertices[v2*3] + vertices[v3*3]) / 3.0
+		real centro_y = (vertices[v1*3+2] + vertices[v2*3+2] + vertices[v3*3+2]) / 3.0
+		real centro_z = (vertices[v1*3+1] + vertices[v2*3+1] + vertices[v3*3+1]) / 3.0
+		real x_rotacionado = centro_z*senr + centro_x*cosr
+		real z_rotacionado = centro_z*cosr - centro_x*senr
+
+		// A câmera está em (0, 0, -150). Faces voltadas para trás não aparecem.
+		se (normal_x*(-x_rotacionado) + ny*(-centro_y) + normal_z*(-150.0-z_rotacionado) <= 0.0)
+		{
+			retorne
 		}
 
-		
-		
+		inteiro pontos[3][2]
+		_proj(v1)
+		pontos[0][0] = scale * projx * ALTURA_TELA + LARGURA_TELA/2
+		pontos[0][1] = scale * projy * ALTURA_TELA + ALTURA_TELA/2
+		_proj(v2)
+		pontos[1][0] = scale * projx * ALTURA_TELA + LARGURA_TELA/2
+		pontos[1][1] = scale * projy * ALTURA_TELA + ALTURA_TELA/2
+		_proj(v3)
+		pontos[2][0] = scale * projx * ALTURA_TELA + LARGURA_TELA/2
+		pontos[2][1] = scale * projy * ALTURA_TELA + ALTURA_TELA/2
+		g.definir_cor(cor_face(normal_x, ny, normal_z))
+		g.desenhar_poligono(pontos, verdadeiro)
+		g.desenhar_poligono(pontos, falso)
+	}
+
+	funcao inteiro cor_face(real nx, real ny, real nz)
+	{
+		real comprimento = m.raiz(nx*nx + ny*ny + nz*nz, 2.0)
+		se (comprimento == 0.0) { retorne g.criar_cor(46, 46, 46) }
+
+		// Luz fixa acima, à direita da imagem e à frente da esfera.
+		real comprimento_luz = m.raiz(0.4*0.4 + 0.65*0.65 + 1.0, 2.0)
+		real difusa = m.maior_numero(0.0, (nx*(-0.4) + ny*0.65 - nz) / (comprimento*comprimento_luz))
+		// A parcela ambiente evita preto absoluto nas faces sem luz direta.
+		inteiro tom = tp.real_para_inteiro(255.0 * (0.18 + 0.82*difusa))
+		tom = tp.real_para_inteiro(m.menor_numero(255.0, m.maior_numero(0.0, tp.inteiro_para_real(tom))))
+		retorne g.criar_cor(tom, tom, tom)
 	}
 
 	funcao linha3d(inteiro v1,inteiro v2)
 	{
-		
+
 		_proj(v1)
 		real px1 = scale * projx * ALTURA_TELA +  LARGURA_TELA/2
 		real py1 = scale * projy * ALTURA_TELA + ALTURA_TELA/2
-		
+
 		//escreva("px1: "+px1+" py1: "+py1+"\n")
-		
+
 		_proj(v2)
 		real px2 = scale * projx * ALTURA_TELA +  LARGURA_TELA/2
 		real py2 = scale * projy * ALTURA_TELA + ALTURA_TELA/2
-		
+
 
 		inteiro index = 1
 		inteiro menor = px1/scale
@@ -361,28 +367,28 @@ programa
 		inteiro px =  menor*-20
 		//g.definir_cor((px*65536*index)+(px*256*index)+(px*1*index))
 		g.definir_cor(0xffffff)
-	
-		
+
+
 		//escreva("[",px1,",", py1,"]  [", px2,",", py2,"]\n")
 		g.desenhar_linha(px1, py1, px2, py2)
 	}
 
 	funcao _proj(inteiro v)
 	{
-		real px = vertices[v*3+0] 
+		real px = vertices[v*3+0]
 		real py = vertices[v*3+2]
 		real pz = vertices[v*3+1]
 
 		//px += m.seno(rot)
-		
+
 		real tz = (pz * cosr) - (px * senr)
 		real tx = (pz * senr) + (px * cosr)
 		real ty = py
 		z_index = tz
-		
+
 		tz = tz+150.0
-		
-		
+
+
 		projx = tx / tz
 		projy = ty / tz
 	}
@@ -399,12 +405,12 @@ programa
 		g.encerrar_modo_grafico()
 	}
 }
-/* $$$ Portugol Studio $$$ 
- * 
- * Esta se��o do arquivo guarda informa��es do Portugol Studio.
- * Voc� pode apag�-la se estiver utilizando outro editor.
- * 
- * @POSICAO-CURSOR = 6770; 
+/* $$$ Portugol Studio $$$
+ *
+ * Esta seção do arquivo guarda informações do Portugol Studio.
+ * Você pode apagá-la se estiver utilizando outro editor.
+ *
+ * @POSICAO-CURSOR = 6770;
  * @PONTOS-DE-PARADA = ;
  * @SIMBOLOS-INSPECIONADOS = {z_index, 33, 6, 7};
  * @FILTRO-ARVORE-TIPOS-DE-DADO = inteiro, real, logico, cadeia, caracter, vazio;

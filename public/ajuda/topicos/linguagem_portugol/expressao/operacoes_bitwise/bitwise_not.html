@@ -1,0 +1,66 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Operação de Bitwise NOT</title><link rel="stylesheet" href="../../../../reader.css"></head><body>
+        <div>
+            <h1>Operação de Bitwise NOT</h1>
+            <p>Muito semelhante ao operador lógico 'nao', o operador unário NOT, ou negação binária devolve um bit 1 sempre que ambos operandos forem '1', conforme podemos confirmar pela tabela de verdade, onde A é o bit de entrada e S é o bit-resposta, ou bit de saída:</p>
+
+
+            <table>
+                <thead>
+                    <tr>
+                        <td>A</td>
+                        <td>S</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>0</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>0</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p>Sua sintaxe é o operador '~' entre os dois inteiros.</p>
+            <section class="code-example"><h3>Exemplo de Sintaxe</h3><pre><code>/*
+Para se fazer a operação Bitwise NOT 7 
+0111  (decimal 7)
+NOT
+----
+1000  (decimal 8)
+*/
+inteiro resultado = ~7</code></pre></section>
+            <h2>Tabela de compatibilidade de tipos da operação de Bitwise NOT</h2>
+
+
+            <table>
+                <thead>
+                    <tr>
+                        <td>Operando</td>
+                        <td>Tipo Resultado</td>
+                        <td>Exemplo</td>
+                        <td>Resultado</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="tipo">inteiro</span></td>
+                        <td><span class="tipo">inteiro</span></td>
+                        <td><span class="operador">~</span> <span class="inteiro">1</span></td>
+                        <td><span class="inteiro"><span class="operador">-</span>2</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p>Lembre-se que os operadores bitwise só trabalham com números do Tipo Inteiro. O exemplo a seguir ilustra em portugol o mesmo exemplo usado anteriormente. É importante a compreensão do conceito "Complemento de dois" presente no menu "Operações Bitwise".</p>
+            <section class="code-example"><h3>Exemplo</h3><pre><code>programa
+{
+    funcao inicio()
+    {	
+		escreva (~7)
+    }
+}</code></pre></section>
+        </div>
+    </body></html>

@@ -1,0 +1,12 @@
+:root { color-scheme: dark; }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 24px; background: #1e1e1e; color: #d4d4d4; font: 14px/1.8 "Segoe UI", system-ui, sans-serif; overflow-wrap: anywhere; }
+h1, h2 { color: #eeeeee; line-height: 1.4; font-weight: 600; border-left: 3px solid #ffc200; padding-left: 12px; }
+h1 { font-size: 24px; } h2 { font-size: 19px; } h3 { font-size: 13px; color: #ffc200; }
+p { margin: 16px 0; } a { color: #ffc200; } a:focus-visible { outline: 2px solid #ffc200; outline-offset: 3px; }
+img { max-width: 100%; height: auto; } table { border-collapse: collapse; width: 100%; } td, th { border: 1px solid #3a3a3a; padding: 8px; }
+.palavra-reservada { color: #00aaff; font-family: Consolas, monospace; }
+.code-example { margin: 20px 0; border: 1px solid #333; border-radius: 5px; padding: 0 16px; background: #181818; }
+pre { font: 13px/1.7 Consolas, monospace; white-space: pre-wrap; overflow-wrap: anywhere; color: #d4d4d4; }
+hr { border: 0; border-top: 1px solid #333; margin: 24px 0; }
+@media(max-width: 600px) { body { padding: 16px; } h1 { font-size: 21px; } }

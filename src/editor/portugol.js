@@ -36,10 +36,10 @@ export const portugolLanguage = StreamLanguage.define({
   languageData: { commentTokens: { line: '//', block: { open: '/*', close: '*/' } }, closeBrackets: { brackets: ['(', '[', '{', '"', "'"] } },
 });
 export const portugolHighlight = syntaxHighlighting(HighlightStyle.define([
-  { tag: tags.keyword, color: '#cf8e6d' }, { tag: tags.typeName, color: '#cf8e6d' },
-  { tag: tags.string, color: '#6aab73' }, { tag: tags.comment, color: '#7a7e85' },
-  { tag: tags.number, color: '#2aacb8' }, { tag: tags.bool, color: '#cf8e6d' },
-  { tag: tags.function(tags.variableName), color: '#56a8f5' }, { tag: tags.constant(tags.variableName), color: '#c77dbb' },
+  { tag: tags.keyword, color: '#00aaff' }, { tag: tags.typeName, color: '#00aaff' },
+  { tag: tags.string, color: '#ce9178' }, { tag: tags.comment, color: '#6a9955' },
+  { tag: tags.number, color: '#b5cea8' }, { tag: tags.bool, color: '#00aaff' },
+  { tag: tags.function(tags.variableName), color: '#dcdcaa' }, { tag: tags.constant(tags.variableName), color: '#00d4d4' },
 ]));
 
 function positionedTokens(source) {

@@ -1,0 +1,29 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Limpa</title><link rel="stylesheet" href="../../../reader.css"></head><body>
+        <div>
+            <h1>Limpa</h1>
+            <p>À medida que um algoritmo está sendo executado ele exibe mensagens e executa ações no console. Assim, em alguns casos o console fica poluído com informações desnecessárias, que atrapalham a compreensão e visualização do programa. Para isso, podemos usar o comando limpa.</p>
+            <p>O comando limpa é responsável por limpar o console. Não requer nenhum parâmetro e não tem nenhuma saída. Sua sintaxe é simples, e está demonstrada a seguir:</p>
+			<section class="code-example"><h3>Exemplo de Sintaxe</h3><pre><code>limpa()</code></pre></section>
+			<p>Para melhor compreensão deste conceito, confira o exemplo abaixo.</p>
+			<section class="code-example"><h3>Exemplo</h3><pre><code>programa
+{
+	
+    funcao inicio()
+    {
+        cadeia nome
+
+        //imprime a frase &quot;Qual é o seu nome?&quot;
+        escreva(&quot;Qual é o seu nome ?\n&quot;)
+
+        //Detecta o que o usuario escreveu na tela
+        leia(nome)
+		
+        //Limpa tudo que estava escrito no console 
+        limpa()
+		
+        //Escreve resposta
+        escreva(&quot;Olá &quot;+nome)
+    }
+}</code></pre></section>
+        </div>
+    </body></html>

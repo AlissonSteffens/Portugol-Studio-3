@@ -1,0 +1,56 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Se senao se</title><link rel="stylesheet" href="../../../../reader.css"></head><body>
+        <div>
+            <h1>Se-senao se</h1>
+            <p>Agora imagine que você precise verificar a nota da prova de um aluno e falar se ele foi muito bem, bem, razoável ou mau em uma prova como fazer isto ?</p>
+			<p>Quando você precisa verificar se uma condição é verdadeira, e se não for, precise verificar se outra condição é verdadeira uma das formas de se fazer esta verificação é utilizando do <span class="palavra-reservada">se</span> ... <span class="palavra-reservada">senao se</span>;</p>
+			<p>A sua sintaxe é parecida com a do <span class="palavra-reservada">senao</span>, mas usando o comando <span class="palavra-reservada">se</span> imediatamente após escrever o comando <span class="palavra-reservada">senao</span>.</p>
+			<section class="code-example"><h3>Exemplo de Sintaxe</h3><pre><code>logico condicao = falso
+logico condicao2 = verdadeiro
+se (condicao) 
+{
+	//Instruções a serem executadas se o desvio for verdadeiro
+}
+senao se (condicao2)
+{
+	//Instruções a serem executadas se o desvio anterior for falso e este desvio for verdadeiro
+}</code></pre></section>
+			<p>Também pode-se colocar o comando <span class="palavra-reservada">senao</span> no final do ultimo <span class="palavra-reservada">senao se</span>, assim quando todos os testes falharem, ele irá executar as instruções dentro do <span class="palavra-reservada">senao</span>
+			<section class="code-example"><h3>Exemplo de Sintaxe</h3><pre><code>se (12 &lt; 5) 
+{
+	//Instruções a serem executadas se o desvio for verdadeiro
+}
+senao se (&quot;palavra&quot; == &quot;texto&quot;)
+{
+	//Instruções a serem executadas se o desvio anterior for falso e este desvio for verdadeiro
+}
+senao
+{
+	//Instruções a serem executadas se o desvio anterior for falso
+}</code></pre></section>
+			<p>O exemplo a seguir ilustra a resolução do em Portugol de avisar se o aluno foi muito bem, bem, razoável ou mau em uma prova.</p>
+			<section class="code-example"><h3>Exemplo</h3><pre><code>programa  
+{  
+    funcao inicio()  
+    { 
+    	real nota
+    	leia(nota)
+    	se(nota &gt;= 9)
+    	{
+    		escreva(&quot;O aluno foi um desempenho muito bom na prova&quot;)
+		}
+   		senao se (nota &gt;= 7)
+   		{
+   			escreva(&quot;O aluno teve um desempenho bom na prova&quot;)
+   		}
+   		senao se (nota &gt;= 6)
+   		{
+   			escreva(&quot;O aluno teve um desempenho razoável na prova&quot;)
+   		}
+   		senao
+   		{
+   			escreva(&quot;O aluno teve um desempenho mau na prova&quot;)
+   		}
+  	}  
+}</code></pre></section>
+		</div>
+	</body></html>

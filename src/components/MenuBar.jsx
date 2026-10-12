@@ -19,10 +19,10 @@ export default function MenuBar({ menus }) {
     document.addEventListener('pointerdown', outside); document.addEventListener('keydown', escape);
     return () => { document.removeEventListener('pointerdown', outside); document.removeEventListener('keydown', escape); };
   }, [open]);
-  return <nav ref={root} aria-label="Menu principal" className="flex flex-wrap gap-1 border-b border-slate-700/70 bg-[#24262a] px-4 py-1">
+  return <nav ref={root} aria-label="Menu principal" className="menu-bar">
     {menus.map((menu, index) => <div key={menu.label} className="relative">
       <button aria-haspopup="menu" aria-expanded={open === index} onClick={() => setOpen(open === index ? null : index)} onKeyDown={event => { if (event.key === 'ArrowDown') { event.preventDefault(); setOpen(index); requestAnimationFrame(() => root.current.querySelector('[role=menu] button:not(:disabled)')?.focus()); } }} className="border-transparent bg-transparent">{menu.label}</button>
-      {open === index && <div ref={popup} style={{ maxWidth: "calc(100vw - 16px)", minWidth: "min(256px, calc(100vw - 16px))" }} role="menu" aria-label={menu.label} className="absolute left-0 top-full z-40 mt-1 min-w-64 rounded-lg border border-slate-600 bg-[#2b2d30] p-1 shadow-xl" onKeyDown={event => {
+      {open === index && <div ref={popup} style={{ maxWidth: "calc(100vw - 16px)", minWidth: "min(256px, calc(100vw - 16px))" }} role="menu" aria-label={menu.label} className="absolute left-0 top-full z-40 mt-1 min-w-64 rounded-lg border border-slate-600 bg-[var(--color-surface-raised)] p-1 shadow-xl" onKeyDown={event => {
         if (!['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) return;
         if (event.target.tagName === 'INPUT') return;
         event.preventDefault(); const items = [...event.currentTarget.querySelectorAll('button:not(:disabled)')], position = items.indexOf(document.activeElement);
