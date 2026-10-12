@@ -1,7 +1,8 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { PortugolRuntime } from '../js/runtime.js';
-const libraries = ['Graficos', 'Matematica', 'Util', 'Teclado', 'Mouse', 'Tipos', 'Calendario', 'Texto', 'Arquivos', 'Sons', 'Internet'];
-const types = { int: 'inteiro', double: 'real', boolean: 'logico', String: 'cadeia', char: 'caracter', void: 'vazio' };
+const sourceRoot = process.argv[2] || '../Portugol-Studio/core/src/main/java/br/univali/portugol/nucleo/bibliotecas';
+const libraries = ['Objetos', 'ServicosWeb', 'Graficos', 'Matematica', 'Util', 'Teclado', 'Mouse', 'Tipos', 'Calendario', 'Texto', 'Arquivos', 'Sons', 'Internet'];
+const types = { int: 'inteiro', double: 'real', boolean: 'logico', String: 'cadeia', char: 'caracter', void: 'vazio', Object: 'todos' };
 const contracts = {}, constants = {}, runtime = new PortugolRuntime(null, null);
 function field(source, name) {
   const value = source.match(new RegExp('\\b' + name + '\\s*=\\s*("(?:[^"\\\\]|\\\\.)*"(?:\\s*\\+\\s*"(?:[^"\\\\]|\\\\.)*")*)'))?.[1];
@@ -24,15 +25,15 @@ function annotations(source, name) {
   return results;
 }
 for (const library of libraries) {
-  const bytes = await readFile('../core/src/main/java/br/univali/portugol/nucleo/bibliotecas/' + library + '.java');
+  const bytes = await readFile(sourceRoot + '/' + library + '.java');
   let source; try { source = new TextDecoder('utf-8', { fatal: true }).decode(bytes); } catch { source = new TextDecoder('windows-1252').decode(bytes); }
   contracts[library] = {};
   constants[library] = {};
-  for (const match of source.matchAll(/public\s+(?:static\s+)?final\s+(int|double|boolean|String|char)\s+([A-Z][A-Z_0-9]*)\s*=/g)) {
+  for (const match of source.matchAll(/public\s+(?:static\s+)?final\s+(int|double|boolean|String|char|Object)\s+([A-Z][A-Z_0-9]*)\s*=/g)) {
     const documentation = source.slice(source.lastIndexOf('public ', match.index - 1) + 1, match.index);
     if (match[2] in runtime[library]) constants[library][match[2]] = { type: types[match[1]], description: field(annotations(documentation, 'DocumentacaoConstante').at(-1) || '', 'descricao') };
   }
-  for (const match of source.matchAll(/public\s+(?:static\s+)?(?:final\s+)?(void|int|double|boolean|String|char)\s+([a-z][a-z_0-9]*)\s*\(([^)]*)\)/g)) {
+  for (const match of source.matchAll(/public\s+(?:static\s+)?(?:final\s+)?(void|int|double|boolean|String|char|Object)\s+([a-z][a-z_0-9]*)\s*\(([^)]*)\)/g)) {
     const documentation = source.slice(source.lastIndexOf('public ', match.index - 1) + 1, match.index);
     if (contracts[library][match[2]]) {
       contracts[library][match[2]].available ||= typeof runtime[library]?.[match[2]] === 'function' && documentation.includes('@DocumentacaoFuncao');
@@ -44,7 +45,7 @@ for (const library of libraries) {
       returns: field(documentation, 'retorno'),
       available: typeof runtime[library]?.[match[2]] === 'function' && documentation.includes('@DocumentacaoFuncao'),
       parameters: match[3].split(',').filter(p => p.trim()).map((p, index) => ({
-        type: types[p.match(/\b(int|double|boolean|String|char)\b/)?.[1]] || 'vazio',
+        type: types[p.match(/\b(int|double|boolean|String|char|Object)\b/)?.[1]] || 'vazio',
         dimensions: (p.match(/\[\]/g) || []).length,
         name: p.match(/\b(?:int|double|boolean|String|char|Object)(?:\[\])*\s+(\w+)/)?.[1] || 'parametro' + (index + 1),
       })),

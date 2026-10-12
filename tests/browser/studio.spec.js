@@ -11,6 +11,7 @@ test('editor executa, recebe entrada e restaura o mesmo canvas da aba gráfica',
   const input = page.getByLabel('Terminal de execução').locator('input');
   await input.fill('Maria'); await input.press('Enter');
   await expect(page.getByLabel('Terminal de execução')).toContainText('Olá, Maria');
+  await page.getByRole('button', { name: 'Mostrar gráfico', exact: true }).click();
   const popupPromise = page.waitForEvent('popup');
   await page.getByRole('button', { name: 'Abrir em nova aba' }).click();
   const popup = await popupPromise;
@@ -20,7 +21,7 @@ test('editor executa, recebe entrada e restaura o mesmo canvas da aba gráfica',
   await page.getByRole('button', { name: 'Executar programa', exact: true }).click();
   await expect(page.getByText('● Executando')).toBeVisible();
   await popup.locator('canvas').focus(); await popup.keyboard.down('a');
-  await expect(page.getByLabel('Terminal de execução')).toContainText('Tecla recebida');
+  await expect(popup.getByLabel('Terminal de execução')).toContainText('Tecla recebida');
   await popup.keyboard.up('a');
   await popup.close();
   await expect(page.locator('canvas')).toBeVisible();
@@ -32,6 +33,7 @@ test('arquivo gerado pelo Portugol persiste após recarregar; imagem enviada é 
   await page.goto('/'); await page.getByRole('button', { name: 'Mostrar editor', exact: true }).click(); await page.locator('.cm-content').fill(source);
   await page.getByRole('button', { name: 'Executar programa', exact: true }).click();
   await expect(page.getByText('● Concluído')).toBeVisible();
+  await page.getByRole('button', { name: 'Mostrar recursos', exact: true }).click();
   await expect(page.getByText('resultado-teste.txt', { exact: true })).toBeVisible();
   await page.reload(); await expect(page.getByText('resultado-teste.txt', { exact: true })).toBeVisible();
   const data = await page.evaluate(() => { const c = document.createElement('canvas'); c.width = c.height = 4; const ctx = c.getContext('2d'); ctx.fillStyle = '#ff0000'; ctx.fillRect(0, 0, 4, 4); return c.toDataURL().split(',')[1]; });

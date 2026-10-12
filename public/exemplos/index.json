@@ -540,7 +540,9 @@
       "solar.png",
       "tela_cheia/dog.jpg"
     ],
-    "ajustes": []
+    "ajustes": [
+      "Inicializados idade e altura antes das condições para garantir a análise de todos os caminhos de execução."
+    ]
   },
   {
     "id": "bibliotecas_internet_gerador_palavras",

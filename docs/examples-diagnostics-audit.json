@@ -1,0 +1,12 @@
+{
+  "total": 120,
+  "valid": 120,
+  "invalid": 0,
+  "corrections": [
+    {
+      "file": "bibliotecas/graficos/varios.por",
+      "message": "Inicializados idade e altura antes das condições para satisfazer a análise conservadora de todos os caminhos de execução.",
+      "status": "corrigido"
+    }
+  ]
+}

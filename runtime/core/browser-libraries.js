@@ -89,6 +89,13 @@ export function installBrowserLibraries(runtime) {
   Object.assign(types, {
     cadeia_e_caracter: value => value.length === 1,
     cadeia_e_logico: value => ['verdadeiro', 'falso'].includes(value),
+    inteiro_para_cadeia(value, base = 10) {
+      if (![2, 10, 16].includes(base)) throw new Error('A base deve ser 2, 10 ou 16.');
+      return base === 10 ? String(value) : (value >>> 0).toString(base).toUpperCase().padStart(base === 2 ? 32 : 8, '0');
+    },
+    cadeia_para_caracter(value) { if (value.length !== 1) throw new Error('O valor não é um caracter válido.'); return value; },
+    caracter_e_logico: value => ['S', 's', 'N', 'n'].includes(value),
+    caracter_para_logico(value) { if (!['S', 's', 'N', 'n'].includes(value)) throw new Error('O valor não é um valor lógico válido. Utilize S ou N.'); return value.toLowerCase() === 's'; },
     cadeia_para_logico(value) { if (!types.cadeia_e_logico(value)) throw new Error('Valor lógico inválido: ' + value); return value === 'verdadeiro'; },
     cadeia_e_inteiro(value, base = 10) {
       if (![2, 10, 16].includes(base)) throw new Error('Base deve ser 2, 10 ou 16.');

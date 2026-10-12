@@ -1,0 +1,37 @@
+import { test, expect } from '@playwright/test';
+
+test('lateral única, árvore expansível, valores de vetor e saída sob demanda', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Mostrar editor', exact: true }).click();
+  await expect(page.locator('.workspace-output')).toBeHidden();
+  await expect(page.locator('.workspace-repository')).toBeHidden();
+  await page.locator('.cm-content').fill('programa {\n const real PI = 3.14\n funcao inteiro dobro(inteiro numero) { retorne numero * 2 }\n funcao inicio() {\n inteiro notas[3] = {7, 8, 9}\n inteiro total = dobro(notas[0])\n escreva(total, PI)\n }\n}');
+  await page.getByRole('button', { name: 'Árvore do código', exact: true }).click();
+  await expect(page.getByRole('tree', { name: 'Símbolos do programa' })).toBeVisible();
+  await page.getByRole('button', { name: 'Recolher dobro', exact: true }).click();
+  await expect(page.getByRole('treeitem', { name: 'numero', exact: true })).toBeHidden();
+  await page.getByRole('button', { name: 'Expandir dobro', exact: true }).click();
+  await expect(page.getByRole('treeitem', { name: 'numero', exact: true })).toBeVisible();
+  await page.getByRole('button', { name: 'Executar programa', exact: true }).click();
+  await expect(page.getByText('● Concluído')).toBeVisible();
+  await page.getByRole('button', { name: 'Expandir notas', exact: true }).click();
+  await expect(page.getByRole('treeitem', { name: '[0]', exact: true }).locator('.symbol-value')).toHaveText('7');
+  const editor = await page.locator('.editor-panel').boundingBox(), output = await page.locator('.workspace-output').boundingBox();
+  expect(output.y).toBeGreaterThan(editor.y + editor.height - 5);
+  expect(editor.width).toBeGreaterThan(900);
+  await page.screenshot({ path: 'test-results/compact-workspace-desktop.png' });
+  await page.getByRole('button', { name: 'Mostrar recursos', exact: true }).click();
+  await expect(page.locator('.workspace-repository')).toBeVisible();
+  await expect(page.getByRole('tree')).toHaveCount(0);
+  await page.getByRole('button', { name: 'Mostrar árvore', exact: true }).click();
+  await expect(page.locator('.workspace-repository')).toBeHidden();
+  await page.getByRole('button', { name: 'Recolher painéis de execução', exact: true }).click();
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.getByRole('button', { name: 'Ferramentas', exact: true }).click();
+  await expect(page.getByRole('tree')).toBeVisible();
+  await expect(page.getByRole('treeitem', { name: 'inicio', exact: true })).toBeVisible();
+  await expect(page.getByRole('treeitem', { name: '[0]', exact: true })).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.screenshot({ path: 'test-results/compact-workspace-mobile.png' });
+});

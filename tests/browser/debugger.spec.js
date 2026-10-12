@@ -1,0 +1,50 @@
+import { test, expect } from '@playwright/test';
+
+test('corrigir, desfazer, buscar e depurar com valores reais', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Mostrar editor', exact: true }).click();
+  const editor = page.locator('.cm-content');
+  await editor.fill('programa {\n funcao inicio() {\n inteiro a = 3.45\n escreva(a)\n }\n}');
+  const warning = page.locator('.cm-lintRange-warning');
+  await expect(warning).toBeVisible();
+  expect(await warning.evaluate(el => getComputedStyle(el).backgroundImage)).toBe('none');
+  await page.locator('.diagnostic-fix').click();
+  await page.getByRole('button', { name: 'Usar real nesta declaração', exact: true }).click();
+  await expect(editor).toContainText('real a = 3.45');
+  await editor.press('Control+z');
+  await expect(editor).toContainText('inteiro a = 3.45');
+  await editor.press('Control+f');
+  await expect(page.getByRole('textbox', { name: 'Buscar', exact: true })).toBeVisible();
+  await page.getByRole('textbox', { name: 'Buscar', exact: true }).fill('a');
+  await page.keyboard.press('Escape');
+  await editor.fill('programa {\n funcao inteiro soma(inteiro n) {\n retorne n + 1\n }\n funcao inicio() {\n inteiro a = 2\n a = soma(a)\n a++\n }\n}');
+  await page.getByRole('button', { name: 'Depurar', exact: true }).click();
+  await expect(page.locator('.debug-toolbar')).toContainText('Pausado · linha 6');
+  await expect(page.locator('.cm-execution-line')).toContainText('inteiro a = 2');
+  await page.getByRole('button', { name: 'Entrar', exact: true }).click();
+  await expect(page.locator('.debug-toolbar')).toContainText('Pausado · linha 7');
+  await expect(page.locator('.debug-stack')).toContainText('a2');
+  await page.getByRole('button', { name: 'Entrar', exact: true }).click();
+  await expect(page.locator('.debug-toolbar')).toContainText('Pausado · linha 3');
+  await expect(page.locator('.debug-stack')).toContainText('soma()');
+  await page.getByRole('button', { name: 'Sair da função', exact: true }).click();
+  await expect(page.locator('.debug-toolbar')).toContainText('Pausado · linha 8');
+  await expect(page.locator('.debug-stack')).toContainText('a3');
+  await page.screenshot({ path: 'test-results/debugger-paused.png' });
+  await page.getByRole('button', { name: 'Continuar', exact: true }).click();
+  await expect(page.getByText('● Concluído')).toBeVisible();
+  await expect(page.locator('.symbol-value')).toContainText(['2', '4']);
+});
+
+test('ponto de parada e cancelamento de execução pausada', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Mostrar editor', exact: true }).click();
+  await page.locator('.cm-content').fill('programa {\n funcao inicio() {\n inteiro a = 0\n a++\n a++\n }\n}');
+  await page.locator('.debug-gutter .cm-gutterElement').nth(4).click();
+  await expect(page.locator('.breakpoint-dot:visible')).toHaveCount(1);
+  await page.getByRole('button', { name: 'Executar programa', exact: true }).click();
+  await expect(page.getByText('● Pausado')).toBeVisible();
+  await page.getByRole('button', { name: 'Parar', exact: true }).click();
+  await expect(page.getByText('● Interrompido')).toBeVisible();
+  await expect(page.locator('.cm-execution-line')).toHaveCount(0);
+});

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Download, File, FileImage, FileAudio, FolderOpen, MoreHorizontal, Plus, RefreshCw, Search, Settings2, Upload, Undo2, Trash2, AlertCircle, X, PanelLeftClose } from 'lucide-react';
+import { Download, File, FileImage, FileAudio, FolderOpen, MoreHorizontal, Plus, RefreshCw, Search, Settings2, Upload, Undo2, Trash2, AlertCircle, X } from 'lucide-react';
 import { repository, download, normalizePath } from '../services/repository.js';
 import { collectResources } from '../services/resources.js';
 
@@ -17,7 +17,7 @@ function Thumbnail({ entry }) {
 }
 const sourceLabels = { original: 'Exemplo', local: 'Local', browser: 'Navegador', missing: 'Ausente' };
 function sizeLabel(size) { return size < 1024 ? size + ' B' : size < 1024 * 1024 ? (size / 1024).toFixed(1) + ' KB' : (size / 1024 / 1024).toFixed(1) + ' MB'; }
-export default function FileRepository({ entries, refresh, busy, onError, code, example, localFiles, onLocalFilesChange, onCollapse }) {
+export default function FileRepository({ entries, refresh, busy, onError, code, example, localFiles, onLocalFilesChange }) {
   const input = useRef(), replacement = useRef(), target = useRef();
   const [prefix, setPrefix] = useState(''), [working, setWorking] = useState(false), [pendingDelete, setPendingDelete] = useState(null), [search, setSearch] = useState(''), [destination, setDestination] = useState('local'), [settings, setSettings] = useState(false), [menu, setMenu] = useState(null);
   const resources = useMemo(() => collectResources(code, example, entries, localFiles), [code, example, entries, localFiles]);
@@ -31,10 +31,10 @@ export default function FileRepository({ entries, refresh, busy, onError, code, 
     try { const additions = Object.fromEntries(files.map(file => [normalizePath((prefix ? prefix + '/' : '') + file.name), file])); await action(() => onLocalFilesChange({ ...localFiles, ...additions })); } catch (error) { onError(error); }
   }
   return <section className="panel resource-panel" aria-label="Repositório de recursos">
-    <div className="panel-heading"><span className="resource-heading"><FolderOpen size={14}/> Repositório <small>{resources.length}</small></span><div className="resource-heading-actions"><button aria-label="Atualizar repositório" title="Atualizar repositório" disabled={working} onClick={() => action(async () => {})}><RefreshCw size={13}/></button><button aria-label="Recolher repositório" title="Recolher repositório" onClick={onCollapse}><PanelLeftClose size={15}/></button></div></div>
+    <div className="inspector-caption resource-caption"><span>{resources.length} {resources.length === 1 ? 'recurso' : 'recursos'}</span><div className="resource-heading-actions"><button aria-label="Atualizar repositório" title="Atualizar recursos" disabled={working} onClick={() => action(async () => {})}><RefreshCw size={13}/></button><button aria-label="Configurar envio de arquivos" title="Pasta e destino do envio" aria-expanded={settings} onClick={() => setSettings(!settings)}><Settings2 size={14}/></button></div></div>
     <div className="resource-toolbar">
       {example && <p className="resource-program" title={example.nome}>{example.nome}</p>}
-      <div className="resource-upload"><button disabled={locked} onClick={() => input.current.click()}><Plus size={14}/> Adicionar arquivos</button><button aria-label="Configurar envio de arquivos" title="Pasta e destino do envio" aria-expanded={settings} onClick={() => setSettings(!settings)}><Settings2 size={14}/></button></div>
+      <div className="resource-upload"><button disabled={locked} onClick={() => input.current.click()}><Plus size={14}/> Adicionar arquivos</button></div>
       <p className="resource-destination">{destination === 'local' ? 'Nesta aba' : 'Neste navegador (todas as abas)'}{prefix && ' / ' + prefix}</p>
       {settings && <div className="resource-settings"><label>Pasta de destino<input aria-label="Pasta de destino" placeholder="Ex.: imagens" value={prefix} onChange={e => setPrefix(e.target.value)} disabled={locked}/></label><label>Adicionar em<select aria-label="Destino dos arquivos" value={destination} onChange={e => setDestination(e.target.value)} disabled={locked}><option value="local">Esta aba (salva no navegador)</option><option value="browser">Neste navegador (todas as abas)</option></select></label></div>}
       <input ref={input} type="file" multiple hidden onChange={e => { const files = [...e.target.files]; e.target.value = ''; upload(files); }}/>

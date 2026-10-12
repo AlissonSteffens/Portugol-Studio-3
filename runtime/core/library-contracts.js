@@ -1,5 +1,578 @@
 // Contratos gerados a partir das bibliotecas Java do projeto.
 export default {
+  "Objetos": {
+    "finalizar": {
+      "type": "vazio",
+      "description": "",
+      "returns": "",
+      "available": false,
+      "parameters": []
+    },
+    "criar_objeto_via_json": {
+      "type": "inteiro",
+      "description": "Realiza a criação de um objeto a partir de uma cadeia no formato JSON (JavaScript Object Notation)",
+      "returns": "O endereço de memória no qual o objeto foi carregada",
+      "available": true,
+      "parameters": [
+        {
+          "type": "cadeia",
+          "dimensions": 0,
+          "name": "json",
+          "description": "texto no formato JSON para criar o objeto"
+        }
+      ]
+    },
+    "criar_objeto_via_xml": {
+      "type": "inteiro",
+      "description": "Realiza a criação de um objeto a partir de uma cadeia no formato XML (eXtensible Markup Language)",
+      "returns": "O endereço de memória no qual o objeto foi carregada",
+      "available": true,
+      "parameters": [
+        {
+          "type": "cadeia",
+          "dimensions": 0,
+          "name": "xml",
+          "description": "texto no formato XML para criar o objeto"
+        }
+      ]
+    },
+    "criar_objeto": {
+      "type": "inteiro",
+      "description": "Realiza a criação de um objeto vazio em memória",
+      "returns": "O endereço de memória no qual o objeto foi carregada",
+      "available": true,
+      "parameters": []
+    },
+    "atribuir_propriedade": {
+      "type": "vazio",
+      "description": "Realiza a atribuição de uma propriedade do objeto no endereço informado",
+      "returns": "",
+      "available": true,
+      "parameters": [
+        {
+          "type": "inteiro",
+          "dimensions": 0,
+          "name": "endereco",
+          "description": "o endereço onde o objeto foi armazenado"
+        },
+        {
+          "type": "cadeia",
+          "dimensions": 0,
+          "name": "propriedade",
+          "description": "a descrição da propriedade que terá o valor alterado"
+        },
+        {
+          "type": "todos",
+          "dimensions": 0,
+          "name": "valor",
+          "description": "o valor que será atribuido para a propriedade"
+        }
+      ]
+    },
+    "obter_propriedade_tipo_inteiro": {
+      "type": "inteiro",
+      "description": "Obtém o valor de uma propriedade do tipo inteiro no objeto do endereço informado",
+      "returns": "o valor da propriedade informada",
+      "available": true,
+      "parameters": [
+        {
+          "type": "inteiro",
+          "dimensions": 0,
+          "name": "endereco",
+          "description": "o endereço onde o objeto foi armazenado"
+        },
+        {
+          "type": "cadeia",
+          "dimensions": 0,
+          "name": "propriedade",
+          "description": "a descrição da propriedade que terá o valor obtido"
+        }
+      ]
+    },
+    "obter_propriedade_tipo_real": {
+      "type": "real",
+      "description": "Obtém o valor de uma propriedade do tipo real no objeto do endereço informado",
+      "returns": "o valor da propriedade informada",
+      "available": true,
+      "parameters": [
+        {
+          "type": "inteiro",
+          "dimensions": 0,
+          "name": "endereco",
+          "description": "o endereço onde o objeto foi armazenado"
+        },
+        {
+          "type": "cadeia",
+          "dimensions": 0,
+          "name": "propriedade",
+          "description": "a descrição da propriedade que terá o valor obtido"
+        }
+      ]
+    },
+    "obter_propriedade_tipo_logico": {
+      "type": "logico",
+      "description": "Obtém o valor de uma propriedade do tipo logico no objeto do endereço informado",
+      "returns": "o valor da propriedade informada",
+      "available": true,
+      "parameters": [
+        {
+          "type": "inteiro",
+          "dimensions": 0,
+          "name": "endereco",
+          "description": "o endereço onde o objeto foi armazenado"
+        },
+        {
+          "type": "cadeia",
+          "dimensions": 0,
+          "name": "propriedade",
+          "description": "a descrição da propriedade que terá o valor obtido"
+        }
+      ]
+    },
+    "obter_propriedade_tipo_caracter": {
+      "type": "caracter",
+      "description": "Obtém o valor de uma propriedade do tipo caracter no objeto do endereço informado",
+      "returns": "o valor da propriedade informada",
+      "available": true,
+      "parameters": [
+        {
+          "type": "inteiro",
+          "dimensions": 0,
+          "name": "endereco",
+          "description": "o endereço onde o objeto foi armazenado"
+        },
+        {
+          "type": "cadeia",
+          "dimensions": 0,
+          "name": "propriedade",
+          "description": "a descrição da propriedade que terá o valor obtido"
+        }
+      ]
+    },
+    "obter_propriedade_tipo_cadeia": {
+      "type": "cadeia",
+      "description": "Obtém o valor de uma propriedade do tipo cadeia no objeto do endereço informado",
+      "returns": "o valor da propriedade informada",
+      "available": true,
+      "parameters": [
+        {
+          "type": "inteiro",
+          "dimensions": 0,
+          "name": "endereco",
+          "description": "o endereço onde o objeto foi armazenado"
+        },
+        {
+          "type": "cadeia",
+          "dimensions": 0,
+          "name": "propriedade",
+          "description": "a descrição da propriedade que terá o valor obtido"
+        }
+      ]
+    },
+    "obter_propriedade_tipo_objeto": {
+      "type": "inteiro",
+      "description": "Obtém o valor de uma propriedade do tipo objeto no objeto do endereço informado",
+      "returns": "o valor da propriedade informada",
+      "available": true,
+      "parameters": [
+        {
+          "type": "inteiro",
+          "dimensions": 0,
+          "name": "endereco",
+          "description": "o endereço onde o objeto foi armazenado"
+        },
+        {
+          "type": "cadeia",
+          "dimensions": 0,
+          "name": "propriedade",
+          "description": "a descrição da propriedade que terá o valor obtido"
+        }
+      ]
+    },
+    "obter_propriedade_tipo_objeto_em_vetor": {
+      "type": "inteiro",
+      "description": "Obtém o valor de um vetor armazenado no objeto do endereço informado",
+      "returns": "o valor da propriedade informada",
+      "available": true,
+      "parameters": [
+        {
+          "type": "inteiro",
+          "dimensions": 0,
+          "name": "endereco",
+          "description": "o endereço onde o objeto foi armazenado"
+        },
+        {
+          "type": "cadeia",
+          "dimensions": 0,
+          "name": "propriedade",
+          "description": "a descrição da propriedade que terá o valor obtido"
+        },
+        {
+          "type": "inteiro",
+          "dimensions": 0,
+          "name": "indice",
+          "description": "o índice do elemento do vetor que será obtido"
+        }
+      ]
+    },
+    "obter_propriedade_tipo_caracter_em_vetor": {
+      "type": "caracter",
+      "description": "Obtém o valor de um vetor armazenado no objeto do endereço informado",
+      "returns": "o valor da propriedade informada",
+      "available": true,
+      "parameters": [
+        {
+          "type": "inteiro",
+          "dimensions": 0,
+          "name": "endereco",
+          "description": "o endereço onde o objeto foi armazenado"
+        },
+        {
+          "type": "cadeia",
+          "dimensions": 0,
+          "name": "propriedade",
+          "description": "a descrição da propriedade que terá o valor obtido"
+        },
+        {
+          "type": "inteiro",
+          "dimensions": 0,
+          "name": "indice",
+          "description": "o índice do elemento do vetor que será obtido"
+        }
+      ]
+    },
+    "obter_propriedade_tipo_logico_em_vetor": {
+      "type": "logico",
+      "description": "Obtém o valor de um vetor armazenado no objeto do endereço informado",
+      "returns": "o valor da propriedade informada",
+      "available": true,
+      "parameters": [
+        {
+          "type": "inteiro",
+          "dimensions": 0,
+          "name": "endereco",
+          "description": "o endereço onde o objeto foi armazenado"
+        },
+        {
+          "type": "cadeia",
+          "dimensions": 0,
+          "name": "propriedade",
+          "description": "a descrição da propriedade que terá o valor obtido"
+        },
+        {
+          "type": "inteiro",
+          "dimensions": 0,
+          "name": "indice",
+          "description": "o índice do elemento do vetor que será obtido"
+        }
+      ]
+    },
+    "obter_propriedade_tipo_real_em_vetor": {
+      "type": "real",
+      "description": "Obtém o valor de um vetor armazenado no objeto do endereço informado",
+      "returns": "o valor da propriedade informada",
+      "available": true,
+      "parameters": [
+        {
+          "type": "inteiro",
+          "dimensions": 0,
+          "name": "endereco",
+          "description": "o endereço onde o objeto foi armazenado"
+        },
+        {
+          "type": "cadeia",
+          "dimensions": 0,
+          "name": "propriedade",
+          "description": "a descrição da propriedade que terá o valor obtido"
+        },
+        {
+          "type": "inteiro",
+          "dimensions": 0,
+          "name": "indice",
+          "description": "o índice do elemento do vetor que será obtido"
+        }
+      ]
+    },
+    "obter_propriedade_tipo_inteiro_em_vetor": {
+      "type": "inteiro",
+      "description": "Obtém o valor de um vetor armazenado no objeto do endereço informado",
+      "returns": "o valor da propriedade informada",
+      "available": true,
+      "parameters": [
+        {
+          "type": "inteiro",
+          "dimensions": 0,
+          "name": "endereco",
+          "description": "o endereço onde o objeto foi armazenado"
+        },
+        {
+          "type": "cadeia",
+          "dimensions": 0,
+          "name": "propriedade",
+          "description": "a descrição da propriedade que terá o valor obtido"
+        },
+        {
+          "type": "inteiro",
+          "dimensions": 0,
+          "name": "indice",
+          "description": "o índice do elemento do vetor que será obtido"
+        }
+      ]
+    },
+    "obter_propriedade_tipo_cadeia_em_vetor": {
+      "type": "cadeia",
+      "description": "Obtém o valor de um vetor armazenado no objeto do endereço informado",
+      "returns": "o valor da propriedade informada",
+      "available": true,
+      "parameters": [
+        {
+          "type": "inteiro",
+          "dimensions": 0,
+          "name": "endereco",
+          "description": "o endereço onde o objeto foi armazenado"
+        },
+        {
+          "type": "cadeia",
+          "dimensions": 0,
+          "name": "propriedade",
+          "description": "a descrição da propriedade que terá o valor obtido"
+        },
+        {
+          "type": "inteiro",
+          "dimensions": 0,
+          "name": "indice",
+          "description": "o índice do elemento do vetor que será obtido"
+        }
+      ]
+    },
+    "obter_tamanho_vetor_propriedade": {
+      "type": "inteiro",
+      "description": "Obtém o tamanho de um vetor armazenado no objeto do endereço informado",
+      "returns": "o valor da propriedade informada",
+      "available": true,
+      "parameters": [
+        {
+          "type": "inteiro",
+          "dimensions": 0,
+          "name": "endereco",
+          "description": "o endereço onde o objeto foi armazenado"
+        },
+        {
+          "type": "cadeia",
+          "dimensions": 0,
+          "name": "propriedade",
+          "description": "a descrição da propriedade que terá o valor obtido"
+        }
+      ]
+    },
+    "liberar_objeto": {
+      "type": "vazio",
+      "description": "Libera o objeto do endereço informado da memória",
+      "returns": "",
+      "available": true,
+      "parameters": [
+        {
+          "type": "inteiro",
+          "dimensions": 0,
+          "name": "endereco",
+          "description": "o endereço onde o objeto foi armazenado"
+        }
+      ]
+    },
+    "liberar": {
+      "type": "vazio",
+      "description": "Libera todos os objetos previamente armazenados na memória",
+      "returns": "",
+      "available": true,
+      "parameters": []
+    },
+    "obter_json": {
+      "type": "cadeia",
+      "description": "Obtém a cadeia que representa o objeto inteiro no formato JSON (JavaScript Object Notation)",
+      "returns": "",
+      "available": true,
+      "parameters": [
+        {
+          "type": "inteiro",
+          "dimensions": 0,
+          "name": "endereco",
+          "description": "o endereço onde o objeto foi armazenado"
+        }
+      ]
+    },
+    "contem_propriedade": {
+      "type": "logico",
+      "description": "Identifica se o objeto contém ou não a propriedade informada",
+      "returns": "",
+      "available": true,
+      "parameters": [
+        {
+          "type": "inteiro",
+          "dimensions": 0,
+          "name": "endereco",
+          "description": "o endereço onde o objeto foi armazenado"
+        },
+        {
+          "type": "cadeia",
+          "dimensions": 0,
+          "name": "propriedade",
+          "description": "propriedade utilizada para verificação"
+        }
+      ]
+    },
+    "tipo_propriedade": {
+      "type": "inteiro",
+      "description": "Identifica o tipo da propriedade informada",
+      "returns": "",
+      "available": true,
+      "parameters": [
+        {
+          "type": "inteiro",
+          "dimensions": 0,
+          "name": "endereco",
+          "description": "o endereço onde o objeto foi armazenado"
+        },
+        {
+          "type": "cadeia",
+          "dimensions": 0,
+          "name": "propriedade",
+          "description": "propriedade utilizada para verificação"
+        }
+      ]
+    }
+  },
+  "ServicosWeb": {
+    "obter_dados": {
+      "type": "cadeia",
+      "description": "Realiza uma chamada HTTP GET para o endereço especificado, retornando uma cadeia no formato JSON como resposta",
+      "returns": "a cadeia JSON contendo a resposta da requisição",
+      "available": true,
+      "parameters": [
+        {
+          "type": "cadeia",
+          "dimensions": 0,
+          "name": "endereco",
+          "description": "endereço para o qual a requisição será feita"
+        }
+      ]
+    },
+    "excluir_dados": {
+      "type": "cadeia",
+      "description": "Realiza uma chamada HTTP DELETE para o endereço especificado, retornando uma cadeia no formato JSON como resposta",
+      "returns": "a cadeia JSON contendo a resposta da requisição",
+      "available": true,
+      "parameters": [
+        {
+          "type": "cadeia",
+          "dimensions": 0,
+          "name": "endereco",
+          "description": "endereço para o qual a requisição será feita"
+        }
+      ]
+    },
+    "publicar_dados": {
+      "type": "cadeia",
+      "description": "Realiza uma chamada HTTP POST para o endereço especificado, retornando uma cadeia no formato JSON como resposta",
+      "returns": "a cadeia JSON contendo a resposta da requisição",
+      "available": true,
+      "parameters": [
+        {
+          "type": "cadeia",
+          "dimensions": 0,
+          "name": "endereco",
+          "description": "endereço para o qual a requisição será feita"
+        },
+        {
+          "type": "cadeia",
+          "dimensions": 0,
+          "name": "objeto",
+          "description": "objeto no formato JSON passado por parâmetro no corpo da requisição"
+        }
+      ]
+    },
+    "atualizar_dados": {
+      "type": "cadeia",
+      "description": "Realiza uma chamada HTTP PUT para o endereço especificado, retornando uma cadeia no formato JSON como resposta",
+      "returns": "a cadeia JSON contendo a resposta da requisição",
+      "available": true,
+      "parameters": [
+        {
+          "type": "cadeia",
+          "dimensions": 0,
+          "name": "endereco",
+          "description": "endereço para o qual a requisição será feita"
+        },
+        {
+          "type": "cadeia",
+          "dimensions": 0,
+          "name": "objeto",
+          "description": "objeto no formato JSON passado por parâmetro no corpo da requisição"
+        }
+      ]
+    },
+    "abrir_conexao": {
+      "type": "vazio",
+      "description": "Abre uma conexão customizável com o endereço especificado.",
+      "returns": "",
+      "available": true,
+      "parameters": [
+        {
+          "type": "cadeia",
+          "dimensions": 0,
+          "name": "endereco",
+          "description": "endereço para o qual a requisição será feita"
+        }
+      ]
+    },
+    "adicionar_cabecalho": {
+      "type": "vazio",
+      "description": "Adiciona um cabeçalho na conexão customizável, para utilizar esta função é necessário abrir uma conexão antes.",
+      "returns": "",
+      "available": true,
+      "parameters": [
+        {
+          "type": "cadeia",
+          "dimensions": 0,
+          "name": "chave",
+          "description": "chave do cabeçalho que será incluído na conexão"
+        },
+        {
+          "type": "cadeia",
+          "dimensions": 0,
+          "name": "valor",
+          "description": "valor do cabeçalho que será incluído na conexão"
+        }
+      ]
+    },
+    "adicionar_parametros": {
+      "type": "vazio",
+      "description": "Adiciona um objeto no formato JSON na conexão customizável, para utilizar esta função é necessário abrir uma conexão antes. Esta função deve ser utilizada para informar os parâmetros dos métodos HTTP POST e PUT.",
+      "returns": "",
+      "available": true,
+      "parameters": [
+        {
+          "type": "cadeia",
+          "dimensions": 0,
+          "name": "objeto",
+          "description": "objeto no formato JSON passado por parâmetro no corpo da requisição"
+        }
+      ]
+    },
+    "fazer_requisicao": {
+      "type": "cadeia",
+      "description": "Realiza uma chamada HTTP através de uma conexão customizada, retornando uma cadeia no formato JSON como resposta",
+      "returns": "a cadeia JSON contendo a resposta da requisição",
+      "available": true,
+      "parameters": [
+        {
+          "type": "inteiro",
+          "dimensions": 0,
+          "name": "metodoHttp",
+          "description": "Método HTTP que será utilizado nesta execução (GET, POST, PUT ou DELETE)."
+        }
+      ]
+    }
+  },
   "Graficos": {
     "inicializar": {
       "type": "vazio",
@@ -1204,7 +1777,7 @@ export default {
       "available": true,
       "parameters": [
         {
-          "type": "vazio",
+          "type": "todos",
           "dimensions": 1,
           "name": "vetor",
           "description": "o vetor em questão"
@@ -1218,7 +1791,7 @@ export default {
       "available": true,
       "parameters": [
         {
-          "type": "vazio",
+          "type": "todos",
           "dimensions": 2,
           "name": "matriz",
           "description": "a matriz em questão"
@@ -1232,7 +1805,7 @@ export default {
       "available": true,
       "parameters": [
         {
-          "type": "vazio",
+          "type": "todos",
           "dimensions": 2,
           "name": "matriz",
           "description": "a matriz em questão"
@@ -2753,6 +3326,54 @@ export default {
   }
 };
 export const libraryConstants = {
+  "Objetos": {
+    "TIPO_INTEIRO": {
+      "type": "inteiro",
+      "description": "Constante para definir o tipo inteiro"
+    },
+    "TIPO_CADEIA": {
+      "type": "inteiro",
+      "description": "Constante para definir o tipo cadeia"
+    },
+    "TIPO_CARACTER": {
+      "type": "inteiro",
+      "description": "Constante para definir o tipo caracter"
+    },
+    "TIPO_REAL": {
+      "type": "inteiro",
+      "description": "Constante para definir o tipo real"
+    },
+    "TIPO_LOGICO": {
+      "type": "inteiro",
+      "description": "Constante para definir o tipo logico"
+    },
+    "TIPO_OBJETO": {
+      "type": "inteiro",
+      "description": "Constante para definir o tipo objeto"
+    },
+    "TIPO_VETOR": {
+      "type": "inteiro",
+      "description": "Constante para definir o tipo vetor"
+    }
+  },
+  "ServicosWeb": {
+    "OBTER": {
+      "type": "inteiro",
+      "description": "Constante para definir o método HTTP GET"
+    },
+    "PUBLICAR": {
+      "type": "inteiro",
+      "description": "Constante para definir o método HTTP POST"
+    },
+    "ATUALIZAR": {
+      "type": "inteiro",
+      "description": "Constante para definir o método HTTP PUT"
+    },
+    "EXCLUIR": {
+      "type": "inteiro",
+      "description": "Constante para definir o método HTTP DELETE"
+    }
+  },
   "Graficos": {
     "COR_PRETO": {
       "type": "inteiro",

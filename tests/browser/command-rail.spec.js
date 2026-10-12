@@ -22,6 +22,7 @@ test('comandos laterais abrem, salvam, executam e interrompem com atalhos e menu
   await expect(rail.getByRole('button', { name: 'Executar programa', exact: true })).toBeDisabled();
   await rail.getByRole('button', { name: 'Parar execução', exact: true }).click();
   await expect(page.locator('.ide-status')).toContainText('Interrompido');
+  await expect(rail.getByRole('button', { name: 'Executar programa', exact: true })).toBeEnabled();
   await page.keyboard.press('Control+Enter');
   await expect(page.locator('.ide-status')).toContainText('Executando');
   await page.keyboard.press('Escape');

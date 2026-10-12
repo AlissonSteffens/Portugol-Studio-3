@@ -30,8 +30,8 @@ programa
 		{
 			logico id = falso, alt = falso
 			cadeia nome = ""
-			inteiro idade
-			real altura
+			inteiro idade = 0
+			real altura = 0.0
 
 			nome = t.caixa_alta(params[0])
 

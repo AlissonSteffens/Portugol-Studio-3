@@ -1,3 +1,6 @@
+import { presentationMethods } from './presentation.js';
+import { installExtendedLibraries } from './extended-libraries.js';
+import { runtimeError } from './diagnostics.js';
 /**
  * Portugol Studio Web - Runtime Engine
  * Implementação completa das bibliotecas do Portugol Studio:
@@ -86,11 +89,15 @@ import { recordingContext } from './recording-context.js';
             this._setupEventListeners();
             this._setupLibraries();
             installBrowserLibraries(this);
+            installExtendedLibraries(this);
         }
 
         abort() {
             this.__aborted = true;
+            this.debugger?.abort();
+            for (const pending of this.__presentationWaits || []) pending.abort();
             this.__networkController?.abort();
+            for (const controller of this.__serviceRequests || []) controller.abort();
             while (this.__keyWaitResolvers.length > 0) {
                 const resolve = this.__keyWaitResolvers.shift();
                 resolve(0);
@@ -356,10 +363,7 @@ import { recordingContext } from './recording-context.js';
                     }
                     self.__drawing.clear();
                     // Aguarda o próximo frame de animação
-                    const nextFrame = typeof requestAnimationFrame !== 'undefined' 
-                        ? requestAnimationFrame 
-                        : (cb) => setTimeout(cb, 16);
-                    await new Promise(resolve => nextFrame(resolve));
+                    await self.waitForFrame();
                     if (self.__aborted) throw new Error("EXECUCAO_INTERROMPIDA");
                 },
 
@@ -565,13 +569,15 @@ import { recordingContext } from './recording-context.js';
             this.Util = {
                 async aguarde(ms) {
                     if (self.__aborted) throw new Error("EXECUCAO_INTERROMPIDA");
-                    await new Promise(r => setTimeout(r, ms));
+                    await self.waitForDelay(ms);
                     if (self.__aborted) throw new Error("EXECUCAO_INTERROMPIDA");
                 },
                 tempo_decorrido() {
                     return Math.floor(performance.now() - self.__startTime);
                 },
                 sorteia(min, max) {
+                    if (min > max) throw runtimeError('ErroExecucaoBiblioteca', `O valor mínimo (${min}) é maior do que o valor máximo (${max}).`);
+                    if (min === max) throw runtimeError('ErroExecucaoBiblioteca', `Os valores mínimo e máximo são iguais: ${min}.`);
                     return Math.floor(Math.random() * (max - min + 1)) + min;
                 },
                 numero_elementos(vetor) {
@@ -886,21 +892,21 @@ import { recordingContext } from './recording-context.js';
             if (typeof val !== 'string') return val;
             if (type === 'cadeia') return val;
             if (type === 'caracter') {
-                if (val.length !== 1) throw new Error('Digite exatamente um caracter.');
+                if (val.length !== 1) throw runtimeError('ErroValorEntradaInvalido', 'Digite exatamente um caracter.');
                 return val;
             }
             val = val.trim();
             if (type === 'inteiro') {
-                if (!/^[+-]?\d+$/.test(val)) throw new Error('Digite um número inteiro válido.');
+                if (!/^[+-]?\d+$/.test(val) || !Number.isSafeInteger(Number(val)) || Number(val) < -2147483648 || Number(val) > 2147483647) throw runtimeError('ErroValorEntradaInvalido', 'Digite um número inteiro válido entre -2147483648 e 2147483647.');
                 return Number(val);
             }
             if (type === 'real') {
                 const number = Number(val.replace(',', '.'));
-                if (!val || !Number.isFinite(number)) throw new Error('Digite um número real válido.');
+                if (!val || !Number.isFinite(number)) throw runtimeError('ErroValorEntradaInvalido', 'Digite um número real válido.');
                 return number;
             }
             if (type === 'logico') {
-                if (!['verdadeiro', 'falso'].includes(val.toLowerCase())) throw new Error('Digite verdadeiro ou falso.');
+                if (!['verdadeiro', 'falso'].includes(val.toLowerCase())) throw runtimeError('ErroValorEntradaInvalido', 'Digite verdadeiro ou falso.');
                 return val.toLowerCase() === 'verdadeiro';
             }
             if (val === '') return '';
@@ -948,5 +954,5 @@ import { recordingContext } from './recording-context.js';
     }
 
 
-Object.assign(PortugolRuntime.prototype, valueMethods);
+Object.assign(PortugolRuntime.prototype, valueMethods, presentationMethods);
 export { PortugolRuntime };

@@ -12,12 +12,14 @@
     "sync:examples": "node scripts/sync-examples.js",
     "sync:contracts": "node scripts/sync-library-contracts.js",
     "examples:run": "node scripts/run-examples.js",
-    "build:runtime": "node scripts/build-runtime.js"
+    "build:runtime": "node scripts/build-runtime.js",
+    "sync:diagnostics": "node scripts/sync-diagnostics.js"
   },
   "dependencies": {
     "@codemirror/autocomplete": "^6.20.3",
     "@codemirror/commands": "^6.11.1",
     "@codemirror/language": "^6.13.1",
+    "@codemirror/lint": "^6.9.7",
     "@codemirror/search": "^6.7.2",
     "@codemirror/state": "^6.7.6",
     "@codemirror/view": "^6.43.14",

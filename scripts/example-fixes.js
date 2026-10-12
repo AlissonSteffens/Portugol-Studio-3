@@ -4,6 +4,10 @@ export function repairExample(relative, source) {
     source: repairSphere(source),
     ajustes: ['Iluminação calculada pela normal de cada face, com luz ambiente e difusa; removido o cálculo baseado na posição na tela.'],
   };
+  if (relative === 'bibliotecas/graficos/varios.por') return {
+    source: source.replace(/inteiro idade\b(?!\s*=)/, 'inteiro idade = 0').replace(/real altura\b(?!\s*=)/, 'real altura = 0.0'),
+    ajustes: ['Inicializados idade e altura antes das condições para garantir a análise de todos os caminhos de execução.'],
+  };
   if (relative === 'bibliotecas/tipos/logico.por') return {
     source: source.replace(/caso\s*\r?\n/, 'caso \'A\':\n                    escreva("\\nCaracter convertido: ", car)\n                    pare\n'),
     ajustes: ['Completado o caso vazio no exemplo original.'],

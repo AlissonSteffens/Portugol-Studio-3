@@ -1,0 +1,898 @@
+[
+  {
+    "source": "bibliotecas/Arquivos.java",
+    "line": 105,
+    "originalFragments": [
+      "Modo de acesso inválido: %d"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Arquivos.java",
+    "line": 108,
+    "originalFragments": [
+      "O arquivo '%s' já está aberto"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Arquivos.java",
+    "line": 221,
+    "originalFragments": [
+      "Não foi possível substituir no arquivo '%s'"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Arquivos.java",
+    "line": 267,
+    "originalFragments": [
+      "Não foi possível apagar o arquivo '%s'"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Arquivos.java",
+    "line": 272,
+    "originalFragments": [
+      "Não foi possível apagar o arquivo '%s'"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Arquivos.java",
+    "line": 308,
+    "originalFragments": [
+      "O endereço de memória especificado não aponta para um arquivo"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Arquivos.java",
+    "line": 338,
+    "originalFragments": [
+      "O número máximo de arquivos que podem ser abertos ao mesmo tempo foi atingido"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Arquivos.java",
+    "line": 433,
+    "originalFragments": [],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Arquivos.java",
+    "line": 468,
+    "originalFragments": [
+      "Não foi possível listar as pastas pois o vetor passado é muito pequeno. O diretório escolhido possui %d pastas, mas o vetor passado comporta apenas %d elementos. Aumente o tamanho do vetor ou escolha outro diretório para listar as pastas."
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Arquivos.java",
+    "line": 487,
+    "originalFragments": [
+      " não é um caminho possível"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Arquivos.java",
+    "line": 520,
+    "originalFragments": [
+      "Não foi possível listar os arquivos pois o vetor passado é muito pequeno. O diretório escolhido possui %d arquivos, mas o vetor passado comporta apenas %d elementos. Aumente o tamanho do vetor ou escolha outro diretório para listar os arquivos."
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Arquivos.java",
+    "line": 539,
+    "originalFragments": [
+      " não é um caminho possível"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Arquivos.java",
+    "line": 592,
+    "originalFragments": [
+      "Não foi possível listar os arquivos pois o vetor passado é muito pequeno. O diretório escolhido possui %d arquivos, mas o vetor passado comporta apenas %d elementos. Aumente o tamanho do vetor ou escolha outro diretório para listar os arquivos."
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Arquivos.java",
+    "line": 612,
+    "originalFragments": [
+      " não é um caminho possível"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Arquivos.java",
+    "line": 635,
+    "originalFragments": [
+      "Não foi possivel criar um diretorio em "
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Arquivos.java",
+    "line": 667,
+    "originalFragments": [
+      "O formato de arquivo '%s' é inválido"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Arquivos.java",
+    "line": 858,
+    "originalFragments": [
+      "Não foi possível abrir o arquivo '%s' para leitura"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Arquivos.java",
+    "line": 875,
+    "originalFragments": [
+      "Não foi possível abrir o arquivo '%s' para escrita"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Arquivos.java",
+    "line": 892,
+    "originalFragments": [
+      "Não foi possível abrir o arquivo '%s' para escrita"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Arquivos.java",
+    "line": 914,
+    "originalFragments": [
+      "Não foi possível ler a próxima linha do arquivo '%s'"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Arquivos.java",
+    "line": 919,
+    "originalFragments": [
+      "O arquivo '%s' está aberto em modo de escrita"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Arquivos.java",
+    "line": 935,
+    "originalFragments": [
+      "Não foi possível escrever no arquivo '%s'"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Arquivos.java",
+    "line": 940,
+    "originalFragments": [
+      "O arquivo '%s' está aberto em modo de leitura"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Arquivos.java",
+    "line": 952,
+    "originalFragments": [
+      "O arquivo '%s' está aberto em modo de escrita"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Calendario.java",
+    "line": 271,
+    "originalFragments": [
+      "'",
+      "' não corresponde a um dia da semana válido."
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Calendario.java",
+    "line": 348,
+    "originalFragments": [
+      "'",
+      "' não corresponde a um dia da semana válido."
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Calendario.java",
+    "line": 425,
+    "originalFragments": [
+      "'",
+      "' não corresponde a um dia da semana válido."
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/graficos/CacheImagens.java",
+    "line": 35,
+    "originalFragments": [
+      "O número máximo de imagens que podem ser carregadas foi atingido"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/graficos/CacheImagens.java",
+    "line": 47,
+    "originalFragments": [
+      "O endereço de memória especificado aponta para uma imagem, mas esta imagem não é um GIF animado"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/graficos/CacheImagens.java",
+    "line": 62,
+    "originalFragments": [
+      "O endereço de memória especificado não aponta para uma imagem"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/graficos/ImagemGif.java",
+    "line": 61,
+    "originalFragments": [
+      "Erro ao carregar a imagem GIF"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/graficos/ImagemGif.java",
+    "line": 118,
+    "originalFragments": [
+      "O índice do quadro é invalido. Esta imagem GIF possui apenas ",
+      " quadros"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/graficos/JanelaGraficaImpl.java",
+    "line": 167,
+    "originalFragments": [],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/graficos/SuperficieDesenhoImpl.java",
+    "line": 80,
+    "originalFragments": [
+      "O modo gráfico não foi inicializado"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/graficos/SuperficieDesenhoImpl.java",
+    "line": 140,
+    "originalFragments": [
+      "O modo gráfico não foi inicializado"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/graficos/SuperficieDesenhoImpl.java",
+    "line": 228,
+    "originalFragments": [
+      "O modo gráfico não foi inicializado"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/graficos/SuperficieDesenhoImpl.java",
+    "line": 243,
+    "originalFragments": [
+      "O modo gráfico não foi inicializado"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/graficos/SuperficieDesenhoImpl.java",
+    "line": 359,
+    "originalFragments": [
+      "O modo gráfico não foi inicializado"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/graficos/SuperficieDesenhoImpl.java",
+    "line": 369,
+    "originalFragments": [
+      "O modo gráfico não foi inicializado"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/graficos/Swing.java",
+    "line": 21,
+    "originalFragments": [],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Graficos.java",
+    "line": 539,
+    "originalFragments": [
+      "Ocorreu um erro ao carregar a imagem '%s'"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Graficos.java",
+    "line": 544,
+    "originalFragments": [
+      "A imagem '%s' não foi encontrada"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Graficos.java",
+    "line": 631,
+    "originalFragments": [
+      "Impossível transformar imagem para estas dimensões"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Graficos.java",
+    "line": 658,
+    "originalFragments": [
+      "Impossível transformar imagem para estas dimensões"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Graficos.java",
+    "line": 679,
+    "originalFragments": [
+      "Erro ao redimensionar a imagem GIF"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Graficos.java",
+    "line": 1000,
+    "originalFragments": [
+      "Erro ao salvar a imagem: o arquivo ",
+      " não pode ser criado"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Graficos.java",
+    "line": 1004,
+    "originalFragments": [
+      "Erro ao salvar a imagem: "
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Graficos.java",
+    "line": 1440,
+    "originalFragments": [
+      "Erro ao criar a cor, os valor dos tons deve estar entre 0 e 255"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Graficos.java",
+    "line": 1476,
+    "originalFragments": [
+      "Não foi possível carregar a fonte '%s'"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Graficos.java",
+    "line": 1481,
+    "originalFragments": [
+      "A fonte '%s' não foi encontrada"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Graficos.java",
+    "line": 1530,
+    "originalFragments": [
+      "O valor da opacidade deve esta entre 0 e 255"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Graficos.java",
+    "line": 1578,
+    "originalFragments": [
+      "O modo gráfico não foi inicializado"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Internet.java",
+    "line": 80,
+    "originalFragments": [
+      "O caminho ",
+      " não tem nenhum conteúdo"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Internet.java",
+    "line": 86,
+    "originalFragments": [
+      "Não foi possível obter o conteúdo de "
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Internet.java",
+    "line": 120,
+    "originalFragments": [
+      "Não foi possível obter o conteúdo de "
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Internet.java",
+    "line": 128,
+    "originalFragments": [
+      "Não foi possivel salvar a imagem em ",
+      "\\nGaranta que o caminho é valido e todas as pastas existem"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Mouse.java",
+    "line": 211,
+    "originalFragments": [
+      "O código '%d' não é um código de botão válido"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/objetos/CacheObjetos.java",
+    "line": 39,
+    "originalFragments": [
+      "O número máximo de objetos que podem ser criados foi atingido"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/objetos/CacheObjetos.java",
+    "line": 51,
+    "originalFragments": [
+      "O endereço de memória especificado não aponta para um objeto"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Objetos.java",
+    "line": 157,
+    "originalFragments": [],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Objetos.java",
+    "line": 179,
+    "originalFragments": [],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Objetos.java",
+    "line": 201,
+    "originalFragments": [],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Objetos.java",
+    "line": 223,
+    "originalFragments": [],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Objetos.java",
+    "line": 245,
+    "originalFragments": [],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Objetos.java",
+    "line": 269,
+    "originalFragments": [
+      "Não foi possível obter a propriedade deste objeto."
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Objetos.java",
+    "line": 271,
+    "originalFragments": [],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Objetos.java",
+    "line": 297,
+    "originalFragments": [],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Objetos.java",
+    "line": 322,
+    "originalFragments": [],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Objetos.java",
+    "line": 347,
+    "originalFragments": [],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Objetos.java",
+    "line": 372,
+    "originalFragments": [],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Objetos.java",
+    "line": 397,
+    "originalFragments": [],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Objetos.java",
+    "line": 422,
+    "originalFragments": [],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Objetos.java",
+    "line": 494,
+    "originalFragments": [
+      "Não foi possível obter o JSON deste objeto."
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Objetos.java",
+    "line": 554,
+    "originalFragments": [],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Objetos.java",
+    "line": 569,
+    "originalFragments": [
+      "Você tentou acessar um índice de vetor inválido.\\n",
+      "O índice deve ser menor que o número de elementos que o vetor possui.\\n",
+      "Por exemplo, se foi declarado um vetor com 5 elementos (inteiro vetor[5]), o maior índice possível é 4.\\n",
+      "Além disso, o índice de um vetor não pode ser negativo."
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Objetos.java",
+    "line": 586,
+    "originalFragments": [
+      "A propriedade \\\"",
+      "\\\" não é um vetor."
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Objetos.java",
+    "line": 589,
+    "originalFragments": [],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/ServicosWeb.java",
+    "line": 37,
+    "originalFragments": [
+      "É necessário criar uma conexão customizada antes de adicionar o cabeçalho"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/ServicosWeb.java",
+    "line": 81,
+    "originalFragments": [
+      "Ocorreu um problema na requisição."
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/ServicosWeb.java",
+    "line": 103,
+    "originalFragments": [
+      "Ocorreu um problema na requisição."
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/ServicosWeb.java",
+    "line": 126,
+    "originalFragments": [
+      "Ocorreu um problema na requisição."
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/ServicosWeb.java",
+    "line": 149,
+    "originalFragments": [
+      "Ocorreu um problema na requisição."
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/ServicosWeb.java",
+    "line": 169,
+    "originalFragments": [
+      "Ocorreu um problema na criação da requisição."
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/ServicosWeb.java",
+    "line": 240,
+    "originalFragments": [
+      "Ocorreu um problema na requisição."
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Sons.java",
+    "line": 129,
+    "originalFragments": [
+      "Endereço de som inválido (",
+      ")!"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Sons.java",
+    "line": 390,
+    "originalFragments": [
+      "Não foi possível criar ou abrir uma linha de execução de áudio para "
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Texto.java",
+    "line": 162,
+    "originalFragments": [
+      "O índice do caracter (%d) é menor que 0"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Texto.java",
+    "line": 166,
+    "originalFragments": [
+      "O índice do caracter (%d) é maior que o número de caracteres na cadeia (%d)"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Texto.java",
+    "line": 233,
+    "originalFragments": [
+      "Posição inicial ou final inválida. A posição deve estar entre 0 e o tamanho da cadeia"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Tipos.java",
+    "line": 75,
+    "originalFragments": [
+      "A base informada (%d) é inválida, a base deve ser um dos seguintes valores: 2; 10; 16"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Tipos.java",
+    "line": 152,
+    "originalFragments": [
+      "o valor '%s' não é um caracter válido"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Tipos.java",
+    "line": 218,
+    "originalFragments": [
+      "o valor '%s' não é um número inteiro válido"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Tipos.java",
+    "line": 222,
+    "originalFragments": [
+      "A base informada (%d) é inválida, a base deve ser um dos seguintes valores: 2; 10; 16"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Tipos.java",
+    "line": 246,
+    "originalFragments": [
+      "o valor '%s' não é um número real válido"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Tipos.java",
+    "line": 271,
+    "originalFragments": [
+      "o valor '%s' não é um valor lógico válido"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Tipos.java",
+    "line": 344,
+    "originalFragments": [
+      "o valor '%s' não é um número inteiro válido"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Tipos.java",
+    "line": 348,
+    "originalFragments": [
+      "A base informada (%d) é inválida, a base deve ser um dos seguintes valores: 2; 10; 16"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Tipos.java",
+    "line": 371,
+    "originalFragments": [
+      "o valor '%d' não é um caracter válido"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Tipos.java",
+    "line": 512,
+    "originalFragments": [
+      "o valor '%s' não é um valor lógico válido"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Util.java",
+    "line": 41,
+    "originalFragments": [
+      "Não foi possível obter o diretório do usuário"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Util.java",
+    "line": 204,
+    "originalFragments": [
+      "O valor mínimo (%d) é maior do que o valor máximo (%d)"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  },
+  {
+    "source": "bibliotecas/Util.java",
+    "line": 208,
+    "originalFragments": [
+      "Os valores mínimo e máximo são iguais: %d"
+    ],
+    "implementation": "runtime/core/runtime-values.js: callLibrary",
+    "notes": "Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador."
+  }
+]

@@ -131,8 +131,8 @@ import { compile } from './compiler.js';
         return tokens;
     }
 
-    function transpilePortugol(source) {
-        return compile(tokenize(source));
+    function transpilePortugol(source, options = {}) {
+        return compile(tokenize(source), options);
     }
 
 export { tokenize, transpilePortugol };
