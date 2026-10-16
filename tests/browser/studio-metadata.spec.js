@@ -4,6 +4,11 @@ import { readFile } from 'node:fs/promises';
 const metadata = '/* $$$ Portugol Studio $$$\n * @POSICAO-CURSOR = 932;\n * @DOBRAMENTO-CODIGO = [1];\n */';
 const code = '// Comentário normal\nprograma { funcao inicio() { escreva("Teste") } }\n';
 
+// Exercise the download fallback used by browsers without a native save picker.
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => { window.showSaveFilePicker = undefined; });
+});
+
 test('abrir e salvar .por mantém metadados fora do editor e dentro do arquivo', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('button', { name: 'Mostrar editor', exact: true }).click();

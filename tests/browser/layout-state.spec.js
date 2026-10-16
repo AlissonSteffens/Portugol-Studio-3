@@ -49,5 +49,5 @@ test('dados locais inválidos não impedem abrir a aplicação', async ({ page }
     localStorage.setItem('portugol-studio-home', '"invalid"');
   });
   await page.goto('/');
-  await expect(page.getByRole('heading', { name: 'O que vamos criar hoje?' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Explore os exemplos' })).toBeVisible();
 });

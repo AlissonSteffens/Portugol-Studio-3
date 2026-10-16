@@ -3,6 +3,11 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
+// Exercise the download fallback used by browsers without a native save picker.
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => { window.showSaveFilePicker = undefined; });
+});
+
 test('site estático persiste recursos de abas, executa e exporta sem API', async ({ page, context }) => {
   const apiRequests = [];
   page.on('request', request => { if (new URL(request.url()).pathname.includes('/api/')) apiRequests.push(request.url()); });

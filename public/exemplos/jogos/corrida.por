@@ -357,6 +357,8 @@ programa
 		retorne distancia_percorrida >= EXTENSAO_ESTRADA
 	}
 
+	// Controles: W ou seta acima acelera; A/D ou setas viram; S ou espaco freia.
+	// Atalhos de teste: B abastece, N causa dano, R repara e 0 reinicia o carro.
 	funcao ler_entrada_usuario()
 	{		
 		se (t.tecla_pressionada(t.TECLA_ESC))
@@ -386,36 +388,36 @@ programa
 					u.aguarde(300)			
 				}
 				
-				se (t.tecla_pressionada(t.TECLA_ESPACO))
+				se ((t.tecla_pressionada(t.TECLA_ESPACO) ou t.tecla_pressionada(t.TECLA_S)))
 				{
 					freiar()
 				}
-				senao se (t.tecla_pressionada(t.TECLA_SETA_ACIMA))
+				senao se ((t.tecla_pressionada(t.TECLA_SETA_ACIMA) ou t.tecla_pressionada(t.TECLA_W)))
 				{
 					freiando = falso
 					acelerar()
 				}
 				
-				se (nao t.tecla_pressionada(t.TECLA_ESPACO))
+				se (nao (t.tecla_pressionada(t.TECLA_ESPACO) ou t.tecla_pressionada(t.TECLA_S)))
 				{
 					interromper_som(rep_som_freio)
 				}
 		
-				se (t.tecla_pressionada(t.TECLA_SETA_ESQUERDA))
+				se ((t.tecla_pressionada(t.TECLA_SETA_ESQUERDA) ou t.tecla_pressionada(t.TECLA_A)))
 				{
 					virar_para_esquerda()
 				}
-				senao se (t.tecla_pressionada(t.TECLA_SETA_DIREITA))
+				senao se ((t.tecla_pressionada(t.TECLA_SETA_DIREITA) ou t.tecla_pressionada(t.TECLA_D)))
 				{
 					virar_para_direita()
 				}
 		
-				se (t.tecla_pressionada(t.TECLA_A))
+				se (t.tecla_pressionada(t.TECLA_B))
 				{
 					abastecer()
 				}
 		
-				se (t.tecla_pressionada(t.TECLA_D))
+				se (t.tecla_pressionada(t.TECLA_N))
 				{
 					danificar(8.0, 12.0)
 				}

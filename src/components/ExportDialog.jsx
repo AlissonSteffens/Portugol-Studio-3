@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Download, FileCode2, Package, X } from 'lucide-react';
 import { prepareExport, desktopSource } from '../services/export.js';
-import { download } from '../services/repository.js';
+import { saveFile } from '../services/save-file.js';
 export default function ExportDialog({ project, onClose }) {
   const dialogRef = useRef();
   useEffect(() => {
@@ -23,10 +23,12 @@ export default function ExportDialog({ project, onClose }) {
   async function exportProject() {
     setWorking(true); setError('');
     try {
-      const prepared = await prepareExport(project, setProgress);
-      if (format === 'electron') download(desktopSource(prepared), prepared.filename + '-electron.zip');
-      else download(new Blob([prepared.html], { type: 'text/html;charset=utf-8' }), prepared.filename + '.html');
-      setProgress('Exportado com ' + prepared.count + ' recursos.');
+      let prepared;
+      const result = await saveFile(async () => {
+        prepared = await prepareExport(project, setProgress);
+        return format === 'electron' ? desktopSource(prepared) : new Blob([prepared.html], { type: 'text/html;charset=utf-8' });
+      }, project.filename.replace(/\.por$/i, '') + (format === 'electron' ? '-electron.zip' : '.html'));
+      setProgress(result ? (result.downloaded ? 'Download iniciado' : 'Arquivo salvo') + ' com ' + prepared.count + ' recursos.' : 'Exportação cancelada.');
     } catch (error) { console.error(error); setError(error.message); }
     finally { setWorking(false); }
   }

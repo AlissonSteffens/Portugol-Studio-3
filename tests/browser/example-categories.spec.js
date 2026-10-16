@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('home organiza categorias, expande subcategorias e aproveita a largura', async ({ page }) => {
+test('home preserva a árvore, expande subcategorias e busca no celular', async ({ page }) => {
   await page.setViewportSize({ width: 1920, height: 1080 });
   await page.goto('/');
   const tree = page.getByLabel('Categorias dos exemplos');
@@ -10,19 +10,16 @@ test('home organiza categorias, expande subcategorias e aproveita a largura', as
   await expect(libraries).toHaveAttribute('aria-expanded', 'true');
   const graphics = tree.getByRole('button', { name: /^Graficos/ });
   await graphics.click();
-  await expect(tree.locator('.welcome-example-list').filter({ visible: true }).first()).toBeVisible();
-  const content = await page.locator('.welcome-content').boundingBox();
-  const catalog = await page.locator('.welcome-catalog').boundingBox();
-  expect(content.width - catalog.width).toBeLessThan(70);
-  await page.locator('.welcome-catalog').scrollIntoViewIfNeeded();
-  await page.screenshot({ path: 'test-results/example-categories-desktop.png' });
+  await expect(graphics).toHaveAttribute('aria-expanded', 'true');
+  await expect(tree.getByRole('button', { name: 'Solar', exact: true })).toBeVisible();
+  await page.screenshot({ path: 'test-results/home-tree-desktop.png' });
+  await libraries.click();
+  await expect(tree.getByRole('button', { name: 'Solar', exact: true })).toHaveCount(0);
   await page.getByLabel('Buscar exemplos').fill('blocos');
   await expect(tree.getByRole('button', { name: /blocos 2D/ })).toBeVisible();
   await page.setViewportSize({ width: 390, height: 844 });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-  await page.locator('.welcome-catalog').scrollIntoViewIfNeeded();
-  await page.screenshot({ path: 'test-results/example-categories-mobile.png' });
+  await page.screenshot({ path: 'test-results/home-tree-mobile.png' });
   await tree.getByRole('button', { name: /blocos 2D/ }).click();
   await expect(page.locator('.cm-editor')).toBeVisible();
 });
-

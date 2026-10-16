@@ -1593,7 +1593,9 @@
       "theballsaga/theballsaga/sons/menu_song.mp3",
       "theballsaga/theballsaga.png"
     ],
-    "ajustes": []
+    "ajustes": [
+      "Adicionado suporte a WASD; atalhos de abastecimento e dano movidos para B e N."
+    ]
   },
   {
     "id": "jogos_medieval",

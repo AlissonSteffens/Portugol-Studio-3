@@ -4,6 +4,7 @@ import CodeInspector from './components/CodeInspector.jsx';
 import { analyzeCode } from './services/analysis.js';
 import { assetUrl } from './services/assets.js';
 import useStoredState from './hooks/useStoredState.js';
+import useRecentExamples from './hooks/useRecentExamples.js';
 import ResizeHandle from './components/ResizeHandle.jsx';
 import { Footprints, Play, Square, FilePlus2, FolderOpen, Home, Code2, Files, TerminalSquare, PanelRight, ListTree, CircleAlert, Monitor, X, Save, SaveAll, Share2, BookOpen } from 'lucide-react';
 import ExamplesMenu from './components/ExamplesMenu.jsx';
@@ -12,6 +13,8 @@ import Welcome from './components/Welcome.jsx';
 import VolumeControl, { readVolume } from './components/VolumeControl.jsx';
 import MenuBar from './components/MenuBar.jsx';
 import FileDialog from './components/FileDialog.jsx';
+import TabContextMenu from './components/TabContextMenu.jsx';
+import { canChooseSaveLocation, saveFile } from './services/save-file.js';
 import ExportDialog from './components/ExportDialog.jsx';
 import { loadCatalog, loadExample, decodeSource } from './services/examples.js';
 import { transpilePortugol, PortugolRuntime } from '../runtime/index.js';
@@ -20,7 +23,7 @@ const Editor = lazy(() => import('./components/Editor.jsx'));
 import Terminal from './components/Terminal.jsx';
 import Graphics from './components/Graphics.jsx';
 import FileRepository from './components/FileRepository.jsx';
-import { createRuntimeFiles, repository, download } from './services/repository.js';
+import { createRuntimeFiles, repository } from './services/repository.js';
 const EMPTY_FILES = {};
 const starter = 'programa\n{\n    funcao inicio()\n    {\n        escreva("Olá, mundo!\\n")\n    }\n}\n';
 export default function App() {
@@ -30,6 +33,7 @@ export default function App() {
   const [examples, setExamples] = useState([]), [loadingExample, setLoadingExample] = useState(false);
   const exampleRequest = useRef(0);
   const store = useDocuments(starter);
+  const recentExamples = useRecentExamples();
   const { code, filename, exampleId: selected } = store.active;
   const localFiles = store.active.localFiles || EMPTY_FILES;
   const activeExample = examples.find(example => example.id === selected);
@@ -53,6 +57,7 @@ export default function App() {
 
   const [home, setHome] = useStoredState('home', true, value => typeof value === 'boolean');
   const [dialog, setDialog] = useState(null);
+  const [tabMenu, setTabMenu] = useState(null), [closeQueue, setCloseQueue] = useState([]);
   const [showInspector, setShowInspector] = useStoredState('inspector-visible', true, value => typeof value === 'boolean');
   const [sidebarTab, setSidebarTab] = useStoredState('workspace-sidebar-tab', 'messages', value => ['messages', 'symbols', 'resources'].includes(value));
   const showRepository = showInspector && sidebarTab === 'resources';
@@ -99,7 +104,7 @@ export default function App() {
     setLoadingExample(true);
     try {
       const source = await loadExample(example);
-      if (request === exampleRequest.current) { store.create({ code: source, filename: example.arquivo, exampleId: id }); setHome(false); setMobileTab('editor'); }
+      if (request === exampleRequest.current) { store.create({ code: source, filename: example.arquivo, exampleId: id }); recentExamples.remember(id); setHome(false); setMobileTab('editor'); }
     } catch (error) { if (request === exampleRequest.current) { report(error); } }
     finally { if (request === exampleRequest.current) setLoadingExample(false); }
   }
@@ -112,9 +117,18 @@ export default function App() {
       store.create({ code: text.replaceAll('\r\n', '\n'), filename: file.name }); setHome(false); setMobileTab('editor');
     } catch (error) { report(error); }
   }
-  function save(document = store.active, name = document.filename) {
-    download(new Blob([serializeStudioDocument(document)], { type: 'text/plain;charset=utf-8' }), name);
-    store.update({ filename: name, savedCode: document.code }, document.id);
+  async function save(document = store.active, name = document.filename) {
+    try {
+      const result = await saveFile(new Blob([serializeStudioDocument(document)], { type: 'text/plain;charset=utf-8' }), name, { source: true });
+      if (!result) return false;
+      store.update({ filename: result.name, savedCode: document.code }, document.id);
+      setStatus(result.downloaded ? 'Download iniciado — destino definido pelo navegador' : 'Arquivo salvo');
+      return true;
+    } catch (error) { report(error); return false; }
+  }
+  function saveAs() {
+    if (canChooseSaveLocation()) return save();
+    setDialog({ kind: 'save', id: store.active.id, filename });
   }
   function openHelpExample(source, title) {
     if (busy || loadingExample || !store.ready) return;
@@ -124,15 +138,36 @@ export default function App() {
     setHome(false); setMobileTab('editor'); setError('');
   }
   function newFile() { if (busy || loadingExample) return; ++exampleRequest.current; store.create(); setHome(false); setMobileTab('editor'); setError(''); }
-  function closeFile(document) {
-    if (busy) return;
-    if (document.code !== document.savedCode || Object.keys(document.localFiles || {}).length) setDialog({ kind: 'close', id: document.id, filename: document.filename, localResources: !!Object.keys(document.localFiles || {}).length });
-    else store.close(document.id);
+  function continueDocument(id) {
+    const document = store.documents.find(document => document.id === id);
+    if (!document || busy || loadingExample) return;
+    if (document.exampleId) recentExamples.remember(document.exampleId);
+    store.activate(id); setHome(false); setMobileTab('editor');
   }
-  function submitDialog(value) {
+  function closeFile(document) {
+    requestClose([document.id]);
+  }
+  function requestClose(ids) {
+    if (busy || loadingExample || !store.ready || dialog || closeQueue.length) return;
+    setCloseQueue(ids);
+  }
+  useEffect(() => {
+    if (!closeQueue.length || dialog || busy || loadingExample || !store.ready) return;
+    const document = store.documents.find(document => document.id === closeQueue[0]);
+    if (!document) { setCloseQueue(current => current.slice(1)); return; }
+    if (document.code !== document.savedCode || Object.keys(document.localFiles || {}).length) {
+      setDialog({ kind: 'close', id: document.id, filename: document.filename, localResources: !!Object.keys(document.localFiles || {}).length });
+    } else { store.close(document.id); setCloseQueue(current => current.slice(1)); }
+  }, [closeQueue, dialog, busy, loadingExample, store.ready, store.documents]);
+  function openTabMenu(event, document) {
+    event.preventDefault();
+    const opener = event.currentTarget.querySelector('[role=tab]'), rect = opener.getBoundingClientRect();
+    setTabMenu({ id: document.id, filename: document.filename, opener, x: event.clientX || rect.left, y: event.clientY || rect.bottom });
+  }
+  async function submitDialog(value) {
     const document = store.documents.find(document => document.id === dialog.id);
-    if (dialog.kind === 'close') { if (value) save(document); store.close(document.id); }
-    else save(document, value);
+    if (dialog.kind === 'close') { if (value && !await save(document)) return; store.close(document.id); setCloseQueue(current => current.filter(id => id !== document.id)); }
+    else if (!await save(document, value)) return;
     setDialog(null);
   }
   function openPicker() { if (!busy && !loadingExample) fileInput.current.click(); }
@@ -167,7 +202,11 @@ export default function App() {
       const readInput = runtime.leia.bind(runtime);
       runtime.leia = type => { setView('terminal'); return readInput(type); };
       const startGraphics = runtime.Graficos.iniciar_modo_grafico;
-      runtime.Graficos.iniciar_modo_grafico = (...args) => { setView('grafico'); return startGraphics(...args); };
+      runtime.Graficos.iniciar_modo_grafico = (...args) => {
+        setView('grafico'); setOutputRatio(current => Math.max(current, .65));
+        requestAnimationFrame(() => canvas.focus({ preventScroll: true }));
+        return startGraphics(...args);
+      };
       runtimeRef.current = runtime; setStatus('Executando');
       await new Function('__runtime', compiled)(runtime);
       setStatus(cancel.current ? 'Interrompido' : 'Concluído');
@@ -183,9 +222,9 @@ export default function App() {
   }, [code, canvas, refresh, report, examples, selected, loadingExample, localFiles, store.ready, analysis]);
   useEffect(() => {
     const key = event => {
-      if (dialog || exporting || event.defaultPrevented) return;
+      if (dialog || exporting || tabMenu || event.defaultPrevented) return;
       if (event.ctrlKey && event.key === 'Enter') { event.preventDefault(); run(); }
-      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 's') { event.preventDefault(); if (event.shiftKey) setDialog({ kind: 'save', id: store.active.id, filename }); else save(); }
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 's') { event.preventDefault(); if (event.shiftKey) saveAs(); else save(); }
       if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'o') { event.preventDefault(); openPicker(); }
       if ((event.ctrlKey || event.metaKey) && event.shiftKey && event.key.toLowerCase() === 'e') { event.preventDefault(); if (!busy && !loadingExample) setExporting(true); }
       if (event.altKey && event.key.toLowerCase() === 'n') { event.preventDefault(); newFile(); }
@@ -195,16 +234,24 @@ export default function App() {
     const unload = event => { if (store.documents.some(document => document.code !== document.savedCode || Object.keys(document.localFiles || {}).length)) { event.preventDefault(); event.returnValue = ''; } };
     window.addEventListener('keydown', key); window.addEventListener('beforeunload', unload);
     return () => { window.removeEventListener('keydown', key); window.removeEventListener('beforeunload', unload); };
-  }, [run, dialog, exporting, code, filename, store.documents, busy, loadingExample, home]);
+  }, [run, dialog, exporting, tabMenu, code, filename, store.documents, busy, loadingExample, home]);
   function showJs() { try { setJs(transpilePortugol(code)); } catch (error) { report(error); } }
   const locked = busy || loadingExample || !store.ready;
+  const tabMenuIndex = store.documents.findIndex(document => document.id === tabMenu?.id);
+  const tabCloseItems = tabMenu ? [
+    { label: 'Fechar aba', ids: [tabMenu.id] },
+    { label: 'Fechar outras abas', ids: store.documents.filter(document => document.id !== tabMenu.id).map(document => document.id) },
+    { label: 'Fechar abas à direita', ids: store.documents.slice(tabMenuIndex + 1).map(document => document.id) },
+    { label: 'Fechar abas à esquerda', ids: store.documents.slice(0, tabMenuIndex).map(document => document.id) },
+    { label: 'Fechar todas as abas', ids: store.documents.map(document => document.id) },
+  ].map(item => ({ label: item.label, disabled: locked || !!closeQueue.length || !!dialog || tabMenuIndex < 0 || !item.ids.length, action: () => requestClose(item.ids) })) : [];
   const menus = [
     { label: 'Arquivo', items: [
       { label: 'Novo arquivo', shortcut: 'Alt + N', action: newFile, disabled: locked },
       { label: 'Abrir arquivo…', shortcut: 'Ctrl + O', action: openPicker, disabled: locked },
       { separator: true },
       { label: 'Salvar', shortcut: 'Ctrl + S', action: () => save() },
-      { label: 'Salvar como…', shortcut: 'Ctrl + Shift + S', action: () => setDialog({ kind: 'save', id: store.active.id, filename }) },
+      { label: 'Salvar como…', shortcut: 'Ctrl + Shift + S', action: saveAs },
       { label: 'Exportar projeto…', shortcut: 'Ctrl + Shift + E', action: () => setExporting(true), disabled: locked },
       { label: 'Fechar arquivo', action: () => closeFile(store.active), disabled: locked },
       { separator: true },
@@ -268,15 +315,15 @@ export default function App() {
         <button aria-label="Mostrar gráfico" title="Modo gráfico" onClick={() => { setHome(false); setMobileTab('execucao'); setView(view === 'grafico' ? 'closed' : 'grafico'); }}><Monitor size={20}/></button>
       </aside>
       <div className="ide-main">
-    {home && <Welcome section={homeSection} onSectionChange={setHomeSection} examples={examples} documents={store.documents} onNew={newFile} onOpen={openPicker} onExample={selectExample} onHelpExample={openHelpExample} onContinue={id => { store.activate(id); setHome(false); setMobileTab('editor'); }} loading={locked}/>}
+    {home && <Welcome section={homeSection} onSectionChange={setHomeSection} examples={examples} documents={store.documents} onNew={newFile} onOpen={openPicker} onExample={selectExample} onHelpExample={openHelpExample} onContinue={continueDocument} recentExampleIds={recentExamples.ids} onClearRecentExamples={recentExamples.clear} loading={locked}/>}
     {(error || store.storageError) && <div role="alert" className="m-4 flex items-center justify-between gap-3 rounded-lg border border-red-400/40 bg-red-950/30 p-3 text-sm text-red-200"><span>{error || store.storageError}</span><button aria-label="Fechar aviso" onClick={() => setError('')}>×</button></div>}
     {!home && <nav className="mobile-tools" aria-label="Área de trabalho">{[{ id: 'editor', label: 'Editor', icon: Code2 }, { id: 'recursos', label: 'Ferramentas', icon: ListTree }, { id: 'execucao', label: 'Execução', icon: TerminalSquare }].map(tool => <button key={tool.id} aria-pressed={mobileTab === tool.id} onClick={() => { setMobileTab(tool.id); if (tool.id === 'recursos') setShowInspector(true); if (tool.id === 'execucao') setView(current => current === 'closed' ? 'terminal' : current); }}><tool.icon size={15}/>{tool.label}</button>)}</nav>}
     <main ref={workspaceRef} style={{ '--repository-width': repositoryWidth + 'px', '--editor-weight': (1 - outputRatio) + 'fr', '--output-weight': outputRatio + 'fr' }} data-output={view === 'closed' ? 'closed' : 'open'} className={(home ? 'hidden ' : '') + 'ide-workspace'} data-mobile-tab={mobileTab} data-repository={showRepository ? 'open' : 'closed'}>
-      <div className="workspace-editor"><div role="tablist" aria-label="Arquivos abertos" className="file-tabs"><div className="file-tab home-tab"><button role="tab" aria-selected={false} className="file-tab-label" title="Tela inicial" onClick={() => { setHomeSection('examples'); setHome(true); }}><img src={assetUrl('portugol-logo.png')} alt="" width="16" height="16"/><span>Início</span></button></div>{store.documents.map(document => <div key={document.id} className={"file-tab " + (store.active.id === document.id ? "is-active" : "")}><button role="tab" aria-selected={store.active.id === document.id} disabled={busy} className="file-tab-label" onClick={() => store.activate(document.id)}>{document.filename}{document.code !== document.savedCode || Object.keys(document.localFiles || {}).length ? ' •' : ''}</button><button aria-label={'Fechar ' + document.filename} disabled={locked} className="file-tab-close" onClick={() => closeFile(document)}><X size={12}/></button></div>)}</div><div className="editor-inspection-layout" data-mobile-area={mobileTab} style={{ '--sidebar-width': repositoryWidth + 'px' }}><Suspense fallback={<div className="p-6 text-sm text-slate-400">Carregando editor…</div>}><Editor onBreakpoints={lines => { if (runtimeRef.current?.debugger) runtimeRef.current.debugger.breakpoints = new Set(lines); }} busy={busy} paused={paused} onDebugCommand={command => { if (command === 'stop') stop(); else if (command === 'pause') runtimeRef.current?.debugger?.pause(); else { setPaused(null); setStatus('Executando'); runtimeRef.current?.debugger?.resume(command); } }} diagnostics={diagnostics} inputRef={editorRef} documentId={store.active.id} onRun={run} onStatus={setEditorInfo} code={code} onChange={setCode} filename={filename} onOpen={open} onSave={() => save()}/></Suspense>{showInspector && <><ResizeHandle label="Largura da lateral" className="sidebar-resizer" value={repositoryWidth} onChange={setRepositoryWidth} min={280} max={480} getValue={event => workspaceRef.current.getBoundingClientRect().right - event.clientX}/><CodeInspector key={store.active.id} tab={sidebarTab} onTabChange={setSidebarTab} onCollapse={() => { setShowInspector(false); setMobileTab('editor'); }} paused={paused} onFix={fix => editorRef.current?.fix(fix)} code={code} diagnostics={diagnostics} symbols={analysis.symbols} values={values} busy={busy} onNavigate={position => { setMobileTab('editor'); editorRef.current?.navigate(position); }} resources={<FileRepository onCollapse={() => setSidebarTab('messages')} key={store.active.id} code={code} example={activeExample} localFiles={localFiles} onLocalFilesChange={localFiles => store.update({ localFiles })} entries={entries} refresh={refresh} busy={busy || !store.ready} onError={report}/>}/></>}</div></div>
+      <div className="workspace-editor"><div role="tablist" aria-label="Arquivos abertos" className="file-tabs"><div className="file-tab home-tab"><button role="tab" aria-selected={false} className="file-tab-label" title="Tela inicial" onClick={() => { setHomeSection('examples'); setHome(true); }}><img src={assetUrl('portugol-logo.png')} alt="" width="16" height="16"/><span>Início</span></button></div>{store.documents.map(document => <div key={document.id} onContextMenu={event => openTabMenu(event, document)} onKeyDown={event => { if (event.key === "ContextMenu" || (event.shiftKey && event.key === "F10")) openTabMenu(event, document); }} className={"file-tab " + (store.active.id === document.id ? "is-active" : "")}><button role="tab" aria-selected={store.active.id === document.id} disabled={busy} className="file-tab-label" onClick={() => continueDocument(document.id)}>{document.filename}{document.code !== document.savedCode || Object.keys(document.localFiles || {}).length ? ' •' : ''}</button><button aria-label={'Fechar ' + document.filename} disabled={locked} className="file-tab-close" onClick={() => closeFile(document)}><X size={12}/></button></div>)}</div><div className="editor-inspection-layout" data-mobile-area={mobileTab} style={{ '--sidebar-width': repositoryWidth + 'px' }}><Suspense fallback={<div className="p-6 text-sm text-slate-400">Carregando editor…</div>}><Editor onBreakpoints={lines => { if (runtimeRef.current?.debugger) runtimeRef.current.debugger.breakpoints = new Set(lines); }} busy={busy} paused={paused} onDebugCommand={command => { if (command === 'stop') stop(); else if (command === 'pause') runtimeRef.current?.debugger?.pause(); else { setPaused(null); setStatus('Executando'); runtimeRef.current?.debugger?.resume(command); } }} diagnostics={diagnostics} inputRef={editorRef} documentId={store.active.id} onRun={run} onStatus={setEditorInfo} code={code} onChange={setCode} filename={filename} onOpen={open} onSave={() => save()}/></Suspense>{showInspector && <><ResizeHandle label="Largura da lateral" className="sidebar-resizer" value={repositoryWidth} onChange={setRepositoryWidth} min={280} max={480} getValue={event => workspaceRef.current.getBoundingClientRect().right - event.clientX}/><CodeInspector key={store.active.id} tab={sidebarTab} onTabChange={setSidebarTab} onCollapse={() => { setShowInspector(false); setMobileTab('editor'); }} paused={paused} onFix={fix => editorRef.current?.fix(fix)} code={code} diagnostics={diagnostics} symbols={analysis.symbols} values={values} busy={busy} onNavigate={position => { setMobileTab('editor'); editorRef.current?.navigate(position); }} resources={<FileRepository onCollapse={() => setSidebarTab('messages')} key={store.active.id} code={code} example={activeExample} localFiles={localFiles} onLocalFilesChange={localFiles => store.update({ localFiles })} entries={entries} refresh={refresh} busy={busy || !store.ready} onError={report}/>}/></>}</div></div>
       {view !== 'closed' && <ResizeHandle label="Tamanho dos painéis de execução" className="output-resizer" orientation={stacked ? 'horizontal' : 'vertical'} value={outputRatio} onChange={setOutputRatio} min={.2} max={.65} getValue={resizeOutput}/>}
       <div ref={outputRef} className={"workspace-output " + (view === 'closed' ? 'hidden' : '')} style={{ '--graphics-weight': graphicsRatio + 'fr', '--terminal-weight': (1 - graphicsRatio) + 'fr' }} data-view={view}>
         <nav className="output-tabs" aria-label="Painéis de execução">{['ambos', 'grafico', 'terminal'].map(mode => <button key={mode} aria-pressed={view === mode} className={view === mode ? 'active-button' : ''} onClick={() => setView(mode)}>{{ ambos: 'Ambos', grafico: 'Gráfico', terminal: 'Terminal' }[mode]}</button>)}<button className="collapse-output" aria-label="Recolher painéis de execução" title="Recolher painéis de execução" onClick={() => { setView('closed'); setMobileTab('editor'); }}><PanelRight size={15}/></button></nav>
-        <div className={"graphic-tool " + (view === 'terminal' ? 'hidden' : '')}><Graphics key={store.active.id} terminalRef={terminalRef} status={status} busy={busy} onStop={stop} onDetachedChange={detached => { setExecutionDetached(detached); if (!detached) { setView('ambos'); setMobileTab('execucao'); } }} onCollapse={() => collapsePanel('grafico')} canvas={canvas} runtimeRef={runtimeRef} title={title} resolution={resolution} onError={report}/></div>
+        <div className={"graphic-tool " + (view === 'terminal' ? 'hidden' : '')}><Graphics controls={selected === 'jogos_corrida' ? (code.includes('// Controles: W ou seta acima') ? 'W / ↑ acelerar · A D / ← → virar · S / Espaço frear' : '↑ acelerar · ← → virar · Espaço frear') : undefined} key={store.active.id} terminalRef={terminalRef} status={status} busy={busy} onStop={stop} onDetachedChange={detached => { setExecutionDetached(detached); if (!detached) { setView('ambos'); setMobileTab('execucao'); } }} onCollapse={() => collapsePanel('grafico')} canvas={canvas} runtimeRef={runtimeRef} title={title} resolution={resolution} onError={report}/></div>
         {view === 'ambos' && <ResizeHandle label="Divisão entre gráfico e terminal" className="panels-resizer" orientation={stacked ? 'vertical' : 'horizontal'} value={graphicsRatio} onChange={setGraphicsRatio} min={.2} max={.8} getValue={resizeGraphics}/>}
         <div className={'terminal-tool ' + (view === 'grafico' ? 'hidden' : '')}><Terminal detached={executionDetached} onFocusExecution={() => canvas.ownerDocument.defaultView.focus()} onCollapse={() => collapsePanel('terminal')} terminalRef={terminalRef} clear={() => terminalRef.current.replaceChildren()}/></div>
       </div>
@@ -284,7 +331,8 @@ export default function App() {
       </div>
     </div>
     <footer className="ide-status"><span className={busy ? 'text-green-300' : ''}>● {status}</span><span className="status-hint">Ctrl + Espaço · Completar código</span><span>Lin {editorInfo.line}, Col {editorInfo.column}</span><span className="desktop-label">UTF-8</span><VolumeControl settings={audioSettings} onChange={changeVolume}/></footer>
-    {dialog && <FileDialog key={dialog.kind + dialog.id} dialog={dialog} onClose={() => setDialog(null)} onSubmit={submitDialog}/>}
+    {tabMenu && <TabContextMenu menu={tabMenu} items={tabCloseItems} onClose={() => setTabMenu(null)}/>}
+    {dialog && <FileDialog key={dialog.kind + dialog.id} dialog={dialog} onClose={() => { setDialog(null); setCloseQueue([]); }} onSubmit={submitDialog}/>}
     {js !== null && <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-6" onClick={() => setJs(null)}><section role="dialog" aria-modal="true" aria-label="JavaScript transpilado" className="panel flex max-h-[85vh] w-full max-w-4xl flex-col" onClick={e => e.stopPropagation()}><div className="panel-heading"><span>JavaScript transpilado</span><button autoFocus onClick={() => setJs(null)}>Fechar ×</button></div><pre className="overflow-auto p-5 font-mono text-xs leading-6">{js}</pre></section></div>}
   </div>;
 }

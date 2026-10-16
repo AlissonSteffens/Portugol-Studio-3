@@ -1,5 +1,10 @@
 import { repairSphere } from './sphere-fix.js';
+import { repairRace } from './corrida-fix.js';
 export function repairExample(relative, source) {
+  if (relative === 'jogos/corrida.por') return {
+    source: repairRace(source),
+    ajustes: ['Adicionado suporte a WASD; atalhos de abastecimento e dano movidos para B e N.'],
+  };
   if (relative === 'bibliotecas/graficos/sphere.por') return {
     source: repairSphere(source),
     ajustes: ['Iluminação calculada pela normal de cada face, com luz ambiente e difusa; removido o cálculo baseado na posição na tela.'],

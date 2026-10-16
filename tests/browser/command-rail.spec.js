@@ -1,5 +1,10 @@
 import { test, expect } from '@playwright/test';
 
+// Exercise the download fallback used by browsers without a native save picker.
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => { window.showSaveFilePicker = undefined; });
+});
+
 test('comandos laterais abrem, salvam, executam e interrompem com atalhos e menus preservados', async ({ page }) => {
   await page.goto('/');
   const rail = page.getByRole('complementary', { name: 'Comandos e ferramentas' });
