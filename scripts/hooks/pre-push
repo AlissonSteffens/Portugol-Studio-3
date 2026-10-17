@@ -1,0 +1,4 @@
+#!/bin/sh
+# portugol-studio-web: pre-push
+set -eu
+node scripts/pre-push.js

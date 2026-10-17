@@ -163,7 +163,21 @@ test('mouse gira a câmera, picareta anima e Esc solta o cursor sem parar o jogo
 });
 
 test('controle do mouse também funciona na aba gráfica destacada', async ({ page }) => {
-  await openWorld(page, '3D');
+  const originalCanvas = await openWorld(page, '3D');
+  await expect(value(page, 'alvo_x')).not.toHaveText('-1');
+  // Observe the world around the crosshair, excluding the HUD and the tool.
+  // A corner of the canvas can remain solid sky even while the camera turns.
+  const scene = canvas => canvas.evaluate(c => {
+    const pixels = c.getContext('2d').getImageData(300, 380, 300, 150).data;
+    let hash = 2166136261;
+    for (const channel of pixels) hash = Math.imul(hash ^ channel, 16777619);
+    return hash >>> 0;
+  });
+  await expect.poll(() => originalCanvas.evaluate(c => {
+    const [r, g, b, a] = c.getContext('2d').getImageData(450, 400, 1, 1).data;
+    return a === 255 && (r !== 153 || g !== 195 || b !== 215);
+  })).toBe(true);
+  const initialScene = await scene(originalCanvas);
   const promise = page.waitForEvent('popup');
   await page.getByRole('button', { name: 'Abrir em nova aba' }).click();
   const popup = await promise, canvas = popup.locator('canvas');
@@ -171,10 +185,18 @@ test('controle do mouse também funciona na aba gráfica destacada', async ({ pa
   await expect(canvas).toBeVisible();
   await point(popup, canvas, 450, 310); await popup.mouse.down(); await popup.mouse.up();
   await expect.poll(() => popup.evaluate(() => document.pointerLockElement?.tagName)).toBe('CANVAS');
-  const frame = () => canvas.evaluate(c => [...c.getContext('2d').getImageData(100, 100, 200, 200).data].join(','));
-  const before = await frame();
+  // Reproduce native capture-time warping on Linux, then reset using the
+  // popup's own keyboard. Wait for a rendered frame rather than inspection
+  // updates scheduled in the background editor window.
+  await canvas.dispatchEvent('mousemove', { movementX: 720, movementY: -640, bubbles: true });
+  await expect.poll(() => scene(canvas)).not.toBe(initialScene);
+  await popup.keyboard.down('r');
+  await expect.poll(() => scene(canvas)).toBe(initialScene);
+  await popup.keyboard.up('r');
   await canvas.dispatchEvent('mousemove', { movementX: 100, movementY: 0, bubbles: true });
-  await expect.poll(frame).not.toBe(before);
+  await expect.poll(() => scene(canvas)).not.toBe(initialScene);
+  await canvas.dispatchEvent('mousemove', { movementX: -100, movementY: 0, bubbles: true });
+  await expect.poll(() => scene(canvas)).toBe(initialScene);
   await popup.keyboard.press('Escape');
   await expect.poll(() => popup.evaluate(() => document.pointerLockElement === null)).toBe(true);
   await restoreExecutionWindow(popup);

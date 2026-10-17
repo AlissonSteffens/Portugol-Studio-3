@@ -34,6 +34,8 @@ npm run test:all
 
 O comando executa os testes do runtime, da interface e da publicação em subpasta. Para executar somente os testes do runtime, use `npm test`.
 
+`npm ci` também instala o hook de pré-push. Ele exige alterações commitadas e executa `npm run test:all` antes de enviar o HEAD ao remote, bloqueando o envio em caso de falha. Para instalar ou atualizar o hook em um checkout já existente, execute `npm run hooks:install`.
+
 ## Build e publicação
 
 ```sh

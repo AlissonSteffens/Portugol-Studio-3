@@ -6,6 +6,8 @@
 
 O workflow `.github/workflows/pages.yml` usa Node.js 24 e executa `npm run test:all` antes da publicação. Uma falha impede o deploy. Os diagnósticos dos testes ficam no artefato `playwright-failures` da execução.
 
+Antes do envio, o hook instalado por `npm ci` ou `npm run hooks:install` executa essa mesma verificação completa em uma árvore limpa correspondente ao HEAD. O push é bloqueado se os testes, o build do Pages ou o teste em subpasta falharem. Consulte as [regras de desenvolvimento](development.md#antes-de-enviar-ao-remote).
+
 Em **Settings → Pages**, selecione **GitHub Actions** como origem. O workflow roda a cada push em `main` e também pode ser iniciado manualmente em **Actions → Publicar GitHub Pages → Run workflow**.
 
 A base deste repositório é `/Portugol-Studio-3/`. Para gerar esse build manualmente no PowerShell:

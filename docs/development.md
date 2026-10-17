@@ -48,6 +48,20 @@ Capturas de tela e traces das falhas ficam em `test-results/browser/` e `test-re
 npx playwright show-trace CAMINHO_DO_TRACE.zip
 ```
 
+## Antes de enviar ao remote
+
+O `prepare` do npm instala o hook de pré-push a partir de `scripts/hooks/pre-push`. Para instalar ou atualizar em um checkout existente:
+
+```sh
+npm run hooks:install
+```
+
+O hook exige que as referências enviadas apontem para o HEAD e que não haja mudanças pendentes, incluindo arquivos não rastreados. Em seguida, executa `npm run test:all` e bloqueia o push se qualquer etapa falhar ou se o conteúdo mudar durante a verificação. Assim, os arquivos testados correspondem ao commit enviado. Exclusões de referências remotas não exigem build.
+
+Se já houver um hook personalizado, o instalador o preserva e pede a integração de `node scripts/pre-push.js`. Em checkouts sem Git e no CI, a instalação é dispensada. Não ignore o pré-push nem envie após uma verificação incompleta. As regras para agentes estão em `AGENTS.md`.
+
+Os testes locais usam Node.js 24 e o Chromium instalado pelo Playwright. O GitHub Actions continua validando em Linux antes do deploy; diferenças de sistema operacional e infraestrutura só podem ser confirmadas nesse ambiente.
+
 ## Explorando o catálogo
 
 `npm run examples:run`, com o servidor de desenvolvimento ativo, faz uma execução exploratória dos exemplos do catálogo, com entrada simulada e limites de tempo. O relatório fica em `reports/examples.json`. Essa ferramenta não faz parte das suítes de regressão de `test:all`: exemplos interativos podem ser interrompidos por limite e precisam de avaliação do relatório.

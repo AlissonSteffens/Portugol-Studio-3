@@ -10,6 +10,8 @@
     "preview": "node server/index.js",
     "test": "node --test tests/*.test.js",
     "test:all": "node scripts/check.js",
+    "hooks:install": "node scripts/install-git-hooks.js",
+    "prepare": "npm run hooks:install",
     "sync:examples": "node scripts/sync-examples.js",
     "sync:contracts": "node scripts/sync-library-contracts.js",
     "examples:run": "node scripts/run-examples.js",
