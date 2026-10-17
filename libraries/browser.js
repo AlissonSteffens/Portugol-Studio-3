@@ -1,3 +1,5 @@
+import { installFullscreen } from '../runtime/fullscreen.js';
+
 export function installBrowserLibraries(runtime) {
   const loadedFonts = new Set();
   runtime.Util.obter_diretorio_usuario = () => 'usuario';
@@ -52,24 +54,10 @@ export function installBrowserLibraries(runtime) {
     restaurar_janela() { if (runtime.canvas) runtime.canvas.style.visibility = 'visible'; },
     ocultar_borda_janela() { if (runtime.canvas) runtime.canvas.style.border = 'none'; },
     exibir_borda_janela() { if (runtime.canvas) runtime.canvas.style.border = '1px solid #43454a'; },
-    entrar_modo_tela_cheia() {
-      runtime.__previousSize = [runtime.bufferWidth, runtime.bufferHeight];
-      const target = runtime.canvas?.ownerDocument.defaultView;
-      g.definir_dimensoes_janela(target?.innerWidth || 800, target?.innerHeight || 600);
-      if (runtime.canvas) {
-        runtime.__previousCanvasStyle = runtime.canvas.style.cssText;
-        Object.assign(runtime.canvas.style, { position: 'fixed', inset: '0', width: '100vw', height: '100vh', maxWidth: '100vw', maxHeight: '100vh', zIndex: '100', background: '#1e1f22' });
-      }
-      runtime.options.onFullscreen?.(true);
-    },
-    sair_modo_tela_cheia() {
-      if (runtime.__previousSize) g.definir_dimensoes_janela(...runtime.__previousSize);
-      if (runtime.canvas && runtime.__previousCanvasStyle !== undefined) runtime.canvas.style.cssText = runtime.__previousCanvasStyle;
-      runtime.__previousCanvasStyle = undefined; runtime.options.onFullscreen?.(false);
-    },
     definir_opacidade(value) { runtime.currentOpacity = Math.min(255, Math.max(0, value)); },
     definir_rotacao(degrees) { runtime.__rotation = degrees; },
   });
+  installFullscreen(runtime);
   const initiate = g.iniciar_modo_grafico;
   g.iniciar_modo_grafico = (...args) => { if (runtime.canvas) runtime.canvas.style.visibility = 'visible'; initiate(...args); };
   const font = g.definir_fonte_texto;
@@ -154,7 +142,7 @@ export function installBrowserLibraries(runtime) {
   runtime.__disposeMedia = () => {
     for (const font of loadedFonts) document.fonts.delete(font); loadedFonts.clear();
     for (const item of sounds.values()) { item.audio.pause(); URL.revokeObjectURL(item.url); } sounds.clear();
-    if (runtime.__previousCanvasStyle !== undefined) g.sair_modo_tela_cheia();
+    g.sair_modo_tela_cheia();
   };
   let timeout = 10000;
   runtime.__networkController = new AbortController();

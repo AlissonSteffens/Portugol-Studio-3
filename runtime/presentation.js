@@ -2,6 +2,7 @@
 export const presentationMethods = {
   setPresentationWindow(target) {
     this.__presentationWindow = target;
+    this.__syncFullscreen?.();
     for (const pending of this.__presentationWaits || []) pending.schedule();
   },
   waitForFrame() { return this.waitForPresentation('frame', 16); },

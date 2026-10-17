@@ -18,6 +18,17 @@ export const touchControlsStyle = `
 .touch-controls button[aria-pressed=true]{transform:translateY(3px);box-shadow:0 1px 0 #0b0c10,inset 0 2px 6px #0005;background:#70602b;border-color:#ffdb66;color:#fff0be}
 @media(any-pointer:coarse){.touch-controls{display:block}}
 @media(any-pointer:coarse) and (max-height:500px) and (orientation:landscape){.touch-controls{padding:5px 8px}.touch-controls small{display:none}.touch-actions{max-height:144px}}
+.touch-mouse-side{display:flex;flex-direction:column;align-items:flex-end;gap:10px;margin-left:auto;min-width:0}
+.touch-mouse-joystick{width:112px;height:112px;border-color:#72cbd466}
+@media(any-pointer:coarse){
+ .touch-controls[data-fullscreen=true]{position:fixed;inset:0;z-index:101;padding:0;border:0;background:none;pointer-events:none}
+ .touch-controls[data-fullscreen=true] small{display:none}
+ .touch-controls[data-fullscreen=true] .touch-controls-layout{display:flex;position:absolute;inset:auto max(14px,env(safe-area-inset-right)) max(16px,env(safe-area-inset-bottom)) max(14px,env(safe-area-inset-left));align-items:flex-end;gap:12px}
+ .touch-controls[data-fullscreen=true] .touch-joystick{width:112px;height:112px;background:radial-gradient(circle,#ffffff12,#0f172a55);pointer-events:auto}
+ .touch-controls[data-fullscreen=true] .touch-actions{max-width:152px;max-height:144px;pointer-events:auto}
+ .touch-controls[data-fullscreen=true] button{background:#1c293bc9;min-width:48px;min-height:48px;width:48px;height:48px}
+ .touch-controls[data-fullscreen=true] button[data-primary=true]{width:58px;height:58px}
+}
 `;
 
 export function joystickDirections(x, y, deadZone = .2) {
@@ -39,13 +50,19 @@ export function mountTouchControls(runtime, container, profile) {
   const wasd = { 87: 'up', 65: 'left', 83: 'down', 68: 'right' };
   const wasdKeys = profile.keys.filter(key => wasd[key.code]);
   const directionKeys = arrowKeys.length ? arrowKeys : wasdKeys.length >= 2 ? wasdKeys.map(key => ({ ...key, direction: wasd[key.code] })) : [];
-  hint.textContent = profile.mouse ? (profile.relativeMouse ? 'Arraste na tela para olhar; use os botões para agir.' : 'Toque ou arraste na tela para usar o mouse.') : directionKeys.length ? 'Arraste o joystick para mover; use os botões para agir.' : 'Segure os botões para jogar.';
+  hint.textContent = profile.mouse ? (profile.relativeMouse || profile.mousePosition ? 'Joystick direito: mouse. Toque ou arraste na tela; use os botões para agir.' : 'Toque na tela ou use os botões para clicar.') : directionKeys.length ? 'Arraste o joystick para mover; use os botões para agir.' : 'Segure os botões para jogar.';
   root.append(hint);
   const layout = doc.createElement('div'); layout.className = 'touch-controls-layout'; root.append(layout);
   const actions = doc.createElement('div'); actions.className = 'touch-actions';
   layout.append(actions); container.append(root);
   const held = new Map(), gestures = new Map(), listeners = [];
   const listen = (node, type, fn, options) => { node.addEventListener(type, fn, options); listeners.push(() => node.removeEventListener(type, fn, options)); };
+  const syncFullscreen = () => {
+    root.dataset.fullscreen = String(canvas.dataset.fullscreen === 'true');
+    if (canvas.dataset.fullscreen === 'true') doc.body.append(root);
+    else container.append(root);
+  };
+  listen(canvas, 'portugol-fullscreenchange', syncFullscreen); syncFullscreen();
   const release = pointerId => {
     const item = held.get(pointerId); if (!item) return;
     held.delete(pointerId);
@@ -58,6 +75,7 @@ export function mountTouchControls(runtime, container, profile) {
   let stickPointer = null;
   const stickKeys = new Set(), indicators = new Map();
   let stick, knob;
+  let releaseMouseStick = () => {};
   const pressKey = code => {
     runtime.__keyStates.set(code, true); runtime.__lastKey = code;
     for (const resolve of runtime.__keyWaitResolvers.splice(0)) resolve(code);
@@ -70,6 +88,7 @@ export function mountTouchControls(runtime, container, profile) {
   };
   const reset = () => {
     releaseJoystick();
+    releaseMouseStick();
     for (const id of [...held.keys()]) release(id);
     gestures.clear(); runtime.__touchMouseCaptured = false;
     runtime.__mouseButtons.fill(false); runtime.__mouseDeltaX = 0; runtime.__mouseDeltaY = 0;
@@ -130,6 +149,52 @@ export function mountTouchControls(runtime, container, profile) {
   const directionCodes = new Set(directionKeys.map(key => key.code));
   for (const key of profile.keys) if (!directionCodes.has(key.code)) addButton('key', key.code, key.label);
   if (profile.mouse) for (const button of profile.mouseButtons) addButton('mouse', button, ['Clique', 'Clique direito', 'Clique do meio'][button]);
+  if (profile.relativeMouse || profile.mousePosition) {
+    const side = doc.createElement('div'); side.className = 'touch-mouse-side'; layout.append(side); side.append(actions);
+    const mouseStick = doc.createElement('div'); mouseStick.className = 'touch-joystick touch-mouse-joystick';
+    mouseStick.setAttribute('role', 'group'); mouseStick.setAttribute('aria-label', 'Joystick do mouse');
+    mouseStick.setAttribute('aria-description', 'Arraste para mover o mouse nos eixos X e Y. Solte para parar.');
+    const mouseKnob = doc.createElement('span'); mouseKnob.className = 'touch-joystick-knob'; mouseStick.append(mouseKnob); side.append(mouseStick);
+    let pointer = null, x = 0, y = 0, frame = null, lastTime = 0, remainderX = 0, remainderY = 0;
+    const tick = time => {
+      const dt = Math.min((time - lastTime) / 1000, .05); lastTime = time;
+      if (profile.relativeMouse) {
+        runtime.__mouseDeltaX += x * 600 * dt; runtime.__mouseDeltaY += y * 600 * dt;
+      } else {
+        // Mouse.posicao_x/y promise integer coordinates, including for array indices.
+        const dx = x * 600 * dt + remainderX, dy = y * 600 * dt + remainderY;
+        remainderX = dx - Math.trunc(dx); remainderY = dy - Math.trunc(dy);
+        runtime.__mouseX = Math.max(0, Math.min(runtime.bufferWidth - 1, runtime.__mouseX + Math.trunc(dx)));
+        runtime.__mouseY = Math.max(0, Math.min(runtime.bufferHeight - 1, runtime.__mouseY + Math.trunc(dy)));
+      }
+      frame = target.requestAnimationFrame(tick);
+    };
+    releaseMouseStick = () => {
+      if (frame !== null) target.cancelAnimationFrame(frame);
+      frame = null; pointer = null; x = 0; y = 0; remainderX = 0; remainderY = 0;
+      mouseStick.dataset.active = 'false'; mouseKnob.style.transform = 'translate(0px, 0px)';
+    };
+    releaseMouseStick();
+    const move = event => {
+      const rect = mouseStick.getBoundingClientRect(), radius = rect.width / 2;
+      x = (event.clientX - rect.left - radius) / radius; y = (event.clientY - rect.top - radius) / radius;
+      const distance = Math.hypot(x, y), scale = Math.max(1, distance);
+      x /= scale; y /= scale;
+      if (distance < .2) { x = 0; y = 0; }
+      const travel = radius - mouseKnob.offsetWidth / 2 - 5;
+      mouseKnob.style.transform = `translate(${x * travel}px, ${y * travel}px)`;
+    };
+    listen(mouseStick, 'contextmenu', event => event.preventDefault());
+    listen(mouseStick, 'pointerdown', event => {
+      if (pointer !== null || (event.pointerType === 'mouse' && event.button !== 0)) return;
+      event.preventDefault(); canvas.focus({ preventScroll: true }); pointer = event.pointerId;
+      mouseStick.setPointerCapture(pointer); mouseStick.dataset.active = 'true';
+      if (profile.relativeMouse) runtime.__touchMouseCaptured = !!runtime.__captureRequested;
+      move(event); lastTime = target.performance.now(); frame = target.requestAnimationFrame(tick);
+    });
+    listen(mouseStick, 'pointermove', event => { if (event.pointerId === pointer) { event.preventDefault(); move(event); } });
+    for (const type of ['pointerup', 'pointercancel', 'lostpointercapture']) listen(mouseStick, type, event => { if (event.pointerId === pointer) releaseMouseStick(); });
+  }
   const previousTouchAction = canvas.style.touchAction;
   if (profile.mouse) {
     canvas.style.touchAction = 'none';

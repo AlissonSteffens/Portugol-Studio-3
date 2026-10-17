@@ -1105,6 +1105,17 @@
     "ajustes": []
   },
   {
+    "id": "web_arena_mobile",
+    "nome": "Arena Pulsar — dois joysticks",
+    "descricao": "Arcade de sobrevivência em tela cheia. WASD ou joystick esquerdo move; movimento XY do mouse ou joystick direito aponta a mira. Segure Clique para disparar, Enter reinicia. Demonstra mouse relativo e multitoque simultâneo.",
+    "imagem": null,
+    "categoria": "Jogos",
+    "arquivo": "arena_mobile.por",
+    "caminho": "web/arena_mobile.por",
+    "recursos": [],
+    "ajustes": []
+  },
+  {
     "id": "jogos_arkanoid",
     "nome": "arkanoid",
     "categoria": "Jogos",
@@ -1609,6 +1620,17 @@
     ]
   },
   {
+    "id": "web_frutas_mobile",
+    "nome": "Corte Tropical — celular",
+    "descricao": "Corte frutas deslizando o dedo e evite bombas, no estilo dos jogos de celular do início dos anos 2010. Mouse ou joystick direito com Clique também cortam. Colisão por segmento reconhece gestos rápidos; Enter reinicia. Tela cheia responsiva.",
+    "imagem": null,
+    "categoria": "Jogos",
+    "arquivo": "frutas_mobile.por",
+    "caminho": "web/frutas_mobile.por",
+    "recursos": [],
+    "ajustes": []
+  },
+  {
     "id": "jogos_medieval",
     "nome": "Crie personagem Medieval",
     "descricao": "Este exemplo é um Jogo",
@@ -1862,7 +1884,7 @@
   {
     "id": "web_missao_mobile",
     "nome": "Missão Órbita — celular",
-    "descricao": "Pilote com o joystick circular de toque, segure Espaço para usar o turbo e toque ou arraste no campo para guiar a nave. Colete 8 estrelas e desvie dos drones. Um laboratório de controles simultâneos, mouse por toque e canvas responsivo. Enter inicia uma nova missão; também funciona com teclado e mouse.",
+    "descricao": "Pilote uma nave que gira na direção do movimento e mostra cada escudo em arcos ao seu redor. Joystick ou setas movem, Espaço usa o turbo. Toque ou joystick direito com Clique guiam pelo sinalizador. Tela cheia adapta o campo à orientação, com controles flutuantes. Colete 8 estrelas; Enter reinicia.",
     "imagem": null,
     "categoria": "Jogos",
     "arquivo": "missao_mobile.por",
@@ -2140,6 +2162,17 @@
     "categoria": "Jogos",
     "arquivo": "blocos_3d.por",
     "caminho": "web/blocos_3d.por",
+    "recursos": [],
+    "ajustes": []
+  },
+  {
+    "id": "web_pista_mobile",
+    "nome": "Pista Neon — celular",
+    "descricao": "Corrida de três pistas em tela cheia, inspirada nos runners de celular. Joystick ou setas trocam de pista, Espaço salta barreiras. Colete moedas e sobreviva; Enter reinicia. Controles flutuantes e cenário adaptado à orientação.",
+    "imagem": null,
+    "categoria": "Jogos",
+    "arquivo": "pista_mobile.por",
+    "caminho": "web/pista_mobile.por",
     "recursos": [],
     "ajustes": []
   },

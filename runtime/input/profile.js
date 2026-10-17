@@ -24,7 +24,7 @@ export function detectInputProfile(source) {
     }
   }
   const keys = new Map(), mouseButtons = new Set();
-  let keyboard = false, mouse = false, relativeMouse = false;
+  let keyboard = false, mouse = false, relativeMouse = false, mousePosition = false;
   for (let i = 0; i < tokens.length - 2; i++) {
     if (tokens[i + 1].value !== '.') continue;
     const library = libraries.get(tokens[i].value), member = tokens[i + 2].value;
@@ -39,6 +39,7 @@ export function detectInputProfile(source) {
     }
     if (library === 'Mouse') {
       mouse = true;
+      if (['posicao_x', 'posicao_y'].includes(member)) mousePosition = true;
       if (['capturar_cursor', 'cursor_capturado', 'movimento_x', 'movimento_y'].includes(member)) relativeMouse = true;
       const button = { BOTAO_ESQUERDO: 0, BOTAO_DIREITO: 1, BOTAO_MEIO: 2 }[member];
       if (button !== undefined) mouseButtons.add(button);
@@ -47,5 +48,5 @@ export function detectInputProfile(source) {
   }
   if (keyboard && !keys.size) keys.set(10, keyDefinition('ENTER'));
   if (mouse && !mouseButtons.size) mouseButtons.add(0);
-  return { keys: [...keys.values()], mouse, relativeMouse, mouseButtons: [...mouseButtons].filter(b => b >= 0 && b <= 2) };
+  return { keys: [...keys.values()], mouse, relativeMouse, mousePosition, mouseButtons: [...mouseButtons].filter(b => b >= 0 && b <= 2) };
 }

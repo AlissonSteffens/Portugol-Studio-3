@@ -12,6 +12,8 @@ Um ambiente para aprender programação em Portugol, direto no navegador.
 
 Os programas e recursos ficam armazenados no navegador. Salve seus arquivos `.por` ou exporte o projeto para manter uma cópia fora dele.
 
+Nos exemplos **Missão Órbita**, **Pista Neon**, **Arena Pulsar** e **Corte Tropical**, o jogo ocupa a tela e acompanha a orientação do celular. Os controles flutuam sobre o campo: joystick esquerdo para setas/WASD, direito para posição ou movimento XY do mouse e botões para ações simultâneas. Também funcionam na aba de execução e no HTML exportado. Use **Sair da tela cheia** para voltar ao player/editor.
+
 ## Executar localmente
 
 Requer Node.js 22.12 ou superior e npm. O CI usa Node.js 24.

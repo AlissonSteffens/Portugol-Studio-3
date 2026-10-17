@@ -21,6 +21,7 @@ test('detecta aliases, setas, ações, códigos numéricos e mouse juntos', () =
   assert.equal(profile.mouse, true);
   assert.deepEqual(profile.mouseButtons, [1]);
   assert.equal(profile.relativeMouse, false);
+  assert.equal(profile.mousePosition, true);
 });
 
 test('comentários, literais e importações sem uso não criam botões', () => {
@@ -31,7 +32,7 @@ test('comentários, literais e importações sem uso não criam botões', () => 
     /* Mouse.capturar_cursor() */
     funcao inicio() { escreva("t.TECLA_ESPACO Mouse.posicao_x()") }
   }`);
-  assert.deepEqual(profile, { keys: [], mouse: false, relativeMouse: false, mouseButtons: [] });
+  assert.deepEqual(profile, { keys: [], mouse: false, relativeMouse: false, mousePosition: false, mouseButtons: [] });
 });
 
 test('ler_tecla sem tecla explícita permite continuar e mouse relativo é reconhecido', () => {
@@ -39,7 +40,19 @@ test('ler_tecla sem tecla explícita permite continuar e mouse relativo é recon
     Teclado.ler_tecla() Mouse.capturar_cursor() Mouse.movimento_x()`);
   assert.deepEqual(profile.keys.map(k => k.code), [10]);
   assert.equal(profile.relativeMouse, true);
+  assert.equal(profile.mousePosition, false);
   assert.deepEqual(profile.mouseButtons, [0]);
+});
+
+test('jogos de bolso compilam sem diagnósticos e aparecem nos dois catálogos', () => {
+  for (const name of ['pista', 'arena', 'frutas']) {
+    const source = readFileSync(new URL(`../public/exemplos/web/${name}_mobile.por`, import.meta.url), 'utf8');
+    assert.deepEqual(analyzeCode(source).diagnostics, [], name);
+    for (const path of ['../public/exemplos/index.json', '../scripts/web-examples.json']) {
+      const entries = JSON.parse(readFileSync(new URL(path, import.meta.url), 'utf8'));
+      assert.equal(entries.filter(item => item.id === `web_${name}_mobile`).length, 1);
+    }
+  }
 });
 
 test('Missão Órbita compila sem diagnósticos e demonstra todos os controles móveis', () => {

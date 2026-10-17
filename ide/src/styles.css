@@ -560,8 +560,10 @@
   .graphics-panel > .panel-heading > span:first-child { display: none; }
   .graphics-panel .touch-controls { border: 0; padding: 0; }
   .graphics-panel .touch-controls-layout { display: contents; }
-  .graphics-panel .touch-joystick { position: absolute; left: 12px; bottom: 12px; }
+  .graphics-panel .touch-joystick:not(.touch-mouse-joystick) { position: absolute; left: 12px; bottom: 12px; }
+  .graphics-panel .touch-mouse-joystick { position: absolute; right: 20px; bottom: 12px; }
   .graphics-panel .touch-actions { position: absolute; right: 10px; bottom: 12px; width: 144px; max-height: calc(100% - 16px); }
+  .graphics-panel .touch-mouse-side .touch-actions { bottom: 136px; }
 }
 
 .tab-context-menu { position: fixed; z-index: 60; width: 224px; max-width: calc(100vw - 16px); padding: 4px; border: 1px solid var(--color-border-strong); border-radius: 6px; background: var(--color-surface-raised); box-shadow: 0 8px 24px #0008; }

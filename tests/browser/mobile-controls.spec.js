@@ -11,6 +11,14 @@ async function openDemo(page) {
   await page.getByRole('button', { name: 'Executar programa', exact: true }).click();
   await expect(page.getByRole('region', { name: 'Controles de toque' })).toBeVisible();
 }
+async function exitFullscreen(page) {
+  const exit = page.getByRole('button', { name: 'Sair da tela cheia', exact: true });
+  if (await exit.count()) await exit.click();
+}
+async function stopGame(page) {
+  await exitFullscreen(page);
+  await page.getByRole('button', { name: 'Parar execução', exact: true }).click();
+}
 async function point(locator) {
   const box = await locator.boundingBox();
   return { x: box.x + box.width / 2, y: box.y + box.height / 2 };
@@ -24,15 +32,140 @@ async function joystickPoint(page, direction = 'right') {
   return { x: box.x + box.width * x, y: box.y + box.height * y };
 }
 
+async function mouseStickPoint(page) {
+  const box = await page.getByRole('group', { name: 'Joystick do mouse', exact: true }).boundingBox();
+  return { x: box.x + box.width * .75, y: box.y + box.height * .75 };
+}
+
+async function renderedFrames(page, count = 6) {
+  await page.evaluate(count => new Promise(resolve => {
+    const next = () => --count ? requestAnimationFrame(next) : resolve();
+    requestAnimationFrame(next);
+  }), count);
+}
+
+for (const relative of [true, false]) test(`joystick direito mantém movimento XY ${relative ? 'relativo' : 'absoluto'}, simultâneo e cancela sem entrada presa`, async ({ page, context }) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Mostrar editor', exact: true }).click();
+  await setEditorCode(page, `programa {
+    inclua biblioteca Graficos --> g inclua biblioteca Teclado --> t inclua biblioteca Mouse --> m
+    funcao inicio() {
+      inteiro x = 0, y = 0
+      ${relative ? '' : 'inteiro pixels[2000]'}
+      g.iniciar_modo_grafico(verdadeiro) g.definir_dimensoes_janela(400, 400)
+      g.entrar_modo_tela_cheia() g.entrar_modo_tela_cheia()
+      ${relative ? 'm.capturar_cursor()' : ''}
+      enquanto (verdadeiro) {
+        ${relative ? 'x += m.movimento_x() y += m.movimento_y()' : 'pixels[m.posicao_x()] = m.posicao_y() x = m.posicao_x() y = pixels[m.posicao_x()]'}
+        inteiro azul = 0
+        se (t.tecla_pressionada(t.TECLA_SETA_DIREITA)) azul = 100
+        se (m.botao_pressionado(m.BOTAO_ESQUERDO)) azul += 100
+        g.definir_cor(g.criar_cor(x % 256, y % 256, azul)) g.limpar() g.renderizar()
+      }
+    }
+  }`);
+  await page.getByRole('button', { name: 'Executar programa', exact: true }).click();
+  const mouseStick = page.getByRole('group', { name: 'Joystick do mouse', exact: true });
+  await expect(mouseStick).toBeVisible();
+  const session = await context.newCDPSession(page);
+  const color = () => page.locator('canvas').evaluate(c => Array.from(c.getContext('2d').getImageData(0, 0, 1, 1).data).slice(0, 3));
+  await touch(session, 'touchStart', [await joystickPoint(page), await mouseStickPoint(page), await point(page.getByRole('button', { name: 'Clique', exact: true }))]);
+  await expect.poll(color).toEqual([expect.any(Number), expect.any(Number), 200]);
+  await expect.poll(async () => (await color())[0]).toBeGreaterThan(30);
+  const moving = await color();
+  // No pointermove: a held stick must keep producing deltas on subsequent frames.
+  await expect.poll(async () => (await color())[0]).not.toBe(moving[0]);
+  await touch(session, 'touchCancel', []);
+  await expect(mouseStick).toHaveAttribute('data-active', 'false');
+  await expect.poll(async () => (await color())[2]).toBe(0);
+  await renderedFrames(page);
+  const released = await color();
+  await renderedFrames(page);
+  expect(await color()).toEqual(released);
+  expect(released[1]).toBeGreaterThan(0);
+  await exitFullscreen(page);
+  await expect.poll(() => page.locator('canvas').evaluate(c => [c.width, c.height])).toEqual([400, 400]);
+  await page.getByRole('button', { name: 'Tela cheia', exact: true }).click();
+  await expect(page.locator('.fullscreen-exit')).toHaveCount(1);
+  await expect(page.locator('.touch-controls')).toHaveAttribute('data-fullscreen', 'true');
+  await exitFullscreen(page);
+  await page.locator('.mobile-tools').getByRole('button', { name: 'Editor', exact: true }).click();
+  await expect(page.locator('.touch-controls')).toHaveCount(0);
+  await page.locator('.mobile-tools').getByRole('button', { name: 'Execução', exact: true }).click();
+  await expect.poll(color).toEqual(released);
+  await stopGame(page);
+});
+
+for (const game of [
+  { name: 'Pista Neon', stick: false },
+  { name: 'Arena Pulsar', stick: true },
+  { name: 'Corte Tropical', stick: true },
+]) test(`${game.name} executa em tela cheia e adapta o campo ao girar o celular`, async ({ page }) => {
+  await page.goto('/');
+  await page.getByLabel('Buscar exemplos').fill(game.name);
+  await page.locator('.welcome-example-list').getByRole('button', { name: new RegExp(game.name) }).click();
+  await page.getByRole('button', { name: 'Executar programa', exact: true }).click();
+  await expect(page.locator('canvas')).toHaveAttribute('data-fullscreen', 'true');
+  await expect(page.getByRole('group', { name: 'Joystick do mouse', exact: true })).toHaveCount(game.stick ? 1 : 0);
+  await exitFullscreen(page);
+  await page.getByRole('button', { name: 'Mostrar árvore', exact: true }).click();
+  await page.locator('.mobile-tools').getByRole('button', { name: 'Execução', exact: true }).click();
+  await page.getByRole('button', { name: 'Tela cheia', exact: true }).click();
+  const value = name => page.getByRole('treeitem', { name, exact: true, includeHidden: true }).locator(':scope > .tree-row .symbol-value').textContent();
+  const session = await page.context().newCDPSession(page);
+  if (game.name === 'Pista Neon') {
+    await touch(session, 'touchStart', [await joystickPoint(page)]);
+    await expect.poll(() => value('pista')).toBe('2');
+    await touch(session, 'touchEnd', []);
+    await touch(session, 'touchStart', [await point(page.getByRole('button', { name: 'Tecla Espaço', exact: true }))]);
+    await expect.poll(async () => Number(await value('salto'))).toBeGreaterThan(0);
+    await touch(session, 'touchEnd', []);
+  } else if (game.name === 'Arena Pulsar') {
+    await touch(session, 'touchStart', [await joystickPoint(page), await mouseStickPoint(page), await point(page.getByRole('button', { name: 'Clique', exact: true }))]);
+    await expect.poll(async () => Number(await value('jogador_x'))).toBeGreaterThan(.55);
+    await expect.poll(async () => Number(await value('mira_x'))).toBeGreaterThan(.55);
+    await expect.poll(async () => Number(await value('proximo'))).toBeGreaterThan(0);
+    await touch(session, 'touchEnd', []);
+  } else {
+    // Find a rendered fruit, then cut it with actual touch input. Bombs are skipped.
+    let fruit;
+    await expect.poll(async () => {
+      fruit = await page.locator('canvas').evaluate(c => {
+        const { data } = c.getContext('2d').getImageData(0, 0, c.width, c.height);
+        for (let y = 130; y < c.height - 230; y++) for (let x = 30; x < c.width - 30; x++) {
+          const i = (y * c.width + x) * 4;
+          if ((data[i] === 255 && ((data[i + 1] === 113 && data[i + 2] === 126) || (data[i + 1] === 183 && data[i + 2] === 77))) || (data[i] === 136 && data[i + 1] === 217 && data[i + 2] === 113)) return { x, y };
+        }
+        return null;
+      });
+      return !!fruit;
+    }).toBe(true);
+    await touch(session, 'touchStart', [fruit]);
+    await expect.poll(async () => Number(await value('pontos'))).toBeGreaterThan(0);
+    await touch(session, 'touchEnd', []);
+  }
+  for (const size of [{ width: 390, height: 844 }, { width: 844, height: 390 }, { width: 320, height: 568 }]) {
+    await page.setViewportSize(size);
+    await expect.poll(() => page.locator('canvas').evaluate(c => [c.width, c.height])).toEqual([size.width, size.height]);
+    await renderedFrames(page);
+    for (const control of await page.locator('.touch-controls button, .touch-controls [role=group]').all()) await expect(control).toBeInViewport();
+    await expect(page.getByRole('alert')).toHaveCount(0);
+    await page.screenshot({ path: `test-results/${game.name.split(' ')[0]}-${size.width}x${size.height}.png` });
+  }
+  await stopGame(page);
+  await expect(page.locator('.fullscreen-exit, .touch-controls')).toHaveCount(0);
+});
+
 test('jogo para celular cabe em retrato e paisagem, com botões de tamanho confortável', async ({ page }) => {
   await openDemo(page);
   for (const size of [{ width: 390, height: 844 }, { width: 844, height: 390 }, { width: 320, height: 568 }]) {
     await page.setViewportSize(size);
     const canvas = await page.locator('canvas').boundingBox();
-    expect(canvas.width).toBeGreaterThan(100);
-    expect(canvas.height).toBeGreaterThan(100);
+    expect(canvas.width).toBe(size.width);
+    expect(canvas.height).toBe(size.height);
+    await expect.poll(() => page.locator('canvas').evaluate(c => [c.width, c.height])).toEqual([size.width, size.height]);
     expect(canvas.x).toBeGreaterThanOrEqual(0);
-    expect(canvas.y + canvas.height).toBeLessThan(size.height);
+    expect(canvas.y + canvas.height).toBe(size.height);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await expect(page.getByRole('group', { name: 'Joystick direcional' })).toBeInViewport();
     for (const button of await page.locator('.touch-controls button').all()) {
@@ -44,7 +177,7 @@ test('jogo para celular cabe em retrato e paisagem, com botões de tamanho confo
     await page.screenshot({ path: `test-results/mobile-${size.width}x${size.height}.png` });
   }
   await expect(page.getByRole('alert')).toHaveCount(0);
-  await page.getByRole('button', { name: 'Parar execução', exact: true }).click();
+  await stopGame(page);
   await expect(page.locator('.touch-controls')).toHaveCount(0);
 });
 
@@ -101,11 +234,12 @@ test('multitoque pressiona direção e ação, solta ao cancelar e traduz coorde
   await touch(session, 'touchEnd', []);
   await page.locator('.mobile-tools').getByRole('button', { name: 'Execução', exact: true }).click();
   await expect.poll(color).toEqual([0, 0, 0]);
-  await page.getByRole('button', { name: 'Parar execução', exact: true }).click();
+  await stopGame(page);
 });
 
 test('controles continuam funcionando na aba de execução e ao restaurar', async ({ page, context }) => {
   await openDemo(page);
+  await exitFullscreen(page);
   const popup = page.waitForEvent('popup');
   await page.getByRole('button', { name: 'Abrir em nova aba ↗' }).click();
   const game = await popup;
@@ -116,9 +250,13 @@ test('controles continuam funcionando na aba de execução e ao restaurar', asyn
   await expect(up).toHaveAttribute('data-directions', 'up');
   await touch(session, 'touchEnd', []);
   await expect(up).toHaveAttribute('data-active', 'false');
+  await game.getByRole('button', { name: 'Tela cheia', exact: true }).click();
+  await expect(game.locator('canvas')).toHaveAttribute('data-fullscreen', 'true');
+  await expect(game.locator('.touch-controls')).toHaveAttribute('data-fullscreen', 'true');
+  await exitFullscreen(game);
   await game.getByRole('button', { name: 'Trazer para o editor' }).click();
   await expect(page.getByRole('group', { name: 'Joystick direcional' })).toBeVisible();
-  await page.getByRole('button', { name: 'Parar execução', exact: true }).click();
+  await stopGame(page);
 });
 
 test('joystick também pilota jogos com WASD sem criar botões duplicados', async ({ page, context }) => {
@@ -151,11 +289,12 @@ test('joystick também pilota jogos com WASD sem criar botões duplicados', asyn
   await expect.poll(color).toEqual([0, 0, 128]);
   await touch(session, 'touchEnd', []);
   await expect.poll(color).toEqual([0, 0, 0]);
-  await page.getByRole('button', { name: 'Parar execução', exact: true }).click();
+  await stopGame(page);
 });
 
 test('Missão Órbita responde ao direcional com turbo e ao sinalizador de toque', async ({ page, context }) => {
   await openDemo(page);
+  await exitFullscreen(page);
   await page.getByRole('button', { name: 'Mostrar árvore', exact: true }).click();
   await page.locator('.mobile-tools').getByRole('button', { name: 'Execução', exact: true }).click();
   const value = name => page.getByRole('treeitem', { name, exact: true, includeHidden: true }).locator(':scope > .tree-row .symbol-value').textContent();
@@ -168,13 +307,15 @@ test('Missão Órbita responde ao direcional com turbo e ao sinalizador de toque
   await expect.poll(() => value('usou_turbo')).toBe('verdadeiro');
   await expect.poll(async () => Number(await value('nave_x'))).toBeGreaterThan(280);
   await expect.poll(async () => Number(await value('energia'))).toBeLessThan(100);
+  await expect.poll(() => value('frente_x')).toBe('1');
+  await expect.poll(() => value('frente_y')).toBe('0');
   await touch(session, 'touchEnd', []);
   const initialX = Number(await value('nave_x')), box = await page.locator('canvas').boundingBox();
   await touch(session, 'touchStart', [{ x: box.x + 60 * box.width / 480, y: box.y + 460 * box.height / 600 }]);
   await expect.poll(() => value('usou_toque')).toBe('verdadeiro');
   await expect.poll(async () => Number(await value('nave_x'))).toBeLessThan(initialX - 20);
   await touch(session, 'touchEnd', []);
-  await page.getByRole('button', { name: 'Parar execução', exact: true }).click();
+  await stopGame(page);
   await expect(page.getByRole('alert')).toHaveCount(0);
 });
 
@@ -187,8 +328,9 @@ test('exemplo de mouse não recebe direcional e programas sem entrada não receb
   }`);
   await page.getByRole('button', { name: 'Executar programa', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Clique', exact: true })).toBeVisible();
-  await expect(page.locator('.touch-joystick')).toHaveCount(0);
-  await page.getByRole('button', { name: 'Parar execução', exact: true }).click();
+  await expect(page.getByRole('group', { name: 'Joystick direcional', exact: true })).toHaveCount(0);
+  await expect(page.getByRole('group', { name: 'Joystick do mouse', exact: true })).toBeVisible();
+  await stopGame(page);
   await page.locator('.mobile-tools').getByRole('button', { name: 'Editor', exact: true }).click();
   await setEditorCode(page, 'programa { funcao inicio() { escreva("Pronto") } }');
   await page.getByRole('button', { name: 'Executar programa', exact: true }).click();
@@ -222,7 +364,7 @@ test('arraste substitui mouse capturado e Enter virtual libera ler_tecla', async
   await touch(session, 'touchMove', [{ x: center.x + 20, y: center.y }]);
   await expect.poll(color).toEqual([255, 255, 0]);
   await touch(session, 'touchEnd', []);
-  await page.getByRole('button', { name: 'Parar execução', exact: true }).click();
+  await stopGame(page);
   await page.locator('.mobile-tools').getByRole('button', { name: 'Editor', exact: true }).click();
   await setEditorCode(page, `programa { inclua biblioteca Graficos --> g inclua biblioteca Teclado --> t
     funcao inicio() { g.iniciar_modo_grafico(verdadeiro) inteiro tecla = t.ler_tecla() escreva(tecla) }
@@ -236,7 +378,7 @@ test('arraste substitui mouse capturado e Enter virtual libera ler_tecla', async
 test('HTML exportado inclui os mesmos controles e pode jogar sem o editor', async ({ page, context }) => {
   await page.addInitScript(() => { window.showSaveFilePicker = undefined; });
   await openDemo(page);
-  await page.getByRole('button', { name: 'Parar execução', exact: true }).click();
+  await stopGame(page);
   await page.getByRole('button', { name: 'Exportar projeto', exact: true }).click();
   const pending = page.waitForEvent('download');
   await page.getByRole('dialog', { name: 'Exportar projeto' }).getByRole('button', { name: 'Exportar projeto', exact: true }).click();
@@ -256,6 +398,8 @@ test('HTML exportado inclui os mesmos controles e pode jogar sem o editor', asyn
   await expect(right).toHaveAttribute('data-directions', 'right');
   await touch(session, 'touchEnd', []);
   await expect(right).toHaveAttribute('data-active', 'false');
+  await expect(exported.locator('canvas')).toHaveAttribute('data-fullscreen', 'true');
+  await exitFullscreen(exported);
   await exported.getByRole('button', { name: 'Parar', exact: true }).click();
   await expect(exported.locator('#status')).toHaveText('Interrompido');
   await expect(exported.locator('.touch-controls')).toHaveCount(0);
