@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ambiente do navegador</title>
+  <link rel="stylesheet" href="../../reader.css">
+</head>
+<body>
+<h1>Ambiente do navegador</h1>
+<p>A biblioteca <strong>Navegador</strong> permite que um programa Portugol consulte o ambiente em que está rodando: navegador, sistema operacional, celular ou tablet, recursos de entrada, tamanho da janela e da tela, idioma e estado da rede.</p>
+<p>É uma biblioteca exclusiva do Portugol Studio Web. Funciona na IDE, na aba de execução e nos projetos HTML exportados. Programas que a utilizam precisam desta versão Web; a biblioteca não existe no Portugol Studio original em Java.</p>
+<pre><code>inclua biblioteca Navegador --&gt; nav</code></pre>
+<nav aria-label="Neste guia"><a href="#exemplo">Executar o exemplo</a> · <a href="#consultas">Consultar as funções</a> · <a href="#adaptacao">Adaptar os controles</a> · <a href="#limites">Entender os limites</a></nav>
+
+<h2 id="exemplo">1. Conheça o ambiente atual</h2>
+<p>Abra este exemplo no editor e execute. Compare o resultado em um computador e em um celular. Redimensione a janela ou gire o aparelho e execute novamente para observar as dimensões e a orientação.</p>
+<section class="code-example">
+<h3>Conheça seu navegador</h3>
+<pre data-example="complete"><code>programa
+{
+    inclua biblioteca Navegador --&gt; nav
+
+    /* Esta biblioteca é exclusiva da versão Web.
+     * Execute no computador e no celular para comparar os resultados.
+     * Gire o aparelho ou redimensione a janela e execute novamente.
+     */
+    funcao inicio()
+    {
+        escreva("MEU AMBIENTE DE EXECUÇÃO\n\n")
+        escreva("Navegador: ", nav.obter_nome(), "\n")
+        escreva("Sistema operacional: ", nav.obter_sistema_operacional(), "\n")
+        escreva("Celular: ", nav.eh_celular(), "\n")
+        escreva("Tablet: ", nav.eh_tablet(), "\n")
+        escreva("Suporta toque: ", nav.suporta_toque(), "\n")
+        escreva("Mouse ou apontador preciso: ", nav.possui_mouse(), "\n")
+        escreva("Janela: ", nav.largura_janela(), " x ", nav.altura_janela(), " pixels CSS\n")
+        escreva("Tela: ", nav.largura_tela(), " x ", nav.altura_tela(), " pixels CSS\n")
+        escreva("Densidade de pixels: ", nav.densidade_pixels(), "\n")
+        escreva("Orientação da janela: ", nav.obter_orientacao(), "\n")
+        escreva("Idioma: ", nav.obter_idioma(), "\n")
+        escreva("Rede informada como online: ", nav.esta_online(), "\n\n")
+
+        // Escolha controles pelos recursos, pois computadores também podem ter toque.
+        se (nav.suporta_toque())
+        {
+            escreva("Este ambiente permite oferecer joystick e botões de toque.\n")
+        }
+        se (nav.possui_mouse())
+        {
+            escreva("Este ambiente também oferece um apontador preciso.\n")
+        }
+        se (nav.largura_janela() &lt; 600)
+        {
+            escreva("A janela é estreita: um layout compacto pode funcionar melhor.\n")
+        }
+        escreva("\nA identificação de dispositivo e sistema é aproximada.\n")
+        escreva("Estar online não garante acesso a um site específico.\n")
+    }
+}</code></pre>
+</section>
+
+<h2 id="consultas">2. Funções disponíveis</h2>
+<p>Todas as funções são síncronas e não recebem parâmetros. Na ajuda, busque <strong>Navegador</strong> para consultar a documentação individual de cada função, com o tipo de retorno.</p>
+<table>
+<thead><tr><th>Função</th><th>Retorno</th><th>Significado</th></tr></thead>
+<tbody>
+<tr><td><code>obter_nome()</code></td><td>cadeia</td><td>Família identificada: Chrome, Chromium, Edge, Firefox, Safari, Opera, Samsung Internet ou Desconhecido.</td></tr>
+<tr><td><code>obter_sistema_operacional()</code></td><td>cadeia</td><td>Android, iOS, iPadOS, Windows, macOS, Linux, ChromeOS, Windows Phone ou Desconhecido. Não informa a versão.</td></tr>
+<tr><td><code>eh_celular()</code></td><td>logico</td><td>Estimativa de celular. Retorna falso para tablet, computador ou dispositivo não identificado. Não usa a largura da janela.</td></tr>
+<tr><td><code>eh_tablet()</code></td><td>logico</td><td>Estimativa de tablet, incluindo iPadOS em modo de computador e tablets Android.</td></tr>
+<tr><td><code>suporta_toque()</code></td><td>logico</td><td>Suporte a pontos de toque ou apontador de baixa precisão. Também pode ser verdadeiro em um computador.</td></tr>
+<tr><td><code>possui_mouse()</code></td><td>logico</td><td>Disponibilidade de apontador preciso: mouse, trackpad ou caneta. Pode ser verdadeiro junto com suporta_toque.</td></tr>
+<tr><td><code>largura_janela()</code></td><td>inteiro</td><td>Largura interna da janela de execução em pixels CSS; 0 quando indisponível.</td></tr>
+<tr><td><code>altura_janela()</code></td><td>inteiro</td><td>Altura interna da janela de execução em pixels CSS; 0 quando indisponível.</td></tr>
+<tr><td><code>largura_tela()</code></td><td>inteiro</td><td>Largura da tela informada pelo navegador, em pixels CSS; 0 quando indisponível.</td></tr>
+<tr><td><code>altura_tela()</code></td><td>inteiro</td><td>Altura da tela informada pelo navegador, em pixels CSS; 0 quando indisponível.</td></tr>
+<tr><td><code>densidade_pixels()</code></td><td>real</td><td>Proporção entre pixels físicos e pixels CSS, como 1.0 ou 2.0. Retorna 1.0 quando indisponível.</td></tr>
+<tr><td><code>obter_orientacao()</code></td><td>cadeia</td><td>paisagem se a janela for mais larga que alta; retrato nos demais formatos válidos, incluindo quadrado. Retorna Desconhecido sem dimensões.</td></tr>
+<tr><td><code>obter_idioma()</code></td><td>cadeia</td><td>Idioma preferido informado pelo navegador, como pt-BR ou en-US. Retorna cadeia vazia quando indisponível.</td></tr>
+<tr><td><code>esta_online()</code></td><td>logico</td><td>Estado de rede informado pelo navegador. Retorna falso quando offline ou indisponível; verdadeiro não garante acesso à Internet.</td></tr>
+</tbody>
+</table>
+
+<h2 id="adaptacao">3. Adaptar jogos e interfaces</h2>
+<p>Use <code>suporta_toque()</code> para decidir se deve oferecer controles de toque, como o joystick circular. Use <code>possui_mouse()</code> para oferecer interações com um apontador preciso. Um aparelho híbrido pode permitir as duas formas de jogar ao mesmo tempo.</p>
+<p>Use a largura da janela para escolher um layout compacto. Uma janela estreita no computador continua sendo uma janela de computador; ela não transforma <code>eh_celular()</code> em verdadeiro. Da mesma forma, conectar um mouse ao celular não o transforma em computador.</p>
+<p>A biblioteca apenas consulta informações. Os controles automáticos de toque da IDE continuam sendo criados a partir das teclas e do uso de Mouse no programa; incluir Navegador, por si só, não cria botões.</p>
+<p>As dimensões da <strong>janela</strong> pertencem à área interna do navegador. Elas não representam o tamanho do canvas nem o espaço disponível dentro do painel gráfico da IDE. As dimensões da <strong>tela</strong> são medidas separadas. Todas usam pixels CSS, que podem diferir dos pixels físicos do aparelho.</p>
+<p>As consultas são atualizadas a cada chamada: se estiver fazendo um jogo que acompanha mudanças de tamanho, consulte as dimensões durante a execução. Ao abrir o gráfico em outra aba, as consultas de janela passam a se referir à aba que exibe o programa. No exemplo acima, cada execução imprime uma fotografia daquele momento.</p>
+
+<h2 id="limites">4. Limites da identificação</h2>
+<p>Navegadores podem reduzir, ocultar ou alterar a identificação do aparelho. A biblioteca usa as informações públicas de User-Agent Client Hints quando disponíveis e a identificação tradicional quando necessário. Não solicita dados de identificação adicionais ou permissões.</p>
+<p>O nome do navegador, o sistema e a classificação celular/tablet são estimativas. Dispositivos não reconhecidos retornam Desconhecido para nome e sistema e falso para as duas classificações. Por isso, prefira testar os recursos necessários ao seu programa, em vez de depender de uma marca de navegador ou sistema.</p>
+<p><code>esta_online()</code> consulta <code>navigator.onLine</code>; uma rede local conectada pode aparecer como online mesmo sem acesso à Internet. Para verificar um endereço, tente a operação desejada com a biblioteca Internet e trate a possibilidade de falha.</p>
+<p>Em um ambiente sem janela de navegador, as dimensões retornam 0, a densidade retorna 1.0, o idioma retorna uma cadeia vazia, as consultas lógicas retornam falso e nome, sistema e orientação retornam Desconhecido.</p>
+<h2>Referências das APIs</h2>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/NavigatorUAData">User-Agent Client Hints</a> · <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Browser_detection_using_the_user_agent">Identificação de navegadores e suas limitações</a> · <a href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator/onLine">Estado de rede</a> · <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/%40media/any-pointer">Tipos de apontador</a></p>
+</body>
+</html>

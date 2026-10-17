@@ -56,7 +56,7 @@ test('home abre ajuda, busca sem acentos e apresenta exemplos incorporados', asy
   await page.getByLabel('Buscar na ajuda').fill('');
   const response = await request.get('/ajuda/index.json');
   const topics = await response.json();
-  expect(topics).toHaveLength(49);
+  expect(topics).toHaveLength(50);
   for (const topic of topics) {
     const article = await request.get(topic.path);
     expect(article.ok(), topic.path).toBe(true);

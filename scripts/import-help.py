@@ -48,5 +48,5 @@ for topic in json.loads((Path(__file__).parent/'web-help.json').read_text(encodi
  index.append({**topic, 'search': re.sub(r'\s+', ' ', plain).strip()})
 (target/'index.json').write_text(json.dumps(index,ensure_ascii=False),encoding='utf-8')
 with (target/'ORIGEM.md').open('a', encoding='utf-8') as origin:
- origin.write('\nO guia Buffer gráfico foi escrito para esta versão Web e documenta suas extensões gráficas. Os tópicos locais estão registrados em scripts/web-help.json e são preservados ao importar novamente a ajuda original.\n')
+ origin.write('\nOs guias Buffer gráfico e Ambiente do navegador foram escritos para esta versão Web e documentam suas extensões. Os tópicos locais estão registrados em scripts/web-help.json e são preservados ao importar novamente a ajuda original.\n')
 print(f'{len(index)} tópicos importados com exemplos incorporados.')

@@ -18,6 +18,7 @@ export default function LibraryHelp({ topic }) {
   return <article className="library-docs">
     <h1>Biblioteca {topic.library}</h1>
     {topic.library === 'Internet' && <p>As requisições são feitas diretamente pelo navegador. O site consultado precisa permitir esse acesso (CORS); a IDE não utiliza um proxy. Em páginas HTTPS, endereços HTTP podem ser bloqueados pelo navegador.</p>}
+    {topic.library === 'Navegador' && <p>Biblioteca exclusiva da versão Web. Consulta o ambiente da janela de execução, inclusive no HTML exportado. A identificação de dispositivo, navegador e sistema é aproximada; prefira consultar suporte a toque e mouse para adaptar controles. Leia também o guia “Ambiente do navegador” na ajuda, com um exemplo que pode ser aberto no editor.</p>}
     <pre><code>inclua biblioteca {topic.library}</code></pre>
     {functions.map(([name, contract]) => <section key={name} className="library-function">
       <h2>{name}</h2>

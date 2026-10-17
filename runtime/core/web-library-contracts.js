@@ -14,3 +14,20 @@ export const webMouseContracts = {
   movimento_x: method('inteiro', 'Retorna e consome o movimento horizontal acumulado do mouse capturado.', []),
   movimento_y: method('inteiro', 'Retorna e consome o movimento vertical acumulado do mouse capturado.', []),
 };
+const browserMethod = (type, description, returns) => ({ type, description, returns, available: true, parameters: [] });
+export const webBrowserContracts = {
+  obter_nome: browserMethod('cadeia', 'Identifica a família do navegador pelas informações públicas disponíveis. A identificação é aproximada e pode ser alterada pelo navegador.', 'Chrome, Chromium, Edge, Firefox, Safari, Opera, Samsung Internet ou Desconhecido.'),
+  obter_sistema_operacional: browserMethod('cadeia', 'Identifica o sistema operacional informado pelo navegador, sem consultar sua versão.', 'Android, iOS, iPadOS, Windows, macOS, Linux, ChromeOS, Windows Phone ou Desconhecido.'),
+  eh_celular: browserMethod('logico', 'Estima se o dispositivo é um celular. Não usa a largura da janela; tablets têm uma consulta separada. Para adaptar controles, consulte suporta_toque e possui_mouse.', 'verdadeiro para um celular identificado; falso para tablet, computador ou dispositivo não identificado.'),
+  eh_tablet: browserMethod('logico', 'Estima se o dispositivo é um tablet, incluindo iPadOS com identificação de computador e tablets Android.', 'verdadeiro para um tablet identificado; falso nos demais casos.'),
+  suporta_toque: browserMethod('logico', 'Consulta o suporte a pontos de toque ou a um apontador de baixa precisão, como uma tela sensível ao toque. Pode ser verdadeiro em computadores.', 'verdadeiro quando o navegador informa suporte a toque ou apontador de baixa precisão.'),
+  possui_mouse: browserMethod('logico', 'Consulta se há um apontador de alta precisão, como mouse, trackpad ou caneta. Pode ser verdadeiro junto com suporta_toque.', 'verdadeiro quando a consulta any-pointer: fine corresponde ao ambiente atual.'),
+  largura_janela: browserMethod('inteiro', 'Consulta a largura interna da janela que exibe a execução, em pixels CSS. Atualiza após redimensionar e ao abrir o gráfico em outra aba. É diferente da largura do canvas.', 'Largura atual da janela; 0 quando indisponível.'),
+  altura_janela: browserMethod('inteiro', 'Consulta a altura interna da janela que exibe a execução, em pixels CSS. É diferente da altura do canvas.', 'Altura atual da janela; 0 quando indisponível.'),
+  largura_tela: browserMethod('inteiro', 'Consulta a largura da tela informada pelo navegador, em pixels CSS. Não representa a resolução física do monitor.', 'Largura informada da tela; 0 quando indisponível.'),
+  altura_tela: browserMethod('inteiro', 'Consulta a altura da tela informada pelo navegador, em pixels CSS.', 'Altura informada da tela; 0 quando indisponível.'),
+  densidade_pixels: browserMethod('real', 'Consulta a proporção entre pixels físicos e pixels CSS (devicePixelRatio). Pode mudar com zoom ou troca de monitor.', 'Proporção positiva, como 1.0 ou 2.0; 1.0 quando indisponível.'),
+  obter_idioma: browserMethod('cadeia', 'Consulta o idioma preferido informado pelo navegador.', 'Etiqueta de idioma, como pt-BR ou en-US; cadeia vazia quando indisponível.'),
+  esta_online: browserMethod('logico', 'Consulta o sinal navigator.onLine. Indica apenas o estado de rede informado pelo navegador e não garante acesso à Internet ou a um site específico.', 'verdadeiro se o navegador informa estar online; falso se estiver offline ou não informar o estado.'),
+  obter_orientacao: browserMethod('cadeia', 'Compara a largura e a altura atuais da janela. A orientação da janela pode diferir da orientação física da tela.', 'paisagem se a largura for maior; retrato nos demais formatos válidos (incluindo quadrado); Desconhecido sem dimensões.'),
+};

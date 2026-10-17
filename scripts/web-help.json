@@ -3,5 +3,10 @@
     "title": "Buffer gráfico",
     "group": "Gráficos e jogos",
     "path": "/ajuda/topicos/graficos/buffer_grafico.html"
+  },
+  {
+    "title": "Ambiente do navegador",
+    "group": "Bibliotecas Web",
+    "path": "/ajuda/topicos/web/ambiente_navegador.html"
   }
 ]

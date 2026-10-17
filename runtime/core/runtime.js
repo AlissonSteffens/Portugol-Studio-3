@@ -1,4 +1,5 @@
 import { installMouseCapture } from './mouse-capture.js';
+import { installNavigatorLibrary } from './navigator-library.js';
 import { installGraphicsBuffers } from './graphics-buffers.js';
 import { presentationMethods } from './presentation.js';
 import { installExtendedLibraries } from './extended-libraries.js';
@@ -96,6 +97,7 @@ import { recordingContext } from './recording-context.js';
             installExtendedLibraries(this);
             installGraphicsBuffers(this);
             installMouseCapture(this);
+            installNavigatorLibrary(this);
         }
 
         abort() {

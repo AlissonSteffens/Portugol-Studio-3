@@ -1,4 +1,4 @@
-import { webGraphicsContracts, webMouseContracts } from './web-library-contracts.js';
+import { webGraphicsContracts, webMouseContracts, webBrowserContracts } from './web-library-contracts.js';
 // Contratos gerados a partir das bibliotecas Java do projeto.
 const contracts = {
   "Objetos": {
@@ -3328,6 +3328,7 @@ const contracts = {
 };
 Object.assign(contracts.Graficos, webGraphicsContracts);
 Object.assign(contracts.Mouse, webMouseContracts);
+contracts.Navegador = webBrowserContracts;
 export default contracts;
 export const libraryConstants = {
   "Objetos": {

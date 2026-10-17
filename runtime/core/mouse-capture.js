@@ -1,6 +1,7 @@
 export function installMouseCapture(runtime) {
   runtime.__mouseDeltaX = 0; runtime.__mouseDeltaY = 0;
   runtime.__releaseMouseCapture = (disable = true) => {
+    runtime.__touchMouseCaptured = false;
     if (disable) runtime.__captureRequested = false;
     runtime.__capturePending = false;
     runtime.__mouseDeltaX = 0; runtime.__mouseDeltaY = 0;
@@ -23,7 +24,7 @@ export function installMouseCapture(runtime) {
   Object.assign(runtime.Mouse, {
     capturar_cursor() { runtime.__captureRequested = true; },
     soltar_cursor() { runtime.__releaseMouseCapture(); },
-    cursor_capturado() { return runtime.canvas?.ownerDocument.pointerLockElement === runtime.canvas && !!runtime.canvas; },
+    cursor_capturado() { return !!runtime.__touchMouseCaptured || (runtime.canvas?.ownerDocument.pointerLockElement === runtime.canvas && !!runtime.canvas); },
     movimento_x() { const value = Math.round(runtime.__mouseDeltaX); runtime.__mouseDeltaX = 0; return value; },
     movimento_y() { const value = Math.round(runtime.__mouseDeltaY); runtime.__mouseDeltaY = 0; return value; },
   });

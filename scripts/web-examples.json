@@ -20,5 +20,27 @@
     "caminho": "web/blocos_3d.por",
     "recursos": [],
     "ajustes": []
+  },
+  {
+    "id": "web_missao_mobile",
+    "nome": "Missão Órbita — celular",
+    "descricao": "Pilote com o joystick circular de toque, segure Espaço para usar o turbo e toque ou arraste no campo para guiar a nave. Colete 8 estrelas e desvie dos drones. Um laboratório de controles simultâneos, mouse por toque e canvas responsivo. Enter inicia uma nova missão; também funciona com teclado e mouse.",
+    "imagem": null,
+    "categoria": "Jogos",
+    "arquivo": "missao_mobile.por",
+    "caminho": "web/missao_mobile.por",
+    "recursos": [],
+    "ajustes": []
+  },
+  {
+    "id": "web_ambiente_navegador",
+    "nome": "Conheça seu navegador",
+    "descricao": "Consulte o navegador, sistema operacional, celular ou tablet, suporte a toque e mouse, dimensões da janela e tela, densidade, idioma, orientação e estado de rede. Mostra como escolher controles pelos recursos disponíveis.",
+    "imagem": null,
+    "categoria": "Bibliotecas / Navegador",
+    "arquivo": "ambiente_navegador.por",
+    "caminho": "web/ambiente_navegador.por",
+    "recursos": [],
+    "ajustes": []
   }
 ]
