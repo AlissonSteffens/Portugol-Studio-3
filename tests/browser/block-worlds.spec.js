@@ -106,7 +106,9 @@ test('personagem 2D pula, cai, colide e não constrói sobre si mesmo', async ({
   await canvas.focus(); await page.keyboard.down('d');
   await expect.poll(async () => Number(await value(page, 'jogador_x').innerText())).toBeGreaterThan(345);
   await page.keyboard.up('d');
-  expect(Number(await value(page, 'jogador_x').innerText())).toBeLessThanOrEqual(348);
+  // Physics accumulates fractional steps; 348.0000000000004 renders at 348.
+  // Allow only floating-point noise, far below the game's 0.01 px collision inset.
+  expect(Number(await value(page, 'jogador_x').innerText())).toBeLessThanOrEqual(348 + 1e-9);
   await expect(value(page, 'no_chao')).toHaveText('verdadeiro');
   await page.getByRole('button', { name: 'Parar execução', exact: true }).click();
 });
