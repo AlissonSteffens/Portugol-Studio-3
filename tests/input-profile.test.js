@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { detectInputProfile } from '../runtime/core/input-profile.js';
-import { analyzeCode } from '../src/services/analysis.js';
+import { detectInputProfile } from '../runtime/input/profile.js';
+import { analyzeCode } from '../ide/src/services/analysis.js';
 
 test('detecta aliases, setas, ações, códigos numéricos e mouse juntos', () => {
   const profile = detectInputProfile(`programa {

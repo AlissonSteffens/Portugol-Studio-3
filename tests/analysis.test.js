@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { analyzeCode } from '../src/services/analysis.js';
-import { transpilePortugol } from '../runtime/core/transpiler.js';
-import { PortugolRuntime } from '../runtime/core/runtime.js';
+import { analyzeCode } from '../ide/src/services/analysis.js';
+import { transpilePortugol } from '../core/transpilation/transpiler.js';
+import { PortugolRuntime } from '../runtime/runtime.js';
 
 test('diagnósticos localizam símbolos desconhecidos e avisam sobre variáveis sem uso', () => {
   const source = 'programa { funcao inicio() { inteiro sobra = 1 escreva(desconhecida) } }';

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { normalizePath } from '../src/services/repository.js';
+import { normalizePath } from '../ide/src/services/repository.js';
 
 test('caminhos locais rejeitam traversal e caminhos absolutos', () => {
   for (const name of ['../segredo', '/absoluto', 'C:\\segredo', 'a/../b', '__proto__/../x', '']) assert.throws(() => normalizePath(name));

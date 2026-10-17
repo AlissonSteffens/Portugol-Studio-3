@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { PortugolRuntime } from '../js/runtime.js';
-import { transpilePortugol } from '../js/transpiler.js';
+import { PortugolRuntime } from '../runtime/runtime.js';
+import { transpilePortugol } from '../core/transpilation/transpiler.js';
 
 test('Internet acessa o endereço diretamente e explica bloqueios do navegador', async t => {
   const calls = [];

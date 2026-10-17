@@ -4,7 +4,7 @@
     "source": "analise/semantica/avisos/AvisoMatrizPodeSerVariavel.java",
     "category": "aviso",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "A matriz ",
@@ -18,7 +18,7 @@
     "source": "analise/semantica/avisos/AvisoMatrizPodeSerVetor.java",
     "category": "aviso",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "A matriz ",
@@ -33,7 +33,7 @@
     "source": "analise/semantica/avisos/AvisoSimboloGlobalOcultado.java",
     "category": "aviso",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "Um simbolo está sendo ocultado",
@@ -57,7 +57,7 @@
     "source": "analise/semantica/avisos/AvisoValorExpressaoSeraConvertido.java",
     "category": "aviso",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": []
   },
@@ -66,7 +66,7 @@
     "source": "analise/semantica/avisos/AvisoVetorPodeSerVariavel.java",
     "category": "aviso",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "O Vetor ",
@@ -79,7 +79,7 @@
     "source": "bibliotecas/base/ErroExecucaoBiblioteca.java",
     "category": "execucao",
     "status": "implementado",
-    "implementation": "runtime/core/runtime-values.js",
+    "implementation": "core/execution/values.js",
     "notes": "A mensagem da biblioteca é preservada, com código estável e posição da chamada.",
     "originalFragments": []
   },
@@ -88,7 +88,7 @@
     "source": "execucao/erros/ErroCodigoNaoAlcancavel.java",
     "category": "execucao",
     "status": "antecipado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Código após retorne, pare ou laço infinito sem saída.",
     "originalFragments": [
       "Existem trechos de código que não são alcançáveis. Verifique se existe algum código após um laço de repetição infinito ou um retorne"
@@ -99,7 +99,7 @@
     "source": "execucao/erros/ErroDivisaoPorZero.java",
     "category": "execucao",
     "status": "implementado",
-    "implementation": "runtime/core/runtime-values.js / runtime/core/runtime.js",
+    "implementation": "core/execution/values.js / runtime/runtime.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "Ocorreu uma divisão por zero"
@@ -110,7 +110,7 @@
     "source": "execucao/erros/ErroEstouroPilha.java",
     "category": "execucao",
     "status": "implementado",
-    "implementation": "runtime/core/runtime-values.js / runtime/core/runtime.js",
+    "implementation": "core/execution/values.js / runtime/runtime.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "Ocorreu um ESTOURO DE PILHA. A função '%s' foi chamada recursivamente sem que uma condição de parada pudesse ser satisfeita"
@@ -121,7 +121,7 @@
     "source": "execucao/erros/ErroExecucaoNaoTratado.java",
     "category": "execucao",
     "status": "implementado",
-    "implementation": "runtime/core/runtime-values.js / runtime/core/runtime.js",
+    "implementation": "core/execution/values.js / runtime/runtime.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": []
   },
@@ -130,7 +130,7 @@
     "source": "execucao/erros/ErroFuncaoInicialInvalida.java",
     "category": "execucao",
     "status": "antecipado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Validação da assinatura inicial, incluindo inicio(cadeia argumentos[]), aceita pelo executor Java.",
     "originalFragments": [
       "A função inicial \\\"%s\\\" não deve possuir parâmetros ou o parâmetro deve ser um vetor do tipo CADEIA."
@@ -141,7 +141,7 @@
     "source": "execucao/erros/ErroFuncaoInicialNaoDeclarada.java",
     "category": "execucao",
     "status": "antecipado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "ErroFuncaoInicioInexistente antes de executar.",
     "originalFragments": [
       "A função principal \\\"",
@@ -153,7 +153,7 @@
     "source": "execucao/erros/ErroImpossivelConverterTipos.java",
     "category": "execucao",
     "status": "implementado",
-    "implementation": "runtime/core/runtime-values.js / runtime/core/runtime.js",
+    "implementation": "core/execution/values.js / runtime/runtime.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "Não foi possível converter o valor de \\\"%s\\\" para \\\"%s\\\""
@@ -164,7 +164,7 @@
     "source": "execucao/erros/ErroIndiceMatrizInvalido.java",
     "category": "execucao",
     "status": "implementado",
-    "implementation": "runtime/core/runtime-values.js / runtime/core/runtime.js",
+    "implementation": "core/execution/values.js / runtime/runtime.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "A posição [",
@@ -184,7 +184,7 @@
     "source": "execucao/erros/ErroIndiceVetorInvalido.java",
     "category": "execucao",
     "status": "implementado",
-    "implementation": "runtime/core/runtime-values.js / runtime/core/runtime.js",
+    "implementation": "core/execution/values.js / runtime/runtime.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "O índice [",
@@ -201,7 +201,7 @@
     "source": "execucao/erros/ErroMemoriaInsuficiente.java",
     "category": "execucao",
     "status": "implementado",
-    "implementation": "runtime/core/runtime-values.js / runtime/core/runtime.js",
+    "implementation": "core/execution/values.js / runtime/runtime.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "O programa atingiu a quantidade máxima de memória RAM permitida.",
@@ -214,7 +214,7 @@
     "source": "execucao/erros/ErroObservadorDepuracao.java",
     "category": "execucao",
     "status": "específico da JVM",
-    "implementation": "src/App.jsx",
+    "implementation": "ide/src/App.jsx",
     "notes": "O inspetor web usa eventos; não existe o protocolo ObservadorDepuracao do executor antigo.",
     "originalFragments": [
       "A depuração depende de um observador"
@@ -225,7 +225,7 @@
     "source": "execucao/erros/ErroValorVetorMatrizNaoInicializado.java",
     "category": "execucao",
     "status": "implementado",
-    "implementation": "runtime/core/runtime-values.js / runtime/core/runtime.js",
+    "implementation": "core/execution/values.js / runtime/runtime.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "O elemento do vetor '%s', na posição [%d] não foi inicializado",
@@ -255,7 +255,7 @@
     "source": "execucao/erros/ErroVariavelNaoInicializada.java",
     "category": "execucao",
     "status": "implementado",
-    "implementation": "runtime/core/runtime-values.js / runtime/core/runtime.js",
+    "implementation": "core/execution/values.js / runtime/runtime.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "A variável '%s' não foi inicializada"
@@ -266,7 +266,7 @@
     "source": "execucao/erros/ErroVariavelPodeNaoTerSidoInicializada.java",
     "category": "execucao",
     "status": "antecipado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Análise de caminhos de condições e laços; leitura também protegida em execução.",
     "originalFragments": [
       "Existem trechos de código onde a variável ",
@@ -278,7 +278,7 @@
     "source": "execucao/erros/mensagens/ErroDivisaoPorZero.java",
     "category": "execucao",
     "status": "implementado",
-    "implementation": "runtime/core/runtime-values.js / runtime/core/runtime.js",
+    "implementation": "core/execution/values.js / runtime/runtime.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "Foi efetuada uma divisão por zero."
@@ -289,7 +289,7 @@
     "source": "execucao/erros/mensagens/ErroEstouroPilha.java",
     "category": "execucao",
     "status": "implementado",
-    "implementation": "runtime/core/runtime-values.js / runtime/core/runtime.js",
+    "implementation": "core/execution/values.js / runtime/runtime.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "Ocorreu um estouro de pilha de memória no programa.",
@@ -337,7 +337,7 @@
     "source": "execucao/erros/mensagens/ErroExecucaoNaoTratado.java",
     "category": "execucao",
     "status": "implementado",
-    "implementation": "runtime/core/runtime-values.js / runtime/core/runtime.js",
+    "implementation": "core/execution/values.js / runtime/runtime.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": []
   },
@@ -346,7 +346,7 @@
     "source": "execucao/erros/mensagens/ErroIndiceInvalido.java",
     "category": "execucao",
     "status": "implementado",
-    "implementation": "runtime/core/runtime-values.js / runtime/core/runtime.js",
+    "implementation": "core/execution/values.js / runtime/runtime.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "Você tentou acessar um índice de vetor ou matriz inválido.\\n\\n",
@@ -376,7 +376,7 @@
     "source": "execucao/erros/mensagens/ErroMemoriaInsuficiente.java",
     "category": "execucao",
     "status": "implementado",
-    "implementation": "runtime/core/runtime-values.js / runtime/core/runtime.js",
+    "implementation": "core/execution/values.js / runtime/runtime.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "O programa atingiu a quantidade máxima de memória RAM permitida.",
@@ -389,7 +389,7 @@
     "source": "execucao/erros/mensagens/ErroValorEntradaInvalido.java",
     "category": "execucao",
     "status": "implementado",
-    "implementation": "runtime/core/runtime-values.js / runtime/core/runtime.js",
+    "implementation": "core/execution/values.js / runtime/runtime.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "A entrada de dados do programa esperava um valor do tipo '%s', mas nenhum valor foi informado ou o valor informado é de outro tipo"
@@ -400,7 +400,7 @@
     "source": "bibliotecas/base/ErroCarregamentoBiblioteca.java",
     "category": "infraestrutura",
     "status": "antecipado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "ErroInclusaoBiblioteca valida bibliotecas e aliases antes de executar. Não há carregamento de JARs.",
     "originalFragments": [
       "Erro ao carregar a biblioteca \\\"%s\\\": %s",
@@ -412,7 +412,7 @@
     "source": "compilador/ErroAnaliseNaCompilacao.java",
     "category": "infraestrutura",
     "status": "substituído",
-    "implementation": "runtime/core/compiler.js",
+    "implementation": "core/compiler.js",
     "notes": "A compilação é bloqueada com a lista de diagnósticos quando a análise encontra erros.",
     "originalFragments": []
   },
@@ -439,7 +439,7 @@
     "source": "ErroCompilacao.java",
     "category": "infraestrutura",
     "status": "substituído",
-    "implementation": "runtime/core/compiler.js",
+    "implementation": "core/compiler.js",
     "notes": "Compilação Java/javac substituída pelo parser, análise semântica e geração JavaScript.",
     "originalFragments": [
       "Não foi possível compilar o programa, o código contém erros."
@@ -450,7 +450,7 @@
     "source": "analise/ErroAlgoritmoContemErros.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "src/App.jsx",
+    "implementation": "ide/src/App.jsx",
     "notes": "Resumo de compilação com erros; detalhes individuais no painel.",
     "originalFragments": [
       "O algoritmo contém erros"
@@ -461,7 +461,7 @@
     "source": "analise/semantica/erros/ErroAliasInexistente.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "\\\"%s.\\\" pode ser apenas utilizado ao se referir a uma biblioteca como alias, porém nenhuma biblioteca o utiliza como alias. \\n",
@@ -474,7 +474,7 @@
     "source": "analise/semantica/erros/ErroAoAtribuirEmMatriz.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "Deve-se atribuir um valor à uma posição da matriz"
@@ -485,7 +485,7 @@
     "source": "analise/semantica/erros/ErroAoAtribuirEmVetor.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "Deve-se atribuir um valor à uma posição do vetor"
@@ -496,7 +496,7 @@
     "source": "analise/semantica/erros/ErroAoInicializarMatriz.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "A matriz '%s' deve ser inicializada com uma matriz literal. Exemplo: "
@@ -507,7 +507,7 @@
     "source": "analise/semantica/erros/ErroAoInicializarVetor.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "O vetor '%s' deve ser inicializado com um vetor literal. Exemplo: "
@@ -518,7 +518,7 @@
     "source": "analise/semantica/erros/ErroAtribuirConstanteBiblioteca.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "\\\"%s\\\" é uma constante da biblioteca \\\"%s\\\", e portanto, não pode ter seu valor alterado"
@@ -529,7 +529,7 @@
     "source": "analise/semantica/erros/ErroAtribuirEmChamadaFuncao.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "Não é possível atribuir uma expressão a uma chamada de função."
@@ -540,7 +540,7 @@
     "source": "analise/semantica/erros/ErroAtribuirEmConstante.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       ".1",
@@ -559,7 +559,7 @@
     "source": "analise/semantica/erros/ErroAtribuirEmExpressao.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "Não é possível realizar uma atribuição à ",
@@ -577,7 +577,7 @@
     "source": "analise/semantica/erros/ErroAtribuirFuncaoBiblioteca.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "\\\"%s\\\" é uma biblioteca e portanto não pode receber valores"
@@ -588,7 +588,7 @@
     "source": "analise/semantica/erros/ErroAtribuirMatrizVetorEmVariavel.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "não é possível atribuir uma matriz ou um vetor a uma variável"
@@ -599,7 +599,7 @@
     "source": "analise/semantica/erros/ErroBibliotecaNaoInserida.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "A biblioteca \\\"%s\\\" não foi incluída no programa"
@@ -610,7 +610,7 @@
     "source": "analise/semantica/erros/ErroBlocoInvalido.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "Esta expressão lógica não faz sentido se estiver sozinha no código. Você pode utilizar a expressão como condição em um dos seguintes comandos: 'se', 'enquanto', 'faca-enquanto'",
@@ -633,7 +633,7 @@
     "source": "analise/semantica/erros/ErroCodigoNaoAlcancavel.java",
     "category": "semantica",
     "status": "antecipado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Código após retorne, pare ou laço infinito sem saída.",
     "originalFragments": [
       "Existem trechos de código que não são alcançáveis. Verifique se existe algum código após um laço de repetição infinito ou um retorne"
@@ -644,7 +644,7 @@
     "source": "analise/semantica/erros/ErroComandoNaoSuportado.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "Este comando não é suportado pela linguagem Portugol"
@@ -655,7 +655,7 @@
     "source": "analise/semantica/erros/ErroConstanteNaoEncontradaNaBiblioteca.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "A constante \\\"%s\\\" não existe na biblioteca \\\"%s\\\""
@@ -666,7 +666,7 @@
     "source": "analise/semantica/erros/ErroDefinirTipoDadoMatrizLiteral.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "A inicialização da matriz possui mais de um tipo de dado"
@@ -677,7 +677,7 @@
     "source": "analise/semantica/erros/ErroDefinirTipoDadoVetorLiteral.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "A inicialização do vetor possui mais de um tipo de dado"
@@ -688,7 +688,7 @@
     "source": "analise/semantica/erros/ErroExpressaoTamanhoVetorMatriz.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "",
@@ -711,7 +711,7 @@
     "source": "analise/semantica/erros/ErroFuncaoInicioInexistente.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "A função \\\"",
@@ -724,7 +724,7 @@
     "source": "analise/semantica/erros/ErroFuncaoInicioNaoAceitaParametros.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "A função \\\"",
@@ -736,7 +736,7 @@
     "source": "analise/semantica/erros/ErroFuncaoSemRetorne.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "A função \\\"",
@@ -748,7 +748,7 @@
     "source": "analise/semantica/erros/ErroInclusaoBiblioteca.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": []
   },
@@ -757,7 +757,7 @@
     "source": "analise/semantica/erros/ErroInicializacaoConstante.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "A constante \\\"",
@@ -779,7 +779,7 @@
     "source": "analise/semantica/erros/ErroInicializacaoErrada.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "Não é possível inicializar. ",
@@ -791,7 +791,7 @@
     "source": "analise/semantica/erros/ErroInicializacaoInvalida.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "Não é possível inicializar ",
@@ -822,7 +822,7 @@
     "source": "analise/semantica/erros/ErroInicializacaoMatrizEmBranco.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "A inicialização da matriz não possui elementos"
@@ -833,7 +833,7 @@
     "source": "analise/semantica/erros/ErroLeiaNecessitaReferencia.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "O parâmetro da função leia deve ser uma referência a uma variável, matriz ou vetor"
@@ -844,7 +844,7 @@
     "source": "analise/semantica/erros/ErroNumeroParametrosFuncao.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "A função \\\"",
@@ -867,7 +867,7 @@
     "source": "analise/semantica/erros/ErroOperandoEsquerdoAtribuicaoConstante.java",
     "category": "semantica",
     "status": "unificado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "ErroAtribuirEmConstante / ErroAtribuirEmExpressao distinguem constantes e literais.",
     "originalFragments": [
       "O operando esquerdo da atribuição não pode ser uma expressão constante."
@@ -878,7 +878,7 @@
     "source": "analise/semantica/erros/ErroParametroExcedente.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "A expressão está sobrando na chamada da função \\\"%s\\\", pois extrapola o número de parâmetros esperados"
@@ -889,7 +889,7 @@
     "source": "analise/semantica/erros/ErroParametroRedeclarado.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "O parâmetro \\\"",
@@ -902,7 +902,7 @@
     "source": "analise/semantica/erros/ErroParaSemExpressaoAtribuicao.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "O comando 'para' quando há uma atribuição utiliza uma das seguintes sintaxes: i=i+1 / i++ / i+=1"
@@ -913,7 +913,7 @@
     "source": "analise/semantica/erros/ErroParaSemExpressaoComparacao.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "O comando 'para' necessita ao menos de uma condição de parada. Utilize a seguinte construção para corrigir o problema: 'para( ; <condicao> ; ){ <comandos> }'"
@@ -924,7 +924,7 @@
     "source": "analise/semantica/erros/ErroPassagemParametroInvalida.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "Não é possível passar um valor literal, constante ou expressão para o parâmetro na posição \\\"",
@@ -940,7 +940,7 @@
     "source": "analise/semantica/erros/ErroQuantidadeElementosColunaInicializacaoMatriz.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "A linha [",
@@ -960,7 +960,7 @@
     "source": "analise/semantica/erros/ErroQuantidadeElementosInicializacaoVetor.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "A inicialização do vetor \\\"",
@@ -979,7 +979,7 @@
     "source": "analise/semantica/erros/ErroQuantidadeLinhasIncializacaoMatriz.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "A inicialização da matriz \\\"",
@@ -998,7 +998,7 @@
     "source": "analise/semantica/erros/ErroQuantificadorParametroFuncao.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "O parâmetro \\\"",
@@ -1019,7 +1019,7 @@
     "source": "analise/semantica/erros/ErroReferenciaInvalida.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "O vetor '%s' está sendo utilizado como ",
@@ -1045,7 +1045,7 @@
     "source": "analise/semantica/erros/ErroSemanticoNaoTratado.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": []
   },
@@ -1054,7 +1054,7 @@
     "source": "analise/semantica/erros/ErroSimboloNaoDeclarado.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "O vetor \\\"",
@@ -1077,7 +1077,7 @@
     "source": "analise/semantica/erros/ErroSimboloNaoInicializado.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "A variável \\\"",
@@ -1109,7 +1109,7 @@
     "source": "analise/semantica/erros/ErroSimboloRedeclarado.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "O símbolo \\\"",
@@ -1132,7 +1132,7 @@
     "source": "analise/semantica/erros/ErroTamanhoMaximoMatriz.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "A matriz '",
@@ -1149,7 +1149,7 @@
     "source": "analise/semantica/erros/ErroTamanhoMaximoVetor.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "O vetor '",
@@ -1164,7 +1164,7 @@
     "source": "analise/semantica/erros/ErroTamanhoVetorMatriz.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "1",
@@ -1180,7 +1180,7 @@
     "source": "analise/semantica/erros/ErroTipoParametroIncompativel.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "Você não pode passar uma função sem retorno para a função \\\"escreva\\\"",
@@ -1196,7 +1196,7 @@
     "source": "analise/semantica/erros/ErroTiposIncompativeis.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "Tipos incompatíveis! Não é possível atribuir uma expressão do tipo \\\"",
@@ -1326,7 +1326,7 @@
     "source": "analise/semantica/erros/ErroVaParaSemTitulo.java",
     "category": "semantica",
     "status": "inativo no Java",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "O visitante Java rejeita va_para e rótulos com ErroComandoNaoSuportado; o web mantém essa rejeição.",
     "originalFragments": [
       "O rótulo \\\"",
@@ -1338,7 +1338,7 @@
     "source": "analise/semantica/erros/ErroVariavelPodeNaoTerSidoInicializada.java",
     "category": "semantica",
     "status": "antecipado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Análise de caminhos de condições e laços; leitura também protegida em execução.",
     "originalFragments": [
       "Existem trechos de código onde a variável ",
@@ -1350,7 +1350,7 @@
     "source": "analise/semantica/erros/ErroVetorSemElementos.java",
     "category": "semantica",
     "status": "implementado",
-    "implementation": "runtime/core/semantic-analysis.js",
+    "implementation": "core/semantic/analyzer.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "A inicialização do vetor não possui elementos"
@@ -1361,7 +1361,7 @@
     "source": "analise/sintatica/erros/ErroCadeiaIncompleta.java",
     "category": "sintatica",
     "status": "implementado",
-    "implementation": "runtime/core/diagnostics.js / runtime/core/compiler.js",
+    "implementation": "core/diagnostics/index.js / core/compiler.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "A expressão do tipo 'cadeia' não foi finalizada corretamente. Insira o caracter '\\\"' para corrigir o problema. "
@@ -1372,7 +1372,7 @@
     "source": "analise/sintatica/erros/ErroCaracterInvalidoReferencia.java",
     "category": "sintatica",
     "status": "implementado",
-    "implementation": "runtime/core/diagnostics.js / runtime/core/compiler.js",
+    "implementation": "core/diagnostics/index.js / core/compiler.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "O caracter '",
@@ -1384,7 +1384,7 @@
     "source": "analise/sintatica/erros/ErroChaveDeVetorMatrizMalPosicionada.java",
     "category": "sintatica",
     "status": "implementado",
-    "implementation": "runtime/core/diagnostics.js / runtime/core/compiler.js",
+    "implementation": "core/diagnostics/index.js / core/compiler.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "O formato de Vetor/Matriz está errado. As chaves devem ser posicionadas no nome da variavel. \\nex: inteiro a[] = {2, 3}"
@@ -1395,7 +1395,7 @@
     "source": "analise/sintatica/erros/ErroComandoEsperado.java",
     "category": "sintatica",
     "status": "implementado",
-    "implementation": "runtime/core/diagnostics.js / runtime/core/compiler.js",
+    "implementation": "core/diagnostics/index.js / core/compiler.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "Esta construção espera um comando. Insira um comando ou inicie um novo escopo utilizando os caracteres '{' e '}'."
@@ -1406,7 +1406,7 @@
     "source": "analise/sintatica/erros/ErroEscapeUnico.java",
     "category": "sintatica",
     "status": "implementado",
-    "implementation": "runtime/core/diagnostics.js / runtime/core/compiler.js",
+    "implementation": "core/diagnostics/index.js / core/compiler.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "Variáveis do tipo cadeias e caracter com o símbolo '\\\\' devem utiliza-lo como: '\\\\\\\\'.\\nIsso se deve ao símbolo '\\\\' ser utilizado em casos como '\\\\t' e '\\\\n' onde ele passa por uma reinterpretação do seu significado, se tornando uma tabulação e um pular linha respectivamente"
@@ -1417,7 +1417,7 @@
     "source": "analise/sintatica/erros/ErroEscopo.java",
     "category": "sintatica",
     "status": "implementado",
-    "implementation": "runtime/core/diagnostics.js / runtime/core/compiler.js",
+    "implementation": "core/diagnostics/index.js / core/compiler.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "O escopo",
@@ -1446,7 +1446,7 @@
     "source": "analise/sintatica/erros/ErroExpressaoEsperada.java",
     "category": "sintatica",
     "status": "implementado",
-    "implementation": "runtime/core/diagnostics.js / runtime/core/compiler.js",
+    "implementation": "core/diagnostics/index.js / core/compiler.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "inicializacaoMatriz",
@@ -1480,7 +1480,7 @@
     "source": "analise/sintatica/erros/ErroExpressaoForaEscopoFuncao.java",
     "category": "sintatica",
     "status": "implementado",
-    "implementation": "runtime/core/diagnostics.js / runtime/core/compiler.js",
+    "implementation": "core/diagnostics/index.js / core/compiler.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "A expressão '%s' está fora de um escopo de função e nunca será chamada. Adicione ela a uma função ou remova-a."
@@ -1491,7 +1491,7 @@
     "source": "analise/sintatica/erros/ErroExpressaoIncompleta.java",
     "category": "sintatica",
     "status": "implementado",
-    "implementation": "runtime/core/diagnostics.js / runtime/core/compiler.js",
+    "implementation": "core/diagnostics/index.js / core/compiler.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "A expressão está incompleta. Verifique se ambos os operandos direito e esquerdo estão presentes."
@@ -1502,7 +1502,7 @@
     "source": "analise/sintatica/erros/ErroExpressaoInesperada.java",
     "category": "sintatica",
     "status": "implementado",
-    "implementation": "runtime/core/diagnostics.js / runtime/core/compiler.js",
+    "implementation": "core/diagnostics/index.js / core/compiler.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "A expressão '%s' não era esperada neste local, remova a expressão para corrigir o problema"
@@ -1513,7 +1513,7 @@
     "source": "analise/sintatica/erros/ErroExpressoesForaEscopoPrograma.java",
     "category": "sintatica",
     "status": "implementado",
-    "implementation": "runtime/core/diagnostics.js / runtime/core/compiler.js",
+    "implementation": "core/diagnostics/index.js / core/compiler.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "",
@@ -1531,7 +1531,7 @@
     "source": "analise/sintatica/erros/ErroFaltaDoisPontos.java",
     "category": "sintatica",
     "status": "implementado",
-    "implementation": "runtime/core/diagnostics.js / runtime/core/compiler.js",
+    "implementation": "core/diagnostics/index.js / core/compiler.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "O caracter ':' é necessário após o caso."
@@ -1542,7 +1542,7 @@
     "source": "analise/sintatica/erros/ErroInteiroForaDoIntervalo.java",
     "category": "sintatica",
     "status": "implementado",
-    "implementation": "runtime/core/diagnostics.js / runtime/core/compiler.js",
+    "implementation": "core/diagnostics/index.js / core/compiler.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "O número ",
@@ -1555,7 +1555,7 @@
     "source": "analise/sintatica/erros/ErroLinhaPuladaEmString.java",
     "category": "sintatica",
     "status": "implementado",
-    "implementation": "runtime/core/diagnostics.js / runtime/core/compiler.js",
+    "implementation": "core/diagnostics/index.js / core/compiler.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "Você pulou uma linha ao escrever uma cadeia. Cadeias apenas podem ser escritas em uma mesma linha"
@@ -1566,7 +1566,7 @@
     "source": "analise/sintatica/erros/ErroNomeIncompativel.java",
     "category": "sintatica",
     "status": "implementado",
-    "implementation": "runtime/core/diagnostics.js / runtime/core/compiler.js",
+    "implementation": "core/diagnostics/index.js / core/compiler.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "Problema na nomeclatura da declaração, uma declaração deve iniciar com letras"
@@ -1577,7 +1577,7 @@
     "source": "analise/sintatica/erros/ErroNomeSimboloEstaFaltando.java",
     "category": "sintatica",
     "status": "implementado",
-    "implementation": "runtime/core/diagnostics.js / runtime/core/compiler.js",
+    "implementation": "core/diagnostics/index.js / core/compiler.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "parametro",
@@ -1595,7 +1595,7 @@
     "source": "analise/sintatica/erros/ErroPalavraReservadaEstaFaltando.java",
     "category": "sintatica",
     "status": "implementado",
-    "implementation": "runtime/core/diagnostics.js / runtime/core/compiler.js",
+    "implementation": "core/diagnostics/index.js / core/compiler.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "O algoritmo está incompleto, está faltando a palavra reservada '%s'"
@@ -1606,7 +1606,7 @@
     "source": "analise/sintatica/erros/ErroParaEsperaCondicao.java",
     "category": "sintatica",
     "status": "implementado",
-    "implementation": "runtime/core/diagnostics.js / runtime/core/compiler.js",
+    "implementation": "core/diagnostics/index.js / core/compiler.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "O comando \\\"para\\\" necessita ao menos de uma condição de parada. Utilize a seguinte construção para corrigir o problema: \\\"para( ; <condicao> ; ){ <comandos> }\\\""
@@ -1617,7 +1617,7 @@
     "source": "analise/sintatica/erros/ErroParametrosNaoTipados.java",
     "category": "sintatica",
     "status": "implementado",
-    "implementation": "runtime/core/diagnostics.js / runtime/core/compiler.js",
+    "implementation": "core/diagnostics/index.js / core/compiler.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "Os parametros da função, não estão tipados.\\n",
@@ -1629,7 +1629,7 @@
     "source": "analise/sintatica/erros/ErroPareForaDeLoopOuSwitch.java",
     "category": "sintatica",
     "status": "implementado",
-    "implementation": "runtime/core/diagnostics.js / runtime/core/compiler.js",
+    "implementation": "core/diagnostics/index.js / core/compiler.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "O comando '%s' apenas pode ser utilizado dentro de Loops (como para, enquanto e faça enquanto) ou dentro de um escolha-caso"
@@ -1640,7 +1640,7 @@
     "source": "analise/sintatica/erros/ErroParentesis.java",
     "category": "sintatica",
     "status": "implementado",
-    "implementation": "runtime/core/diagnostics.js / runtime/core/compiler.js",
+    "implementation": "core/diagnostics/index.js / core/compiler.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "A expressão não foi ",
@@ -1659,7 +1659,7 @@
     "source": "analise/sintatica/erros/ErroParsingNaoTratado.java",
     "category": "sintatica",
     "status": "implementado",
-    "implementation": "runtime/core/diagnostics.js / runtime/core/compiler.js",
+    "implementation": "core/diagnostics/index.js / core/compiler.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": []
   },
@@ -1668,7 +1668,7 @@
     "source": "analise/sintatica/erros/ErroRealComVirgula.java",
     "category": "sintatica",
     "status": "implementado",
-    "implementation": "runtime/core/diagnostics.js / runtime/core/compiler.js",
+    "implementation": "core/diagnostics/index.js / core/compiler.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "A expressão foi formada utilizando vírgulas. Valores reais devem ser expressados utilizando pontos. ex: 2.75 "
@@ -1679,7 +1679,7 @@
     "source": "analise/sintatica/erros/ErroRetornoVetorMatriz.java",
     "category": "sintatica",
     "status": "implementado",
-    "implementation": "runtime/core/diagnostics.js / runtime/core/compiler.js",
+    "implementation": "core/diagnostics/index.js / core/compiler.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "Não é possível retornar vetores ou matrizes por funções.\\n\\n"
@@ -1690,7 +1690,7 @@
     "source": "analise/sintatica/erros/ErroSenaoInesperado.java",
     "category": "sintatica",
     "status": "implementado",
-    "implementation": "runtime/core/diagnostics.js / runtime/core/compiler.js",
+    "implementation": "core/diagnostics/index.js / core/compiler.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "O token 'senao' não faz sentido neste local. O comando 'senao' deve ser utilizado com o comando 'se' da seguinte maneira:\\n",
@@ -1708,7 +1708,7 @@
     "source": "analise/sintatica/erros/ErroSimboloFaltandoOuRealComVirgula.java",
     "category": "sintatica",
     "status": "unificado",
-    "implementation": "runtime/core/compiler.js",
+    "implementation": "core/compiler.js",
     "notes": "ErroNomeSimboloEstaFaltando / ErroRealComVirgula distinguem as duas causas.",
     "originalFragments": [
       "parametro",
@@ -1726,7 +1726,7 @@
     "source": "analise/sintatica/erros/ErroTipoDeDadoEstaFaltando.java",
     "category": "sintatica",
     "status": "implementado",
-    "implementation": "runtime/core/diagnostics.js / runtime/core/compiler.js",
+    "implementation": "core/diagnostics/index.js / core/compiler.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "Você esqueceu de informar o tipo de dado da variável."
@@ -1737,7 +1737,7 @@
     "source": "analise/sintatica/erros/ErroTokenFaltando.java",
     "category": "sintatica",
     "status": "implementado",
-    "implementation": "runtime/core/diagnostics.js / runtime/core/compiler.js",
+    "implementation": "core/diagnostics/index.js / core/compiler.js",
     "notes": "Diagnóstico com mensagem em português e posição no código.",
     "originalFragments": [
       "A expressão está incompleta, está faltando o operador '%s'",

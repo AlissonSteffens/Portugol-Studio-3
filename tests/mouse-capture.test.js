@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { installMouseCapture } from '../runtime/core/mouse-capture.js';
+import { installMouseCapture } from '../libraries/input/mouse-capture.js';
 
 function setup(request) {
   const doc = { pointerLockElement: null, exitPointerLock() { this.pointerLockElement = null; } };

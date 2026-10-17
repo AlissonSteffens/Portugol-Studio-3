@@ -3,7 +3,9 @@
 O núcleo não depende de React, Tailwind, componentes da IDE ou do servidor de arquivos.
 
 - `index.js`: API pública (`PortugolRuntime`, `transpilePortugol`, `tokenize`, `createProjectFiles`, `mountProject`).
-- `core/`: compilador, bibliotecas e execução.
+- `../core/`: análise léxica, sintática e semântica, transpilação e valores da execução.
+- `../libraries/`: contratos e implementações das bibliotecas.
+- `runtime.js`, `presentation.js` e `input/`: integração com o navegador.
 - `project-files.js`: adaptador de arquivos incorporados com persistência em IndexedDB.
 - `player.js`: interface mínima de execução usada na exportação.
 
@@ -32,3 +34,5 @@ O adaptador de arquivos deve oferecer `files` (snapshot de textos), `normalizePa
 `networkMode: 'direct'` acessa os endereços diretamente e respeita CORS. O modo padrão usa o proxy da IDE. O runtime executa código no contexto da página; não é uma sandbox para programas não confiáveis. O pacote Electron mantém o renderer sem acesso ao Node.js e com isolamento e sandbox ativados.
 
 Também é possível gerar somente o runtime com `npm run build:runtime`, sem compilar a IDE.
+
+A estrutura completa e as dependências estão em [Organização dos módulos](../docs/architecture.md).

@@ -76,4 +76,4 @@ A exportação gera um HTML independente ou um projeto Electron para compilar lo
 
 ## Conteúdo da ajuda
 
-A ajuda original pode ser importada com `python scripts/import-help.py CAMINHO_DO_REPOSITORIO`. Os tópicos escritos para a versão Web estão registrados em `scripts/web-help.json` e são mantidos na importação. Os contratos das bibliotecas ficam em `runtime/core/library-contracts.js`.
+A ajuda original pode ser importada com `python scripts/import-help.py CAMINHO_DO_REPOSITORIO`. Os tópicos escritos para a versão Web estão registrados em `scripts/web-help.json` e são mantidos na importação. Os contratos das bibliotecas ficam em `libraries/contracts/index.js`.

@@ -1,8 +1,8 @@
 import { readFile, writeFile } from 'node:fs/promises';
-import { transpilePortugol } from '../runtime/core/transpiler.js';
-import { PortugolRuntime } from '../runtime/core/runtime.js';
-import { ExecutionDebugger } from '../runtime/core/debugger.js';
-import { analyzeCode } from '../src/services/analysis.js';
+import { transpilePortugol } from '../core/transpilation/transpiler.js';
+import { PortugolRuntime } from '../runtime/runtime.js';
+import { ExecutionDebugger } from '../core/execution/debugger.js';
+import { analyzeCode } from '../ide/src/services/analysis.js';
 
 // Fixed simulated input/time, no display refresh wait: measure execution cost,
 // not the monitor's refresh rate. Run before and after with the same frame count.

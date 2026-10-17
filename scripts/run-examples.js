@@ -10,7 +10,7 @@ await page.goto(baseURL);
 const results = [];
 for (const example of selected) {
   const result = await page.evaluate(async example => {
-    const [{ transpilePortugol, tokenize }, { PortugolRuntime }, { createRuntimeFiles, repository }, { loadExample }] = await Promise.all([import('/js/transpiler.js'), import('/js/runtime.js'), import('/src/services/repository.js'), import('/src/services/examples.js')]);
+    const [{ transpilePortugol, tokenize }, { PortugolRuntime }, { createRuntimeFiles, repository }, { loadExample }] = await Promise.all([import('/core/transpilation/transpiler.js'), import('/runtime/runtime.js'), import('/ide/src/services/repository.js'), import('/ide/src/services/examples.js')]);
     for (const entry of await repository.list()) await repository.remove(entry.path);
     const source = await loadExample(example), canvas = document.createElement('canvas'); canvas.width = 800; canvas.height = 600;
     const files = await createRuntimeFiles(() => {}, console.error, example);

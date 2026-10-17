@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { splitStudioMetadata, normalizeStudioDocument, serializeStudioDocument } from '../src/services/studio-metadata.js';
+import { splitStudioMetadata, normalizeStudioDocument, serializeStudioDocument } from '../ide/src/services/studio-metadata.js';
 
 const metadata = '/* $$$ Portugol Studio $$$\n * @POSICAO-CURSOR = 932;\n * @DOBRAMENTO-CODIGO = [1];\n */';
 

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { joystickDirections } from '../runtime/core/touch-controls.js';
+import { joystickDirections } from '../runtime/input/touch-controls.js';
 
 test('joystick tem zona neutra e reconhece oito direções, inclusive fora do círculo', () => {
   for (const [x, y] of [[0, 0], [.1, -.1], [0, .19]]) assert.deepEqual(joystickDirections(x, y), []);

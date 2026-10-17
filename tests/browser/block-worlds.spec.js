@@ -183,8 +183,17 @@ test('controle do mouse também funciona na aba gráfica destacada', async ({ pa
   const popup = await promise, canvas = popup.locator('canvas');
   await popup.bringToFront();
   await expect(canvas).toBeVisible();
+  // Chromium can expose pointerLockElement before delivering pointerlockchange.
+  // The runtime clears capture-time deltas in that event, so sending movement
+  // before the event is processed can discard the test's own input.
+  await canvas.evaluate(c => {
+    c.ownerDocument.addEventListener('pointerlockchange', () => {
+      c.dataset.pointerCaptureReady = String(c.ownerDocument.pointerLockElement === c);
+    }, { once: true });
+  });
   await point(popup, canvas, 450, 310); await popup.mouse.down(); await popup.mouse.up();
   await expect.poll(() => popup.evaluate(() => document.pointerLockElement?.tagName)).toBe('CANVAS');
+  await expect(canvas).toHaveAttribute('data-pointer-capture-ready', 'true');
   // Reproduce native capture-time warping on Linux, then reset using the
   // popup's own keyboard. Wait for a rendered frame rather than inspection
   // updates scheduled in the background editor window.

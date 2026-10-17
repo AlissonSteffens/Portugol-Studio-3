@@ -1,13 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { installNavigatorLibrary } from '../runtime/core/navigator-library.js';
+import { installNavigatorLibrary } from '../libraries/navigator.js';
 import { PortugolRuntime, transpilePortugol } from '../runtime/index.js';
-import contracts from '../runtime/core/library-contracts.js';
-import { analyzeCode } from '../src/services/analysis.js';
+import contracts from '../libraries/contracts/index.js';
+import { analyzeCode } from '../ide/src/services/analysis.js';
 import { EditorState } from '@codemirror/state';
 import { CompletionContext } from '@codemirror/autocomplete';
-import { portugolCompletions } from '../src/editor/portugol.js';
+import { portugolCompletions } from '../ide/src/editor/portugol.js';
 
 function setup(navigator = {}, properties = {}) {
   const view = { navigator, ...properties }, runtime = { canvas: { ownerDocument: { defaultView: view } } };

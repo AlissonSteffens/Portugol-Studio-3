@@ -1,9 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { analyzeCode } from '../src/services/analysis.js';
-import { transpilePortugol } from '../runtime/core/transpiler.js';
-import { PortugolRuntime } from '../runtime/core/runtime.js';
+import { analyzeCode } from '../ide/src/services/analysis.js';
+import { transpilePortugol } from '../core/transpilation/transpiler.js';
+import { PortugolRuntime } from '../runtime/runtime.js';
 
 const program = body => `programa { funcao inicio() { ${body} } }`;
 const cases = [

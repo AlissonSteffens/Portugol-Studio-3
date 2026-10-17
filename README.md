@@ -47,6 +47,7 @@ Abra http://127.0.0.1:3000. O build em `dist/` pode ser publicado em uma hospeda
 
 ## Documentação
 
+- [Organização dos módulos](docs/architecture.md)
 - [Desenvolvimento e testes](docs/development.md)
 - [Publicação e GitHub Pages](docs/deployment.md)
 - [Runtime e buffers gráficos](docs/runtime-performance.md)

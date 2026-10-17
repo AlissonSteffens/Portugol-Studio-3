@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { PortugolRuntime } from '../runtime/core/runtime.js';
-import { transpilePortugol } from '../runtime/core/transpiler.js';
-import { ExecutionDebugger } from '../runtime/core/debugger.js';
+import { PortugolRuntime } from '../runtime/runtime.js';
+import { transpilePortugol } from '../core/transpilation/transpiler.js';
+import { ExecutionDebugger } from '../core/execution/debugger.js';
 
 test('execução rápida amostra variáveis, preserva o valor final e dispensa cálculo de linhas', async () => {
   const source = 'programa { funcao inteiro dobro(inteiro n) { retorne n * 2 } funcao inicio() { inteiro total = 0 para (inteiro i = 0; i < 200; i++) { total += dobro(i) } } }';

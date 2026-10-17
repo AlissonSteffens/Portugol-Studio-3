@@ -1,4 +1,4 @@
-// Compatibilidade com os imports anteriores. O núcleo fica em runtime/core.
-export * from '../runtime/core/library-contracts.js';
-export { default } from '../runtime/core/library-contracts.js';
+// Compatibilidade com os imports anteriores. As implementações ficam nos módulos core, libraries e runtime.
+export * from '../libraries/contracts/index.js';
+export { default } from '../libraries/contracts/index.js';
 

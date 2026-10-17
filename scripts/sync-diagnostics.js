@@ -17,23 +17,23 @@ for (const match of tableSource.matchAll(/private Object\[\]\[\] criarTabelaComp
   tables[match[1]] = Object.fromEntries([...match[2].matchAll(/tabela\[(\w+)\.ordinal\(\)\]\[(\w+)\.ordinal\(\)\] = (\w+);/g)].map(row => [`${row[1].toLowerCase()}:${row[2].toLowerCase()}`, row[3].toLowerCase()]));
 }
 const operators = { '=': 'Atribuicao', '+': 'Soma', '-': 'DivisaoMultiplicacaoSubtracao', '*': 'DivisaoMultiplicacaoSubtracao', '/': 'DivisaoMultiplicacaoSubtracao', '%': 'Modulo', '==': 'DiferencaIgualdade', '!=': 'DiferencaIgualdade', e: 'EOu', ou: 'EOu', '<': 'MaiorMaiorIgualMenorMenorIgual', '>': 'MaiorMaiorIgualMenorMenorIgual', '<=': 'MaiorMaiorIgualMenorMenorIgual', '>=': 'MaiorMaiorIgualMenorMenorIgual', '&': 'Bitwise', '|': 'Bitwise', '^': 'Bitwise', '<<': 'Bitwise', '>>': 'Bitwise', '>>>': 'Bitwise' };
-await writeFile('runtime/core/type-compatibility.js', '// Tabelas do core Java: TabelaCompatibilidadeTiposPortugol.java.\nexport const compatibility = ' + JSON.stringify(tables, null, 2) + ';\nexport const operatorTables = ' + JSON.stringify(operators, null, 2) + ';\n');
+await writeFile('core/semantic/type-compatibility.js', '// Tabelas do core Java: TabelaCompatibilidadeTiposPortugol.java.\nexport const compatibility = ' + JSON.stringify(tables, null, 2) + ';\nexport const operatorTables = ' + JSON.stringify(operators, null, 2) + ';\n');
 
 // Mensagens antigas que foram unificadas ou antecipadas pelo analisador web.
 const equivalents = {
-  ErroAlgoritmoContemErros: ['implementado', 'src/App.jsx', 'Resumo de compilação com erros; detalhes individuais no painel.'],
-  ErroOperandoEsquerdoAtribuicaoConstante: ['unificado', 'runtime/core/semantic-analysis.js', 'ErroAtribuirEmConstante / ErroAtribuirEmExpressao distinguem constantes e literais.'],
-  ErroSimboloFaltandoOuRealComVirgula: ['unificado', 'runtime/core/compiler.js', 'ErroNomeSimboloEstaFaltando / ErroRealComVirgula distinguem as duas causas.'],
-  ErroFuncaoInicialNaoDeclarada: ['antecipado', 'runtime/core/semantic-analysis.js', 'ErroFuncaoInicioInexistente antes de executar.'],
-  ErroFuncaoInicialInvalida: ['antecipado', 'runtime/core/semantic-analysis.js', 'Validação da assinatura inicial, incluindo inicio(cadeia argumentos[]), aceita pelo executor Java.'],
-  ErroCodigoNaoAlcancavel: ['antecipado', 'runtime/core/semantic-analysis.js', 'Código após retorne, pare ou laço infinito sem saída.'],
-  ErroVariavelPodeNaoTerSidoInicializada: ['antecipado', 'runtime/core/semantic-analysis.js', 'Análise de caminhos de condições e laços; leitura também protegida em execução.'],
-  ErroVaParaSemTitulo: ['inativo no Java', 'runtime/core/semantic-analysis.js', 'O visitante Java rejeita va_para e rótulos com ErroComandoNaoSuportado; o web mantém essa rejeição.'],
-  ErroObservadorDepuracao: ['específico da JVM', 'src/App.jsx', 'O inspetor web usa eventos; não existe o protocolo ObservadorDepuracao do executor antigo.'],
-  ErroCompilacao: ['substituído', 'runtime/core/compiler.js', 'Compilação Java/javac substituída pelo parser, análise semântica e geração JavaScript.'],
-  ErroAnaliseNaCompilacao: ['substituído', 'runtime/core/compiler.js', 'A compilação é bloqueada com a lista de diagnósticos quando a análise encontra erros.'],
-  ErroCarregamentoBiblioteca: ['antecipado', 'runtime/core/semantic-analysis.js', 'ErroInclusaoBiblioteca valida bibliotecas e aliases antes de executar. Não há carregamento de JARs.'],
-  ErroExecucaoBiblioteca: ['implementado', 'runtime/core/runtime-values.js', 'A mensagem da biblioteca é preservada, com código estável e posição da chamada.'],
+  ErroAlgoritmoContemErros: ['implementado', 'ide/src/App.jsx', 'Resumo de compilação com erros; detalhes individuais no painel.'],
+  ErroOperandoEsquerdoAtribuicaoConstante: ['unificado', 'core/semantic/analyzer.js', 'ErroAtribuirEmConstante / ErroAtribuirEmExpressao distinguem constantes e literais.'],
+  ErroSimboloFaltandoOuRealComVirgula: ['unificado', 'core/compiler.js', 'ErroNomeSimboloEstaFaltando / ErroRealComVirgula distinguem as duas causas.'],
+  ErroFuncaoInicialNaoDeclarada: ['antecipado', 'core/semantic/analyzer.js', 'ErroFuncaoInicioInexistente antes de executar.'],
+  ErroFuncaoInicialInvalida: ['antecipado', 'core/semantic/analyzer.js', 'Validação da assinatura inicial, incluindo inicio(cadeia argumentos[]), aceita pelo executor Java.'],
+  ErroCodigoNaoAlcancavel: ['antecipado', 'core/semantic/analyzer.js', 'Código após retorne, pare ou laço infinito sem saída.'],
+  ErroVariavelPodeNaoTerSidoInicializada: ['antecipado', 'core/semantic/analyzer.js', 'Análise de caminhos de condições e laços; leitura também protegida em execução.'],
+  ErroVaParaSemTitulo: ['inativo no Java', 'core/semantic/analyzer.js', 'O visitante Java rejeita va_para e rótulos com ErroComandoNaoSuportado; o web mantém essa rejeição.'],
+  ErroObservadorDepuracao: ['específico da JVM', 'ide/src/App.jsx', 'O inspetor web usa eventos; não existe o protocolo ObservadorDepuracao do executor antigo.'],
+  ErroCompilacao: ['substituído', 'core/compiler.js', 'Compilação Java/javac substituída pelo parser, análise semântica e geração JavaScript.'],
+  ErroAnaliseNaCompilacao: ['substituído', 'core/compiler.js', 'A compilação é bloqueada com a lista de diagnósticos quando a análise encontra erros.'],
+  ErroCarregamentoBiblioteca: ['antecipado', 'core/semantic/analyzer.js', 'ErroInclusaoBiblioteca valida bibliotecas e aliases antes de executar. Não há carregamento de JARs.'],
+  ErroExecucaoBiblioteca: ['implementado', 'core/execution/values.js', 'A mensagem da biblioteca é preservada, com código estável e posição da chamada.'],
   ErroAoRenomearSimbolo: ['fora da análise de código', 'docs/java-diagnostics.md', 'Exceção da API Java de refatoração/renomeação, recurso inexistente no web; não é erro no programa do aluno.'],
   ErroAoTentarObterDeclaracaoDoSimbolo: ['fora da análise de código', 'docs/java-diagnostics.md', 'Exceção da API Java de navegação de declarações; a árvore web navega pelas posições do próprio parser.'],
 };
@@ -45,7 +45,7 @@ for (const { file, source } of sources) {
   if (!/class\s+\w+/.test(source)) continue;
   const relative = path.relative(root, file).replaceAll('\\', '/');
   const category = relative.includes('avisos/') ? 'aviso' : relative.includes('sintatica/') ? 'sintatica' : relative.includes('semantica/') || name === 'ErroAlgoritmoContemErros' ? 'semantica' : relative.includes('execucao/') || name === 'ErroExecucaoBiblioteca' ? 'execucao' : 'infraestrutura';
-  const defaultHandler = category === 'sintatica' ? 'runtime/core/diagnostics.js / runtime/core/compiler.js' : category === 'execucao' ? 'runtime/core/runtime-values.js / runtime/core/runtime.js' : 'runtime/core/semantic-analysis.js';
+  const defaultHandler = category === 'sintatica' ? 'core/diagnostics/index.js / core/compiler.js' : category === 'execucao' ? 'core/execution/values.js / runtime/runtime.js' : 'core/semantic/analyzer.js';
   const equivalent = equivalents[name];
   const messageStart = source.search(/protected String construirMensagem/);
   entries.push({ class: name, source: relative, category, status: equivalent?.[0] || 'implementado', implementation: equivalent?.[1] || defaultHandler, notes: equivalent?.[2] || 'Diagnóstico com mensagem em português e posição no código.', originalFragments: literals(messageStart >= 0 ? source.slice(messageStart) : source) });
@@ -53,7 +53,7 @@ for (const { file, source } of sources) {
 entries.sort((a, b) => a.category.localeCompare(b.category) || a.source.localeCompare(b.source));
 const libraryMessages = [];
 for (const { file, source } of sources.filter(item => item.file.includes(path.sep + 'bibliotecas' + path.sep))) {
-  for (const match of source.matchAll(/throw new ErroExecucaoBiblioteca\(([\s\S]*?)\);/g)) libraryMessages.push({ source: path.relative(root, file).replaceAll('\\', '/'), line: source.slice(0, match.index).split('\n').length, originalFragments: literals(match[1]), implementation: 'runtime/core/runtime-values.js: callLibrary', notes: 'Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador.' });
+  for (const match of source.matchAll(/throw new ErroExecucaoBiblioteca\(([\s\S]*?)\);/g)) libraryMessages.push({ source: path.relative(root, file).replaceAll('\\', '/'), line: source.slice(0, match.index).split('\n').length, originalFragments: literals(match[1]), implementation: 'core/execution/values.js: callLibrary', notes: 'Mensagem da implementação web da biblioteca com localização e código ErroExecucao.ErroExecucaoBiblioteca; dependências Swing/Java/native substituídas pelo navegador.' });
 }
 await mkdir('docs', { recursive: true });
 await writeFile('docs/java-diagnostics-inventory.json', JSON.stringify(entries, null, 2) + '\n');

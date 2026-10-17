@@ -1,5 +1,5 @@
 import { readFile, writeFile } from 'node:fs/promises';
-import { PortugolRuntime } from '../js/runtime.js';
+import { PortugolRuntime } from '../runtime/runtime.js';
 const sourceRoot = process.argv[2] || '../Portugol-Studio/core/src/main/java/br/univali/portugol/nucleo/bibliotecas';
 const libraries = ['Objetos', 'ServicosWeb', 'Graficos', 'Matematica', 'Util', 'Teclado', 'Mouse', 'Tipos', 'Calendario', 'Texto', 'Arquivos', 'Sons', 'Internet'];
 const types = { int: 'inteiro', double: 'real', boolean: 'logico', String: 'cadeia', char: 'caracter', void: 'vazio', Object: 'todos' };
@@ -59,5 +59,5 @@ for (const library of libraries) {
   }
 }
 runtime.destroy();
-await writeFile('runtime/core/library-contracts.js', "// Contratos gerados a partir das bibliotecas Java do projeto.\nimport { webGraphicsContracts, webMouseContracts, webBrowserContracts } from './web-library-contracts.js';\nconst contracts = " + JSON.stringify(contracts, null, 2) + ';\nObject.assign(contracts.Graficos, webGraphicsContracts);\nObject.assign(contracts.Mouse, webMouseContracts);\ncontracts.Navegador = webBrowserContracts;\nexport default contracts;\nexport const libraryConstants = ' + JSON.stringify(constants, null, 2) + ';\n');
+await writeFile('libraries/contracts/index.js', "// Contratos gerados a partir das bibliotecas Java do projeto.\nimport { webGraphicsContracts, webMouseContracts, webBrowserContracts } from './web.js';\nconst contracts = " + JSON.stringify(contracts, null, 2) + ';\nObject.assign(contracts.Graficos, webGraphicsContracts);\nObject.assign(contracts.Mouse, webMouseContracts);\ncontracts.Navegador = webBrowserContracts;\nexport default contracts;\nexport const libraryConstants = ' + JSON.stringify(constants, null, 2) + ';\n');
 

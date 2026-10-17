@@ -1,9 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { ExecutionDebugger } from '../runtime/core/debugger.js';
-import { PortugolRuntime } from '../runtime/core/runtime.js';
-import { transpilePortugol } from '../runtime/core/transpiler.js';
-import { analyzeCode } from '../src/services/analysis.js';
+import { ExecutionDebugger } from '../core/execution/debugger.js';
+import { PortugolRuntime } from '../runtime/runtime.js';
+import { transpilePortugol } from '../core/transpilation/transpiler.js';
+import { analyzeCode } from '../ide/src/services/analysis.js';
 
 test('depuração entra em chamadas, observa valores e avança sobre funções', async () => {
   const source = 'programa { funcao inteiro soma(inteiro n) { retorne n + 1 } funcao inicio() { inteiro a = 2 a = soma(a) a++ } }';

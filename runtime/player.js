@@ -1,6 +1,6 @@
-import { PortugolRuntime } from './core/runtime.js';
+import { PortugolRuntime } from './runtime.js';
 import { createProjectFiles } from './project-files.js';
-import { mountTouchControls } from './core/touch-controls.js';
+import { mountTouchControls } from './input/touch-controls.js';
 export async function mountProject(project, root = document) {
   const canvas = root.querySelector('#screen'), terminal = root.querySelector('#terminal'), status = root.querySelector('#status'), runButton = root.querySelector('#run'), stopButton = root.querySelector('#stop'), volume = root.querySelector('#volume'), list = root.querySelector('#files');
   let runtime, running = false;

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { presentationMethods } from '../runtime/core/presentation.js';
+import { presentationMethods } from '../runtime/presentation.js';
 
 function frameWindow() {
   let next = 0;
