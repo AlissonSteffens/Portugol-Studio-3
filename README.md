@@ -2,13 +2,20 @@
 
 Um ambiente para aprender programação em Portugol, direto no navegador.
 
-[**Abrir a IDE**](https://alissonsteffens.github.io/Portugol-Studio-3/)
+[**Página inicial**](https://alissonsteffens.github.io/Portugol-Studio-3/) · [**Abrir a IDE**](https://alissonsteffens.github.io/Portugol-Studio-3/app/)
 
 ## O que você pode fazer
 
 - Escrever e executar programas, com mensagens de erro, avisos e sugestões de correção.
 - Depurar passo a passo, usar pontos de parada e acompanhar variáveis.
 - Explorar exemplos e ajuda, criar programas gráficos e exportar suas criações.
+
+## Organização da IDE
+
+- **Barra superior:** menus (Arquivo, Editar, Exemplos, Executar, Exibir, Ajuda) e os botões Executar, Depurar e Parar.
+- **Barra lateral esquerda:** troca de tela, entre Início (exemplos e arquivos recentes), Editor e Ajuda.
+- **Tela do editor:** abas dos arquivos abertos, o código e o terminal abaixo dele. O painel à esquerda do código reúne as ferramentas do programa (Estrutura, Problemas e Recursos). Ele pode ser ocultado pelo botão no início da linha de abas.
+- **Programas gráficos** rodam em outra aba do navegador (no aplicativo instalado, em outra janela), com o terminal recolhível abaixo do jogo. Fechar essa aba encerra o programa. A depuração na Web continua no painel, ao lado do código. Para manter tudo no painel, desmarque **Exibir › Programas gráficos em aba separada**. Em celulares e tablets o jogo sempre ocupa a própria tela.
 
 Os programas e recursos ficam armazenados no navegador. Salve seus arquivos `.por` ou exporte o projeto para manter uma cópia fora dele.
 
@@ -23,7 +30,7 @@ npm ci
 npm run dev
 ```
 
-Abra o endereço exibido pelo Vite no terminal.
+Abra o endereço exibido pelo Vite no terminal. A página inicial fica na raiz e a IDE em `/app/`.
 
 ## Testar
 
@@ -45,13 +52,18 @@ npm run build
 npm start
 ```
 
-Abra http://127.0.0.1:3000. O build em `dist/` pode ser publicado em uma hospedagem estática. Neste repositório, o GitHub Actions verifica e publica no Pages a cada push em `main`.
+Abra http://127.0.0.1:3000 (página inicial) ou http://127.0.0.1:3000/app/ (IDE). O build em `dist/` pode ser publicado em uma hospedagem estática. Neste repositório, o GitHub Actions verifica e publica no Pages a cada push em `main`.
+
+## Aplicativo para computador
+
+Também há versões instaláveis para Windows, macOS e Linux, disponíveis em [Releases](https://github.com/AlissonSteffens/Portugol-Studio-3/releases). Para gerá-las localmente, use `npm run desktop:dist`. Consulte [Versões instaláveis](docs/desktop.md).
 
 ## Documentação
 
 - [Organização dos módulos](docs/architecture.md)
 - [Desenvolvimento e testes](docs/development.md)
 - [Publicação e GitHub Pages](docs/deployment.md)
+- [Versões instaláveis](docs/desktop.md)
 - [Runtime e buffers gráficos](docs/runtime-performance.md)
 - [Diagnósticos e compatibilidade com o core Java](docs/java-diagnostics.md)
 

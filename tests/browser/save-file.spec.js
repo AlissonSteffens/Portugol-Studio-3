@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures.js';
 import { setEditorCode } from './helpers/editor.js';
 
 test.beforeEach(async ({ page }) => {
@@ -13,7 +13,7 @@ test.beforeEach(async ({ page }) => {
       }) };
     };
   });
-  await page.goto('/');
+  await page.goto('/app/');
   await page.getByRole('button', { name: 'Mostrar editor', exact: true }).click();
   await setEditorCode(page, 'programa { funcao inicio() { escreva("Salvar") } }');
 });
@@ -51,7 +51,8 @@ test('recursos e exportação também usam o seletor de destino', async ({ page 
   await page.getByRole('button', { name: 'Salvar arquivo como…', exact: true }).click();
   await expect.poll(() => page.evaluate(() => window.savedFiles[0])).toBe('Conteúdo do recurso');
   expect(await page.evaluate(() => window.pickerOptions.suggestedName)).toBe('recurso.txt');
-  await page.getByRole('button', { name: 'Exportar projeto', exact: true }).click();
+  await page.getByRole('navigation', { name: 'Menu principal' }).getByRole('button', { name: 'Arquivo', exact: true }).click();
+  await page.getByRole('menuitem', { name: /Exportar projeto/ }).click();
   await page.getByRole('dialog', { name: 'Exportar projeto' }).getByRole('button', { name: 'Exportar projeto', exact: true }).click();
   await expect(page.getByRole('status')).toContainText('Arquivo salvo');
   expect(await page.evaluate(() => window.savedFiles[1])).toContain('<!doctype html>');

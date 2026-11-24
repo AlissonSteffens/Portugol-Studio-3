@@ -1,7 +1,7 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures.js';
 
 test('cores inteiras preservam RGB e trocar de documento limpa o gráfico anterior', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/app/');
   await page.getByRole('button', { name: 'Mostrar editor', exact: true }).click();
   await page.locator('.cm-content').fill(`programa {
     inclua biblioteca Graficos --> g
@@ -27,7 +27,7 @@ test('cores inteiras preservam RGB e trocar de documento limpa o gráfico anteri
   expect(pixels[0]).toEqual([255, 255, 255, 255]);
   const rgb = -4046236;
   expect(pixels[1]).toEqual([(rgb >>> 16) & 255, (rgb >>> 8) & 255, rgb & 255, 255]);
-  await page.getByRole('tab', { name: 'Início', exact: true }).click();
+  await page.getByRole('button', { name: 'Tela inicial', exact: true }).click();
   await page.getByRole('button', { name: /Novo programa/ }).click();
   await expect(page.getByText('● Pronto')).toBeVisible();
   const canvas = page.locator('canvas');

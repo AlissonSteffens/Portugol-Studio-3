@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures.js';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -11,7 +11,7 @@ test.beforeEach(async ({ page }) => {
 test('site estático persiste recursos de abas, executa e exporta sem API', async ({ page, context }) => {
   const apiRequests = [];
   page.on('request', request => { if (new URL(request.url()).pathname.includes('/api/')) apiRequests.push(request.url()); });
-  await page.goto('./');
+  await page.goto('./app/');
   await expect(page.locator('.brand-logo')).toBeVisible();
   await expect.poll(() => page.locator('.brand-logo').evaluate(image => image.complete && image.naturalWidth > 0)).toBe(true);
   await page.getByRole('button', { name: 'Mostrar editor', exact: true }).click();
@@ -25,7 +25,8 @@ test('site estático persiste recursos de abas, executa e exporta sem API', asyn
   await page.getByRole('button', { name: 'Executar programa', exact: true }).click();
   await expect(page.getByLabel('Terminal de execução')).toContainText('Sem API');
   expect(await page.locator('canvas').evaluate(c => Array.from(c.getContext('2d').getImageData(0, 0, 1, 1).data))).toEqual([255, 0, 0, 255]);
-  await page.getByRole('button', { name: 'Exportar projeto', exact: true }).click();
+  await page.getByRole('navigation', { name: 'Menu principal' }).getByRole('button', { name: 'Arquivo', exact: true }).click();
+  await page.getByRole('menuitem', { name: /Exportar projeto/ }).click();
   await expect(page.getByText('HTML independente', { exact: true })).toBeVisible();
   const pending = page.waitForEvent('download');
   await page.getByRole('dialog', { name: 'Exportar projeto' }).getByRole('button', { name: 'Exportar projeto', exact: true }).click();
@@ -42,4 +43,14 @@ test('site estático persiste recursos de abas, executa e exporta sem API', asyn
   await expect(page.frameLocator('.help-reader iframe').getByRole('heading', { name: 'Linguagem Portugol', exact: true })).toBeVisible();
   await expect(page.frameLocator('.help-reader iframe').locator('pre')).toBeVisible();
   expect(apiRequests).toEqual([]);
+});
+
+test('página inicial na subpasta leva à IDE e carrega seus arquivos', async ({ page }) => {
+  await page.goto('./');
+  await expect.poll(() => page.locator('.screenshot img').evaluate(image => image.complete && image.naturalWidth > 0)).toBe(true);
+  // Runs under both the root and the GitHub Pages base; the IDE sits next to the home page.
+  const ide = new URL('app/', page.url()).href;
+  await page.getByRole('link', { name: 'Usar no navegador' }).click();
+  await expect(page).toHaveURL(ide);
+  await expect(page.getByRole('button', { name: 'Mostrar editor', exact: true })).toBeVisible();
 });

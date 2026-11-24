@@ -1,7 +1,7 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures.js';
 
 test('buffers mantêm camadas, transparência e conteúdo após voltar à janela', async ({ page }) => {
-  await page.goto('/'); await page.getByRole('button', { name: 'Mostrar editor', exact: true }).click();
+  await page.goto('/app/'); await page.getByRole('button', { name: 'Mostrar editor', exact: true }).click();
   await page.locator('.cm-content').fill(`programa {
     inclua biblioteca Graficos --> g
     funcao inicio() {

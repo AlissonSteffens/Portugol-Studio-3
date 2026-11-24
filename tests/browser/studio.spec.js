@@ -1,8 +1,8 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures.js';
 test('editor executa, recebe entrada e restaura o mesmo canvas da aba gráfica', async ({ page }) => {
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
-  await page.goto('/'); await page.getByRole('button', { name: 'Mostrar editor', exact: true }).click();
+  await page.goto('/app/'); await page.getByRole('button', { name: 'Mostrar editor', exact: true }).click();
   await page.getByRole('button', { name: 'Executar programa', exact: true }).click();
   await expect(page.getByLabel('Terminal de execução')).toContainText('Olá, mundo!');
   await expect(page.getByText('● Concluído')).toBeVisible();
@@ -11,7 +11,8 @@ test('editor executa, recebe entrada e restaura o mesmo canvas da aba gráfica',
   const input = page.getByLabel('Terminal de execução').locator('input');
   await input.fill('Maria'); await input.press('Enter');
   await expect(page.getByLabel('Terminal de execução')).toContainText('Olá, Maria');
-  await page.getByRole('button', { name: 'Mostrar gráfico', exact: true }).click();
+  await page.getByRole('navigation', { name: 'Menu principal' }).getByRole('button', { name: 'Exibir', exact: true }).click();
+  await page.getByRole('menuitemcheckbox', { name: 'Gráfico no painel' }).click();
   const popupPromise = page.waitForEvent('popup');
   await page.getByRole('button', { name: 'Abrir em nova aba' }).click();
   const popup = await popupPromise;
@@ -30,7 +31,7 @@ test('editor executa, recebe entrada e restaura o mesmo canvas da aba gráfica',
 
 test('arquivo gerado pelo Portugol persiste após recarregar; imagem enviada é desenhada', async ({ page, request }) => {
   const source = 'programa {\n inclua biblioteca Arquivos --> a\n funcao inicio() {\n inteiro h = a.abrir_arquivo("resultado-teste.txt", a.MODO_ESCRITA)\n a.escrever_linha("Persistente!", h)\n a.fechar_arquivo(h)\n }\n }';
-  await page.goto('/'); await page.getByRole('button', { name: 'Mostrar editor', exact: true }).click(); await page.locator('.cm-content').fill(source);
+  await page.goto('/app/'); await page.getByRole('button', { name: 'Mostrar editor', exact: true }).click(); await page.locator('.cm-content').fill(source);
   await page.getByRole('button', { name: 'Executar programa', exact: true }).click();
   await expect(page.getByText('● Concluído')).toBeVisible();
   await page.getByRole('button', { name: 'Mostrar recursos', exact: true }).click();

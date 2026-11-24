@@ -1,13 +1,13 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures.js';
 
 test('lateral única, árvore expansível, valores de vetor e saída sob demanda', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto('/');
+  await page.goto('/app/');
   await page.getByRole('button', { name: 'Mostrar editor', exact: true }).click();
   await expect(page.locator('.workspace-output')).toBeHidden();
   await expect(page.locator('.workspace-repository')).toBeHidden();
   await page.locator('.cm-content').fill('programa {\n const real PI = 3.14\n funcao inteiro dobro(inteiro numero) { retorne numero * 2 }\n funcao inicio() {\n inteiro notas[3] = {7, 8, 9}\n inteiro total = dobro(notas[0])\n escreva(total, PI)\n }\n}');
-  await page.getByRole('button', { name: 'Árvore do código', exact: true }).click();
+  await page.getByRole('button', { name: 'Mostrar árvore', exact: true }).click();
   await expect(page.getByRole('tree', { name: 'Símbolos do programa' })).toBeVisible();
   await page.getByRole('button', { name: 'Recolher dobro', exact: true }).click();
   await expect(page.getByRole('treeitem', { name: 'numero', exact: true })).toBeHidden();
@@ -26,7 +26,7 @@ test('lateral única, árvore expansível, valores de vetor e saída sob demanda
   await expect(page.getByRole('tree')).toHaveCount(0);
   await page.getByRole('button', { name: 'Mostrar árvore', exact: true }).click();
   await expect(page.locator('.workspace-repository')).toBeHidden();
-  await page.getByRole('button', { name: 'Recolher painéis de execução', exact: true }).click();
+  await page.getByRole('button', { name: 'Recolher terminal', exact: true }).click();
   await page.setViewportSize({ width: 390, height: 844 });
   await page.getByRole('button', { name: 'Ferramentas', exact: true }).click();
   await expect(page.getByRole('tree')).toBeVisible();

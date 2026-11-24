@@ -1,6 +1,8 @@
 import QuickFix from './QuickFix.jsx';
 import { useRef, useState } from 'react';
-import { ChevronRight, CircleAlert, TriangleAlert, CheckCheck, FunctionSquare, Variable, Diamond, Brackets, FolderCode, Files, ListTree, PanelRightClose } from 'lucide-react';
+import { ChevronRight, CircleAlert, TriangleAlert, CheckCheck, FunctionSquare, Variable, Diamond, Brackets, FolderCode, ListTree, Files, X } from 'lucide-react';
+
+export const panelTitles = { symbols: 'Estrutura', messages: 'Problemas', resources: 'Recursos' };
 
 function SymbolTree({ symbols, values, onNavigate }) {
   const [closed, setClosed] = useState(new Set()), [openedArrays, setOpenedArrays] = useState(new Set()), [selected, setSelected] = useState(null);
@@ -40,14 +42,17 @@ function SymbolTree({ symbols, values, onNavigate }) {
   return <ul ref={tree} role="tree" aria-label="Símbolos do programa" className="symbol-tree">{globals.length > 0 && render({ id: 'globals', name: 'Variáveis globais', group: true, children: globals })}{functions.length > 0 && render({ id: 'functions', name: 'Funções', group: true, children: functions })}</ul>;
 }
 
+// The editor's side panel: one tool at a time, chosen by the segmented control in its header.
 export default function CodeInspector({ code, diagnostics, symbols, values, onNavigate, busy, paused, onFix, tab, onTabChange, onCollapse, resources }) {
   const [filter, setFilter] = useState('all');
   const errors = diagnostics.filter(item => item.severity === 'error').length, warnings = diagnostics.length - errors;
   const line = from => code.slice(0, from).split('\n').length;
-  const tabs = [{ id: 'messages', label: 'Mensagens', icon: CircleAlert }, { id: 'symbols', label: 'Árvore do código', icon: ListTree }, { id: 'resources', label: 'Recursos', icon: Files }];
   const visible = diagnostics.filter(item => filter === 'all' || filter === item.severity);
-  return <aside className="code-inspector" aria-label="Ferramentas do programa">
-    <nav className="inspector-tabs" aria-label="Ferramentas do programa">{tabs.map(item => <button key={item.id} aria-label={item.label} aria-pressed={tab === item.id} title={item.label} onClick={() => onTabChange(item.id)}><item.icon size={15}/><span>{item.id === 'symbols' ? 'Árvore' : item.label}</span>{item.id === 'messages' && diagnostics.length > 0 && <span className={`inspector-badge ${errors ? 'has-errors' : ''}`}>{diagnostics.length}</span>}</button>)}<button className="inspector-close" aria-label="Recolher lateral" title="Recolher lateral" onClick={onCollapse}><PanelRightClose size={15}/></button></nav>
+  return <aside className="code-inspector" aria-label={panelTitles[tab]}>
+    <header className="side-panel-heading">
+      <div className="tool-switch" role="group" aria-label="Ferramentas do programa">{[{ id: 'symbols', label: 'Mostrar árvore', icon: ListTree }, { id: 'messages', label: 'Mostrar mensagens', icon: CircleAlert }, { id: 'resources', label: 'Mostrar recursos', icon: Files }].map(item => <button key={item.id} aria-label={item.label} title={panelTitles[item.id]} aria-pressed={tab === item.id} onClick={() => onTabChange(item.id)}><item.icon size={14} aria-hidden="true"/><span>{panelTitles[item.id]}</span>{item.id === 'messages' && diagnostics.length > 0 && <span className={'tool-badge' + (errors ? ' has-errors' : '')}>{diagnostics.length}</span>}</button>)}</div>
+      <button className="side-panel-close" aria-label="Fechar painel" title="Ocultar painel" onClick={onCollapse}><X size={15}/></button>
+    </header>
     {tab === 'messages' && <><div className="message-filters">{[['all', 'Todas'], ['error', `${errors} ${errors === 1 ? 'erro' : 'erros'}`], ['warning', `${warnings} ${warnings === 1 ? 'aviso' : 'avisos'}`]].map(([id, label]) => <button key={id} aria-pressed={filter === id} onClick={() => setFilter(id)}>{label}</button>)}</div><div className="inspector-content" aria-live="polite">{visible.map((item, index) => <div key={index} data-diagnostic-code={item.code} className={`diagnostic-row ${item.severity}`} ><button className="diagnostic-main" onClick={() => onNavigate(item.from)}><span className="diagnostic-icon">{item.severity === 'error' ? <CircleAlert size={15}/> : <TriangleAlert size={15}/>}</span><span className="diagnostic-description"><strong>{item.severity === 'error' ? 'Erro' : 'Aviso'} <small>Linha {line(item.from)}</small></strong><span>{item.message}</span></span></button><QuickFix fixes={item.fixes} disabled={busy} onFix={onFix}/></div>)}{!visible.length && <div className="inspector-empty"><CheckCheck size={27}/><strong>{diagnostics.length ? 'Nenhuma mensagem neste filtro' : 'Tudo certo por aqui'}</strong><span>{diagnostics.length ? 'Escolha outro filtro para ver as mensagens.' : 'Os erros e avisos aparecem aqui enquanto você escreve.'}</span></div>}</div></>}
     <div className={`inspector-tree-section ${tab === 'symbols' ? '' : 'hidden'}`}><div className="inspector-caption"><span className={busy ? 'tree-live-dot is-live' : 'tree-live-dot'}/>{busy ? 'Valores em execução' : Object.keys(values).length ? 'Últimos valores da execução' : 'Estrutura do programa'}</div><div className="inspector-content tree-content">{paused && <div className="debug-stack"><strong>Pilha de chamadas</strong>{[...paused.frames].reverse().map((frame, index) => <details key={index} open={index === 0}><summary>{frame.name}() · linha {line(frame.from || paused.from)}</summary>{frame.symbols.map(symbol => <div key={symbol.from}>{symbol.name}<code>{JSON.stringify(symbol.value) ?? "—"}</code></div>)}</details>)}</div>}<SymbolTree symbols={symbols} values={values} onNavigate={onNavigate}/>{!symbols.length && <div className="inspector-empty"><ListTree size={27}/><span>A árvore aparece quando o código pode ser analisado.</span></div>}</div></div>
     <div className={`workspace-repository ${tab === 'resources' ? '' : 'hidden'}`}>{resources}</div>

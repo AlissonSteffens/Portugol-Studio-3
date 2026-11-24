@@ -1,8 +1,8 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures.js';
 import { restoreExecutionWindow } from './helpers/execution-window.js';
 
 test('fix discreto no painel e menu de correção no hover', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/app/');
   await page.getByRole('button', { name: 'Mostrar editor', exact: true }).click();
   const editor = page.locator('.cm-content');
   await editor.fill('programa {\n funcao inicio() {\n inteiro a = 3.45\n escreva(a)\n }\n}');
@@ -22,7 +22,7 @@ test('fix discreto no painel e menu de correção no hover', async ({ page }) =>
 
 test('recursos ocupam a lateral e se adaptam à largura e ao celular', async ({ page }) => {
   await page.setViewportSize({ width: 1080, height: 720 });
-  await page.goto('/');
+  await page.goto('/app/');
   await page.getByRole('button', { name: 'Mostrar editor', exact: true }).click();
   await page.getByRole('button', { name: 'Mostrar recursos', exact: true }).click();
   await page.locator('input[type=file][multiple]').setInputFiles({ name: 'arquivo-com-nome-bem-longo-para-verificar-o-layout.txt', mimeType: 'text/plain', buffer: Buffer.from('teste') });
@@ -46,7 +46,7 @@ test('recursos ocupam a lateral e se adaptam à largura e ao celular', async ({ 
 
 test('aba de execução anima com o editor suspenso, recebe leia e restaura os elementos', async ({ page }) => {
   const errors = []; page.on('pageerror', error => errors.push(error.message));
-  await page.goto('/');
+  await page.goto('/app/');
   await page.getByRole('button', { name: 'Mostrar editor', exact: true }).click();
   await page.locator('.cm-content').fill(`programa {
     inclua biblioteca Graficos --> g
@@ -93,23 +93,22 @@ test('aba de execução anima com o editor suspenso, recebe leia e restaura os e
   expect(errors).toEqual([]);
 });
 
-test('fechar a aba durante leia devolve a entrada e parar cancela frames na nova aba', async ({ page }) => {
+test('fechar a aba durante leia encerra o programa e parar cancela frames na nova aba', async ({ page }) => {
   const errors = []; page.on('pageerror', error => errors.push(error.message));
-  await page.goto('/');
+  await page.goto('/app/');
   await page.getByRole('button', { name: 'Mostrar editor', exact: true }).click();
   await page.locator('.cm-content').fill('programa { inclua biblioteca Graficos --> g funcao inicio() { inteiro valor g.iniciar_modo_grafico() leia(valor) escreva(valor) } }');
   await page.getByRole('button', { name: 'Executar programa', exact: true }).click();
   await expect(page.getByLabel('Terminal de execução').locator('input')).toBeVisible();
-  await page.getByRole('button', { name: 'Mostrar gráfico', exact: true }).click();
+  // Graphics programs already show the panel; the tab holds the game and its terminal.
   let popupPromise = page.waitForEvent('popup');
   await page.getByRole('button', { name: 'Abrir em nova aba' }).click();
   let popup = await popupPromise;
   await expect(popup.getByLabel('Terminal de execução').locator('input')).toBeVisible();
+  // Closing the execution tab ends the program, like closing a game window.
   await popup.close();
-  const input = page.getByLabel('Terminal de execução').locator('input');
-  await expect(input).toBeVisible(); await input.fill('7'); await input.press('Enter');
-  await expect(page.getByText('● Concluído')).toBeVisible();
-  await expect(page.getByLabel('Terminal de execução')).toContainText('7');
+  await expect(page.getByText('● Interrompido')).toBeVisible();
+  await expect(page.getByLabel('Terminal de execução').locator('input')).toHaveCount(0);
   await page.locator('.cm-content').fill('programa { inclua biblioteca Graficos --> g funcao inicio() { g.iniciar_modo_grafico() enquanto (verdadeiro) { g.renderizar() } } }');
   await page.getByRole('button', { name: 'Executar programa', exact: true }).click();
   popupPromise = page.waitForEvent('popup');

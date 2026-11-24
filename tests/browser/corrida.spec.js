@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures.js';
 
 for (const detached of [false, true]) test(`corrida anima pixels da pista e sprites com WASD ${detached ? 'em outra aba' : 'no painel'}`, async ({ page, context }) => {
   test.setTimeout(45000);
@@ -28,7 +28,7 @@ for (const detached of [false, true]) test(`corrida anima pixels da pista e spri
       return result;
     };
   });
-  await page.goto('/');
+  await page.goto('/app/');
   await page.getByLabel('Buscar exemplos').fill('corrida');
   await page.getByRole('button', { name: /Corrida/ }).click();
   await page.getByRole('button', { name: 'Executar programa', exact: true }).click();
@@ -39,6 +39,8 @@ for (const detached of [false, true]) test(`corrida anima pixels da pista e spri
     game = await popup;
   }
   await expect(game.getByText('W / ↑ acelerar · A D / ← → virar · S / Espaço frear', { exact: true })).toBeVisible();
+  // The panel shows up as soon as Executar is clicked; keys only count once the runtime exists.
+  await expect(page.locator('.ide-status')).toContainText('Executando');
   await game.getByLabel('Tela gráfica Portugol').focus();
   await game.keyboard.down('w');
   // The runtime draws from the owner's window, but the drawing context belongs
@@ -65,14 +67,14 @@ for (const detached of [false, true]) test(`corrida anima pixels da pista e spri
 });
 
 test('corrida recebe foco, passa pela largada e responde a acelerar, virar e frear', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/app/');
   await page.getByLabel('Buscar exemplos').fill('corrida');
   await page.getByRole('button', { name: /Corrida/ }).click();
   await page.getByRole('button', { name: 'Executar programa', exact: true }).click();
   const canvas = page.getByLabel('Tela gráfica Portugol');
   await expect(canvas).toBeFocused();
   expect((await canvas.boundingBox()).height).toBeGreaterThan(200);
-  await page.getByRole('button', { name: 'Árvore do código', exact: true }).click();
+  await page.getByRole('button', { name: 'Mostrar árvore', exact: true }).click();
   await page.getByRole('button', { name: 'Expandir carro_jogador', exact: true }).click();
   const car = page.getByRole('treeitem', { name: 'carro_jogador', exact: true });
   const value = index => car.getByRole('treeitem', { name: `[${index}]`, exact: true }).locator('.symbol-value').textContent().then(Number);

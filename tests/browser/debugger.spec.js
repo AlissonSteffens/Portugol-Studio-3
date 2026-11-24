@@ -1,7 +1,7 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures.js';
 
 test('corrigir, desfazer, buscar e depurar com valores reais', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/app/');
   await page.getByRole('button', { name: 'Mostrar editor', exact: true }).click();
   const editor = page.locator('.cm-content');
   await editor.fill('programa {\n funcao inicio() {\n inteiro a = 3.45\n escreva(a)\n }\n}');
@@ -37,7 +37,7 @@ test('corrigir, desfazer, buscar e depurar com valores reais', async ({ page }) 
 });
 
 test('ponto de parada e cancelamento de execução pausada', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/app/');
   await page.getByRole('button', { name: 'Mostrar editor', exact: true }).click();
   await page.locator('.cm-content').fill('programa {\n funcao inicio() {\n inteiro a = 0\n a++\n a++\n }\n}');
   await page.locator('.debug-gutter .cm-gutterElement').nth(4).click();

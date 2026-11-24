@@ -19,13 +19,17 @@ const detachedStyle = `
   .execution-stage{display:flex;align-items:center;justify-content:center;flex:1;min-height:0;overflow:auto;padding:12px;background:#151515}
   canvas{max-width:100%;max-height:100%;object-fit:contain;outline:none;flex-shrink:0}canvas:focus-visible{box-shadow:0 0 0 2px #ffc200}
   .execution-terminal{flex:0 1 25%;min-height:95px;display:flex;flex-direction:column;border-top:1px solid #303030;overflow:hidden}
-  .terminal-title{padding:7px 14px;background:#202020;color:#92959c;font-size:11px}
+  .execution-terminal[data-collapsed=true]{flex:0 0 auto;min-height:0}.execution-terminal[data-collapsed=true] .terminal{display:none}
+  .terminal-title{display:flex;width:100%;padding:7px 14px;border:0;border-radius:0;background:#202020;color:#92959c;font-size:11px}
   .terminal{flex:1;min-height:0;padding:10px 14px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.7 Consolas,monospace;color:#b7d6bd}
   .terminal input{background:#181818;color:#dfe1e5;border:1px solid #454545;padding:5px 8px;max-width:100%;font:inherit;border-radius:4px;outline:none}.terminal input:focus{border-color:#ffc200}
+  .execution-error{flex-basis:100%;margin:0;padding:8px 10px;border:1px solid #f8717166;border-radius:4px;background:#450a0a66;color:#fecaca;font-size:12px}
   @media(max-width:480px){header .execution-actions{margin-left:0}.execution-stage{padding:6px}.execution-terminal{flex-basis:30%}}
 `;
 
-export default function Graphics({ onCollapse, canvas, runtimeRef, terminalRef, title, resolution, status, busy, paused, onStop, onDetachedChange, onError, controls, inputProfile, inputEnabled }) {
+// Programs with graphics run in a separate tab (web) or window (desktop). The IDE opens it
+// synchronously from the click that starts the program, so browsers do not block it.
+export default function Graphics({ onCollapse, canvas, runtimeRef, terminalRef, title, resolution, status, busy, paused, onStop, onDetachedChange, onWindowClosed, onError, error, controls, inputProfile, inputEnabled, controlRef, place = 'aba' }) {
   const host = useRef(), external = useRef();
   const [detached, setDetached] = useState(false);
   function restore(notify = true) {
@@ -45,9 +49,9 @@ export default function Graphics({ onCollapse, canvas, runtimeRef, terminalRef, 
     return () => { restore(false); canvas.remove(); };
   }, [canvas]);
   function detach() {
-    if (external.current && !external.current.target.closed) { external.current.target.focus(); return; }
+    if (external.current && !external.current.target.closed) { external.current.target.focus(); return true; }
     const target = window.open('about:blank', '_blank');
-    if (!target) { onError(new Error('O navegador bloqueou a aba. Permita pop-ups para abrir a execução.')); return; }
+    if (!target) { onError(new Error('O navegador bloqueou a aba de execução. Permita pop-ups para este site ou use Exibir › Gráfico no painel.')); return false; }
     const doc = target.document;
     doc.documentElement.lang = 'pt-BR'; doc.title = title + ' — Portugol Studio';
     const style = doc.createElement('style'); style.textContent = detachedStyle; doc.head.append(style);
@@ -55,24 +59,28 @@ export default function Graphics({ onCollapse, canvas, runtimeRef, terminalRef, 
     const controls = doc.createElement('header'), stage = doc.createElement('main'); stage.className = 'execution-stage'; stage.setAttribute('aria-label', 'Execução gráfica');
     const touchHost = doc.createElement('div');
     const terminalHost = doc.createElement('section'); terminalHost.className = 'execution-terminal';
-    const caption = doc.createElement('div'); caption.className = 'terminal-title'; caption.textContent = 'Terminal'; terminalHost.append(caption);
+    const caption = doc.createElement('button'); caption.className = 'terminal-title'; caption.textContent = '▾ Terminal'; caption.setAttribute('aria-expanded', 'true');
+    caption.onclick = () => { const collapsed = terminalHost.dataset.collapsed !== 'true'; terminalHost.dataset.collapsed = collapsed; caption.setAttribute('aria-expanded', String(!collapsed)); caption.textContent = (collapsed ? '▸' : '▾') + ' Terminal'; };
+    terminalHost.append(caption);
     doc.body.append(controls, stage, touchHost, terminalHost);
     const terminal = terminalRef.current, anchor = terminal.ownerDocument.createComment('terminal na aba de execução');
     terminal.before(anchor); stage.append(canvas); terminalHost.append(terminal);
-    const onClose = () => restore();
+    const onClose = () => { restore(); onWindowClosed?.(); };
     external.current = { target, controls, touchHost, terminal, anchor, onClose };
     runtimeRef.current?.bindInputWindow(target);
     runtimeRef.current?.setPresentationWindow(target);
     target.addEventListener('pagehide', onClose, { once: true });
     target.focus(); canvas.focus(); setDetached(true); onDetachedChange?.(true);
+    return true;
   }
+  if (controlRef) controlRef.current = { detach, restore: () => restore(), isDetached: () => !!external.current && !external.current.target.closed };
   useEffect(() => { if (external.current) external.current.target.document.title = title + ' — Portugol Studio'; }, [title]);
   const touchControls = <TouchControls runtimeRef={runtimeRef} profile={inputProfile} enabled={busy && !paused && (detached || inputEnabled)} status={status}/>;
   return <section className="panel graphics-panel overflow-hidden">
-    <div className="panel-heading"><span>▣ &nbsp; {title}</span><span className="flex items-center gap-3"><small className="text-slate-400">{resolution}</small><button disabled={!busy} onClick={() => runtimeRef.current?.Graficos.entrar_modo_tela_cheia()}>Tela cheia</button><button onClick={detached ? () => restore() : detach}>{detached ? 'Trazer para o painel' : 'Abrir em nova aba ↗'}</button><button aria-label="Recolher gráfico" title="Recolher gráfico" onClick={onCollapse}><ChevronDown size={14}/></button></span></div>
+    <div className="panel-heading"><span>▣ &nbsp; {title}</span><span className="flex items-center gap-3"><small className="text-slate-400">{resolution}</small><button disabled={!busy} onClick={() => runtimeRef.current?.Graficos.entrar_modo_tela_cheia()}>Tela cheia</button><button onClick={detached ? () => restore() : detach}>{detached ? 'Trazer para o painel' : `Abrir em nova ${place} ↗`}</button><button aria-label="Recolher gráfico" title="Recolher gráfico" onClick={onCollapse}><ChevronDown size={14}/></button></span></div>
     {controls && !detached && <p className="graphics-controls">{controls}</p>}
     <div ref={host} className={'canvas-host ' + (detached ? 'hidden' : '')}/>
     {detached ? createPortal(touchControls, external.current.touchHost) : touchControls}
-    {detached && <><div className="detached-notice"><ExternalLink size={22}/><span>Execução aberta em outra aba</span><small>Gráfico, teclado, mouse e terminal continuam ativos.</small><button onClick={detach}>Ir para a aba ↗</button></div>{createPortal(<><strong>{title}</strong><small>{resolution} · {status}</small>{controls && <small>{controls}</small>}<div className="execution-actions"><button disabled={!busy} onClick={() => runtimeRef.current?.Graficos.entrar_modo_tela_cheia()}>Tela cheia</button><button disabled={!busy} onClick={onStop}><Square size={13}/>Parar execução</button><button onClick={() => restore()}><Undo2 size={13}/>Trazer para o editor</button></div></>, external.current.controls)}</>}
+    {detached && <><div className="detached-notice"><ExternalLink size={22}/><span>Execução aberta em outra {place}</span><small>Gráfico, teclado, mouse e terminal estão nela. Fechar a {place} encerra o programa.</small><span className="detached-actions"><button onClick={detach}>Ir para a {place} ↗</button><button onClick={() => restore()}>Trazer para o editor</button></span></div>{createPortal(<><strong>{title}</strong><small>{resolution} · {status}</small>{controls && <small>{controls}</small>}<div className="execution-actions"><button disabled={!busy} onClick={() => runtimeRef.current?.Graficos.entrar_modo_tela_cheia()}>Tela cheia</button><button disabled={!busy} onClick={onStop}><Square size={13}/>Parar execução</button><button onClick={() => restore()}><Undo2 size={13}/>Trazer para o editor</button></div>{error && <p role="alert" className="execution-error">{error}</p>}</>, external.current.controls)}</>}
   </section>;
 }

@@ -1,2 +1,183 @@
 <!doctype html>
-<html lang="pt-BR"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/><link rel="icon" type="image/png" href="%BASE_URL%portugol-logo.png"/><title>Portugol Studio Web</title></head><body><div id="root"></div><script type="module" src="/ide/src/main.jsx"></script></body></html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <meta name="description" content="Portugol Studio: escreva, execute e depure programas em Portugol. Use no navegador ou instale no Windows, macOS e Linux."/>
+  <meta name="theme-color" content="#181818"/>
+  <link rel="icon" type="image/png" href="%BASE_URL%portugol-logo.png"/>
+  <title>Portugol Studio — aprenda a programar em português</title>
+  <script type="module" src="/site/landing.js"></script>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="i-play" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></symbol>
+      <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></symbol>
+      <symbol id="i-code" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></symbol>
+      <symbol id="i-step" viewBox="0 0 24 24"><line x1="6" x2="6" y1="4" y2="20"/><polygon points="10 4 20 12 10 20 10 4"/></symbol>
+      <symbol id="i-gamepad" viewBox="0 0 24 24"><line x1="6" x2="10" y1="12" y2="12"/><line x1="8" x2="8" y1="10" y2="14"/><line x1="15" x2="15.01" y1="13" y2="13"/><line x1="18" x2="18.01" y1="11" y2="11"/><rect width="20" height="12" x="2" y="6" rx="2"/></symbol>
+      <symbol id="i-phone" viewBox="0 0 24 24"><rect width="14" height="20" x="5" y="2" rx="2"/><path d="M12 18h.01"/></symbol>
+      <symbol id="i-book" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></symbol>
+      <symbol id="i-share" viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" x2="12" y1="2" y2="15"/></symbol>
+      <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></symbol>
+      <symbol id="i-monitor" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+      <symbol id="i-class" viewBox="0 0 24 24"><path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/></symbol>
+      <symbol id="i-github" viewBox="0 0 24 24"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></symbol>
+    </defs>
+  </svg>
+
+  <header class="site-header">
+    <nav class="container nav" aria-label="Principal">
+      <a class="brand" href="%BASE_URL%"><img src="%BASE_URL%portugol-logo.png" alt="" width="28" height="28"/><span>Portugol Studio</span></a>
+      <div class="nav-links">
+        <a href="#recursos">Recursos</a>
+        <a href="#download">Download</a>
+        <a href="#ensine">Ensine</a>
+        <a href="https://github.com/AlissonSteffens/Portugol-Studio-3" aria-label="Código-fonte no GitHub"><svg class="icon"><use href="#i-github"/></svg></a>
+      </div>
+      <a class="button button-small" href="%BASE_URL%app/">Abrir a IDE</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-inner">
+        <img class="hero-logo" src="%BASE_URL%portugol-logo.png" alt="" width="88" height="88"/>
+        <p class="eyebrow">Portugol Studio</p>
+        <h1>Aprenda a programar em português.</h1>
+        <p class="lead">Um ambiente completo para escrever, executar e depurar programas em Portugol. Use direto no navegador ou instale no computador. É gratuito.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="%BASE_URL%app/" data-action="open-app"><svg class="icon"><use href="#i-play"/></svg>Usar no navegador</a>
+          <a class="button button-secondary" href="#versoes" data-download-primary><svg class="icon"><use href="#i-download"/></svg><span>Baixar para o computador</span></a>
+        </div>
+        <p class="hero-note" data-download-note>Para Windows, macOS e Linux · <a href="#versoes">outras versões</a></p>
+      </div>
+      <div class="container">
+        <figure class="screenshot">
+          <img src="%BASE_URL%site/ide.webp" alt="A IDE do Portugol Studio com o editor de código, um jogo em execução e o terminal" width="1440" height="900"/>
+        </figure>
+      </div>
+    </section>
+
+    <section id="recursos" class="section">
+      <div class="container">
+        <h2>Tudo o que você precisa para começar</h2>
+        <p class="section-lead">Do primeiro <code>escreva("Olá, mundo!")</code> até um jogo completo, no mesmo lugar.</p>
+        <div class="features">
+          <article class="feature"><svg class="icon"><use href="#i-code"/></svg><h3>Editor que ajuda</h3><p>Destaque de sintaxe, sugestões de código e mensagens de erro em português, com dicas de correção. A árvore estrutural mostra as partes do programa.</p></article>
+          <article class="feature"><svg class="icon"><use href="#i-step"/></svg><h3>Depurador</h3><p>Execute passo a passo, use pontos de parada e acompanhe o valor de cada variável no inspetor.</p></article>
+          <article class="feature"><svg class="icon"><use href="#i-gamepad"/></svg><h3>Gráficos, sons e jogos</h3><p>Bibliotecas para desenhar, tocar sons e ler o teclado e o mouse permitem criar jogos de verdade.</p></article>
+          <article class="feature"><svg class="icon"><use href="#i-book"/></svg><h3>Exemplos e ajuda</h3><p>Mais de 120 exemplos, de entrada e saída a jogos, e a ajuda completa da linguagem e das bibliotecas.</p></article>
+          <article class="feature"><svg class="icon"><use href="#i-phone"/></svg><h3>Funciona no celular</h3><p>No celular e no tablet, os jogos ocupam a tela e ganham controles de toque, com joystick e botões.</p></article>
+          <article class="feature"><svg class="icon"><use href="#i-share"/></svg><h3>Compartilhe o que criou</h3><p>Exporte o programa como uma página HTML independente, que abre em qualquer navegador.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="download" class="section section-alt">
+      <div class="container">
+        <h2>Escolha como usar</h2>
+        <p class="section-lead">Os recursos são os mesmos nas duas versões, e os programas <code>.por</code> abrem em qualquer uma delas.</p>
+        <div class="modes">
+          <article class="mode">
+            <header>
+              <svg class="icon"><use href="#i-globe"/></svg>
+              <div><h3>No navegador</h3><p>Abra e comece a programar.</p></div>
+            </header>
+            <ul class="checks">
+              <li><svg class="icon"><use href="#i-check"/></svg>Nada para instalar</li>
+              <li><svg class="icon"><use href="#i-check"/></svg>No computador, no celular e no Chromebook</li>
+              <li><svg class="icon"><use href="#i-check"/></svg>Programas salvos no próprio navegador</li>
+              <li><svg class="icon"><use href="#i-check"/></svg>Sempre na versão mais recente</li>
+            </ul>
+            <a class="button button-primary" href="%BASE_URL%app/"><svg class="icon"><use href="#i-play"/></svg>Abrir no navegador</a>
+          </article>
+          <article class="mode">
+            <header>
+              <svg class="icon"><use href="#i-monitor"/></svg>
+              <div><h3>No computador</h3><p>Instale uma vez e use quando quiser.</p></div>
+            </header>
+            <ul class="checks">
+              <li><svg class="icon"><use href="#i-check"/></svg>Funciona sem internet</li>
+              <li><svg class="icon"><use href="#i-check"/></svg>Menus nativos e atalho no sistema</li>
+              <li><svg class="icon"><use href="#i-check"/></svg>Jogos abrem em uma janela própria</li>
+              <li><svg class="icon"><use href="#i-check"/></svg>Para Windows, macOS e Linux</li>
+            </ul>
+            <a class="button button-secondary" href="#versoes" data-download-card><svg class="icon"><use href="#i-download"/></svg><span>Ver downloads</span></a>
+          </article>
+        </div>
+
+        <div id="versoes" class="downloads">
+          <h3>Downloads para computador</h3>
+          <div class="platforms">
+            <div class="platform" data-os="windows">
+              <h4>Windows <span class="badge" hidden>Seu sistema</span></h4>
+              <p>Windows 10 e 11, 64 bits</p>
+              <a class="button button-secondary" href="https://github.com/AlissonSteffens/Portugol-Studio-3/releases/latest/download/Portugol-Studio-windows-x64.exe"><svg class="icon"><use href="#i-download"/></svg>Instalador (.exe)</a>
+              <div class="platform-links"><a class="link" href="https://github.com/AlissonSteffens/Portugol-Studio-3/releases/latest/download/Portugol-Studio-windows-x64.zip">Portátil (.zip)</a></div>
+            </div>
+            <div class="platform" data-os="macos">
+              <h4>macOS <span class="badge" hidden>Seu sistema</span></h4>
+              <p>Apple Silicon (M1 ou mais recente) e Intel</p>
+              <a class="button button-secondary" href="https://github.com/AlissonSteffens/Portugol-Studio-3/releases/latest/download/Portugol-Studio-macos-arm64.dmg"><svg class="icon"><use href="#i-download"/></svg>Apple Silicon (.dmg)</a>
+              <div class="platform-links"><a class="link" href="https://github.com/AlissonSteffens/Portugol-Studio-3/releases/latest/download/Portugol-Studio-macos-x64.dmg">Intel (.dmg)</a></div>
+            </div>
+            <div class="platform" data-os="linux">
+              <h4>Linux <span class="badge" hidden>Seu sistema</span></h4>
+              <p>64 bits</p>
+              <a class="button button-secondary" href="https://github.com/AlissonSteffens/Portugol-Studio-3/releases/latest/download/Portugol-Studio-linux-x64.AppImage"><svg class="icon"><use href="#i-download"/></svg>AppImage</a>
+              <div class="platform-links"><a class="link" href="https://github.com/AlissonSteffens/Portugol-Studio-3/releases/latest/download/Portugol-Studio-linux-x64.deb">Debian/Ubuntu (.deb)</a><a class="link" href="https://github.com/AlissonSteffens/Portugol-Studio-3/releases/latest/download/Portugol-Studio-linux-x64.tar.gz">.tar.gz</a></div>
+            </div>
+          </div>
+          <p class="fine-print">Todas as versões ficam em <a href="https://github.com/AlissonSteffens/Portugol-Studio-3/releases">Releases</a>. Os instaladores ainda não têm assinatura digital, então o sistema pode pedir uma confirmação na primeira vez: <a href="https://github.com/AlissonSteffens/Portugol-Studio-3/blob/main/docs/desktop.md#assinatura-de-código">veja como abrir</a>.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="ensine" class="section">
+      <div class="container split">
+        <div>
+          <h2>Para quem ensina</h2>
+          <p class="section-lead">Com o Portugol Studio, seus estudantes criam desde algoritmos simples até jogos completos, tudo em português. A linguagem é inspirada em C e simplifica as partes gráficas e matemáticas, para a aula focar na lógica.</p>
+        </div>
+        <ul class="teach">
+          <li><svg class="icon"><use href="#i-book"/></svg><div><h3>Exemplos por assunto</h3><p>Sequências, desvios, laços, vetores, funções, bibliotecas e jogos, prontos para abrir e modificar.</p></div></li>
+          <li><svg class="icon"><use href="#i-class"/></svg><div><h3>Execução visível em aula</h3><p>O depurador e o inspetor de variáveis mostram o que acontece em cada passo do programa.</p></div></li>
+          <li><svg class="icon"><use href="#i-share"/></svg><div><h3>Entregas fáceis</h3><p>Os estudantes salvam o arquivo <code>.por</code> ou exportam o projeto para enviar o trabalho.</p></div></li>
+        </ul>
+      </div>
+      <div class="container">
+        <figure class="shot">
+          <img src="%BASE_URL%site/exemplos.webp" alt="Tela inicial da IDE com a biblioteca de exemplos organizada por assunto" width="1280" height="760" loading="lazy"/>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section section-alt">
+      <div class="container origin">
+        <h2>Uma continuação do Portugol Studio</h2>
+        <p>O Portugol Studio foi criado pelo Laboratório de Inovação Tecnológica na Educação (LITE) da UNIVALI e é usado em escolas e universidades do Brasil e de outros países de língua portuguesa. Esta versão reconstrói o ambiente para a Web, com a mesma linguagem, as mesmas bibliotecas e os exemplos.</p>
+        <div class="origin-links">
+          <a class="link" href="https://github.com/UNIVALI-LITE/Portugol-Studio">Portugol Studio original</a>
+          <a class="link" href="http://lite.acad.univali.br/pt/">Conheça o LITE</a>
+          <a class="link" href="https://github.com/AlissonSteffens/Portugol-Studio-3">Código-fonte desta versão</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <a class="brand" href="%BASE_URL%"><img src="%BASE_URL%portugol-logo.png" alt="" width="22" height="22"/><span>Portugol Studio</span></a>
+      <nav aria-label="Rodapé">
+        <a href="%BASE_URL%app/">Abrir a IDE</a>
+        <a href="#download">Download</a>
+        <a href="https://github.com/AlissonSteffens/Portugol-Studio-3">GitHub</a>
+        <a href="https://github.com/AlissonSteffens/Portugol-Studio-3/blob/main/public/ajuda/ORIGEM.md">Origem da ajuda</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>

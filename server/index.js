@@ -10,7 +10,9 @@ http.createServer(async (req, res) => {
     const base = process.env.BASE_PATH || '/';
     if (!pathname.startsWith(base)) { res.writeHead(404); return res.end('Página não encontrada.'); }
     pathname = '/' + pathname.slice(base.length);
-    const target = path.resolve(root, '.' + (pathname === '/' ? '/index.html' : pathname));
+    // Like static hosts, serve folder indexes and add the trailing slash to folder URLs.
+    if (pathname === '/app') { res.writeHead(301, { Location: base + 'app/' }); return res.end(); }
+    const target = path.resolve(root, '.' + (pathname.endsWith('/') ? pathname + 'index.html' : pathname));
     if (!target.startsWith(root + path.sep)) { res.writeHead(403); return res.end(); }
     const data = await readFile(target);
     res.setHeader('Content-Type', types[path.extname(target)] || 'application/octet-stream');

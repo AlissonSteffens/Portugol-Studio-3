@@ -1,6 +1,6 @@
 # Publicação
 
-`npm run build` gera um site estático em `dist/`, incluindo runtime, exemplos e ajuda. Publique o conteúdo dessa pasta em uma hospedagem HTTP. A IDE não requer API, autenticação ou banco de dados remoto.
+`npm run build` gera um site estático em `dist/`, incluindo runtime, exemplos e ajuda. O site tem duas páginas: a página inicial (`index.html`, código em `site/`), com a apresentação e os downloads, e a IDE (`app/index.html`, código em `ide/`). Publique o conteúdo dessa pasta em uma hospedagem HTTP. A IDE não requer API, autenticação ou banco de dados remoto. Os prints da página inicial (`public/site/*.webp`) são gerados por `npm run screenshots`; rode de novo quando o visual da IDE mudar.
 
 ## GitHub Pages
 
@@ -35,7 +35,7 @@ npm run build
 npm start
 ```
 
-Abra http://127.0.0.1:3000. `PORT` e `HOST` configuram a porta e a interface. Esse servidor apenas entrega arquivos estáticos.
+Abra http://127.0.0.1:3000 (página inicial) ou http://127.0.0.1:3000/app/ (IDE). `PORT` e `HOST` configuram a porta e a interface. Esse servidor apenas entrega arquivos estáticos.
 
 Abrir o `index.html` da IDE por `file://` não substitui uma hospedagem HTTP. O HTML exportado de um programa é independente e pode ser aberto diretamente.
 

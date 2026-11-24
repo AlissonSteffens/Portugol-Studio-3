@@ -27,7 +27,7 @@ export default function MenuBar({ menus }) {
         if (event.target.tagName === 'INPUT') return;
         event.preventDefault(); const items = [...event.currentTarget.querySelectorAll('button:not(:disabled)')], position = items.indexOf(document.activeElement);
         items[event.key === 'Home' ? 0 : event.key === 'End' ? items.length - 1 : (position + (event.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length]?.focus();
-      }}>{menu.render ? menu.render(() => setOpen(null)) : menu.items.map((item, i) => item.separator ? <hr key={i} className="my-1 border-slate-600"/> : <button key={item.label} role="menuitem" disabled={item.disabled} className="flex w-full items-center justify-between gap-5 border-0 bg-transparent px-3 py-2 text-left" onClick={() => { setOpen(null); item.action(); }}><span>{item.label}</span><span className="text-[10px] text-slate-400">{item.shortcut}</span></button>)}</div>}
+      }}>{menu.render ? menu.render(() => setOpen(null)) : menu.items.map((item, i) => item.separator ? <hr key={i} className="my-1 border-slate-600"/> : <button key={item.label} role={item.checked === undefined ? 'menuitem' : 'menuitemcheckbox'} aria-checked={item.checked === undefined ? undefined : !!item.checked} disabled={item.disabled} className="flex w-full items-center justify-between gap-5 border-0 bg-transparent px-3 py-2 text-left" onClick={() => { setOpen(null); item.action(); }}><span>{item.checked !== undefined && <span className="menu-check" aria-hidden="true">{item.checked ? '✓' : ''}</span>}{item.label}</span><span className="text-[10px] text-slate-400">{item.shortcut}</span></button>)}</div>}
     </div>)}
   </nav>;
 }

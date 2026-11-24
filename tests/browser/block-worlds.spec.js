@@ -1,14 +1,14 @@
 import { writeFile } from 'node:fs/promises';
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures.js';
 import { restoreExecutionWindow } from './helpers/execution-window.js';
 
 async function openWorld(page, dimension) {
   await page.setViewportSize({ width: 1440, height: 1000 });
-  await page.goto('/');
+  await page.goto('/app/');
   await page.getByLabel('Buscar exemplos').fill(`Mundo de blocos ${dimension}`);
   await page.locator('.welcome-example-list').getByRole('button', { name: new RegExp(`Mundo de blocos ${dimension}`) }).click();
   await expect(page.locator('.diagnostic-row')).toHaveCount(0);
-  await page.getByRole('button', { name: 'Árvore do código', exact: true }).click();
+  await page.getByRole('button', { name: 'Mostrar árvore', exact: true }).click();
   await page.getByRole('button', { name: 'Executar programa', exact: true }).click();
   await expect(page.getByText('● Executando')).toBeVisible();
   return page.locator('canvas');

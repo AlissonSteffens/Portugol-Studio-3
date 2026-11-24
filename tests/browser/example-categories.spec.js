@@ -1,8 +1,8 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures.js';
 
 test('home preserva a árvore, expande subcategorias e busca no celular', async ({ page }) => {
   await page.setViewportSize({ width: 1920, height: 1080 });
-  await page.goto('/');
+  await page.goto('/app/');
   const tree = page.getByLabel('Categorias dos exemplos');
   const libraries = tree.getByRole('button', { name: /^Bibliotecas/ });
   await expect(libraries).toHaveAttribute('aria-expanded', 'false');

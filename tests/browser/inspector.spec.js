@@ -1,8 +1,8 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures.js';
 import { setEditorCode } from './helpers/editor.js';
 
 test('mensagens, navegação, sublinhados e valores da árvore', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/app/');
   await page.getByRole('button', { name: 'Mostrar editor', exact: true }).click();
   await setEditorCode(page, 'programa {\n funcao inicio() {\n inteiro sobra = 0\n escreva(naoDeclarada)\n }\n}');
   await expect(page.locator('.diagnostic-row.error')).toContainText('Símbolo não declarado');
@@ -14,7 +14,7 @@ test('mensagens, navegação, sublinhados e valores da árvore', async ({ page }
   await expect(page.locator('.ide-status')).toContainText('Lin 4');
   await setEditorCode(page, 'programa { funcao inicio() { inteiro valor = 2 valor += 3 } }');
   await expect(page.locator('.diagnostic-row')).toHaveCount(0);
-  await page.getByRole('button', { name: 'Árvore do código', exact: true }).click();
+  await page.getByRole('button', { name: 'Mostrar árvore', exact: true }).click();
   await page.getByRole('button', { name: 'Executar programa', exact: true }).click();
   await expect(page.getByText('● Concluído')).toBeVisible();
   await expect(page.locator('.symbol-value')).toHaveText('5');
@@ -23,10 +23,10 @@ test('mensagens, navegação, sublinhados e valores da árvore', async ({ page }
 
 test('valores durante leia e diagnóstico de execução na linha do código', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto('/');
+  await page.goto('/app/');
   await page.getByRole('button', { name: 'Mostrar editor', exact: true }).click();
   await setEditorCode(page, 'programa {\n funcao inicio() {\n inteiro valor = 2\n leia(valor)\n valor += 3\n }\n}');
-  await page.getByRole('button', { name: 'Árvore do código', exact: true }).click();
+  await page.getByRole('button', { name: 'Mostrar árvore', exact: true }).click();
   await page.getByRole('button', { name: 'Executar programa', exact: true }).click();
   await expect(page.getByText('● Executando')).toBeVisible();
   await expect(page.locator('.symbol-value')).toHaveText('2');
@@ -34,7 +34,7 @@ test('valores durante leia e diagnóstico de execução na linha do código', as
   await input.fill('7'); await input.press('Enter');
   await expect(page.locator('.symbol-value')).toHaveText('10');
   await setEditorCode(page, 'programa {\n funcao inicio() {\n inteiro valor = 1 / 0\n }\n}');
-  await page.getByRole('button', { name: /Mensagens/ }).click();
+  await page.getByRole('button', { name: 'Mostrar mensagens', exact: true }).click();
   await page.getByRole('button', { name: 'Executar programa', exact: true }).click();
   await expect(page.locator('.diagnostic-row.error')).toContainText('Execução:');
   await expect(page.locator('.diagnostic-row.error')).toContainText('Linha 3');
@@ -42,7 +42,7 @@ test('valores durante leia e diagnóstico de execução na linha do código', as
 
 
 test('seleção visível com mouse e teclado permite substituir texto; real para inteiro avisa', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/app/');
   await page.getByRole('button', { name: 'Mostrar editor', exact: true }).click();
   const editor = page.locator('.cm-content');
   await setEditorCode(page, 'programa {\n funcao inicio() {\n inteiro a = 3.45\n escreva(a)\n }\n}');
@@ -68,7 +68,7 @@ test('seleção visível com mouse e teclado permite substituir texto; real para
 });
 
 test('vários diagnósticos Java aparecem juntos e a execução aguarda sua correção', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/app/');
   await page.getByRole('button', { name: 'Mostrar editor', exact: true }).click();
   await setEditorCode(page, 'programa {\n funcao inicio() {\n const inteiro valor = 1\n valor = 2\n se(1) escreva(desconhecido)\n }\n}');
   for (const code of ['ErroAtribuirEmConstante', 'ErroTiposIncompativeis', 'ErroSimboloNaoDeclarado']) await expect(page.locator(`[data-diagnostic-code="ErroSemantico.${code}"]`)).toBeVisible();
@@ -83,7 +83,7 @@ test('vários diagnósticos Java aparecem juntos e a execução aguarda sua corr
 });
 
 test('Objetos analisa JSON/XML e apresenta mensagem localizada para JSON inválido', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/app/');
   await page.getByRole('button', { name: 'Mostrar editor', exact: true }).click();
   await setEditorCode(page, 'programa { inclua biblioteca Objetos --> o funcao inicio() { inteiro id=o.criar_objeto_via_xml("<pessoa><nome>Maria</nome></pessoa>") escreva(o.obter_propriedade_tipo_cadeia(id,"nome")) } }');
   await page.getByRole('button', { name: 'Executar programa', exact: true }).click();

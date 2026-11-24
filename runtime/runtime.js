@@ -106,6 +106,8 @@ import { recordingContext } from '../libraries/graphics/recording-context.js';
                 const item = this.__inputResolvers.shift();
                 if (item && item.reject) item.reject(new Error("EXECUCAO_INTERROMPIDA"));
             }
+            // An unanswered 'leia' box would otherwise stay in the terminal after stopping.
+            for (const wrap of this.consoleEl?.querySelectorAll?.('.console-input-wrap') || []) if (wrap.querySelector('input')) wrap.remove();
         }
 
         _setupEventListeners() {

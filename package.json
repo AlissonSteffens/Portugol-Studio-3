@@ -3,6 +3,7 @@
   "version": "0.2.0",
   "private": true,
   "type": "module",
+  "main": "desktop/main.cjs",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "build": "vite build",
@@ -16,7 +17,10 @@
     "sync:contracts": "node scripts/sync-library-contracts.js",
     "examples:run": "node scripts/run-examples.js",
     "build:runtime": "node scripts/build-runtime.js",
-    "sync:diagnostics": "node scripts/sync-diagnostics.js"
+    "sync:diagnostics": "node scripts/sync-diagnostics.js",
+    "desktop:start": "vite build && electron .",
+    "desktop:dist": "node scripts/build-desktop.js",
+    "screenshots": "vite build && node scripts/capture-screenshots.js"
   },
   "dependencies": {
     "@codemirror/autocomplete": "^6.20.3",

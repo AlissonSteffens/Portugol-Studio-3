@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures.js';
 
 const source = 'programa { funcao inicio() { escreva("Teste") } }';
 async function setup(page, dirty = []) {
@@ -11,7 +11,7 @@ async function setup(page, dirty = []) {
       return { name: 'salvo.por', createWritable: async () => ({ write: async blob => { window.savedSource = await blob.text(); }, close: async () => {} }) };
     };
   }, { source, dirty });
-  await page.goto('/');
+  await page.goto('/app/');
   await expect(page.getByRole('button', { name: 'Executar programa', exact: true })).toBeEnabled();
 }
 const tab = (page, name) => page.getByRole('tab', { name: new RegExp('^' + name + '\\.por') });
@@ -39,14 +39,14 @@ test('menu fecha à direita e à esquerda da aba clicada sem trocar a aba ativa'
   await expect(tab(page, 'c')).toBeFocused();
 });
 
-test('fechar outras e todas mantém Início e oferece um novo documento ao esvaziar', async ({ page }) => {
+test('fechar outras e todas oferece um novo documento ao esvaziar', async ({ page }) => {
   await setup(page);
   await action(page, 'b', 'Fechar outras abas');
-  await expect(page.getByRole('tab')).toHaveCount(2);
+  await expect(page.getByRole('tab')).toHaveCount(1);
   await expect(tab(page, 'b')).toBeVisible();
   await action(page, 'b', 'Fechar todas as abas');
   await expect(tab(page, 'b')).toHaveCount(0);
-  await expect(page.getByRole('tab', { name: 'Início', exact: true })).toBeVisible();
+  await expect(page.getByRole('tab')).toHaveCount(1);
   await expect(page.getByRole('tab', { name: 'sem_titulo.por', exact: true })).toBeVisible();
 });
 
@@ -86,6 +86,6 @@ test('menu aceita teclado, fecha ao clicar fora e não sai da tela', async ({ pa
   expect(rect.x + rect.width).toBeLessThanOrEqual(1280);
   expect(rect.y + rect.height).toBeLessThanOrEqual(720);
   await page.screenshot({ path: 'test-results/tab-context-menu.png' });
-  await page.locator('.editor-heading').click();
+  await page.locator('.ide-status').click();
   await expect(page.getByRole('menu')).toHaveCount(0);
 });

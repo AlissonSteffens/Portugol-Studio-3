@@ -1,6 +1,6 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures.js';
 test('esfera mantém a luz acima e à direita durante a rotação', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/app/');
   await page.getByLabel('Buscar exemplos').fill('Esfera 3D');
   await page.locator('.welcome-example-list').getByRole('button', { name: /Esfera 3D/ }).click();
   await page.getByRole('button', { name: 'Executar programa', exact: true }).click();

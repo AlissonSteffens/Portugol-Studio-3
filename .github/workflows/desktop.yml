@@ -1,0 +1,66 @@
+name: Versões instaláveis
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: ${{ matrix.name }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { name: Windows, os: windows-latest, flag: --win }
+          - { name: macOS, os: macos-latest, flag: --mac }
+          - { name: Linux, os: ubuntu-latest, flag: --linux }
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Conferir versão da tag
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: bash
+        run: |
+          version=$(node -p "require('./package.json').version")
+          test "v$version" = "$GITHUB_REF_NAME" || { echo "A tag $GITHUB_REF_NAME não corresponde à versão $version do package.json."; exit 1; }
+      - name: Instalar dependências
+        run: npm ci
+      - name: Testes do runtime
+        run: npm test
+      - name: Gerar instaladores
+        run: npm run desktop:dist -- ${{ matrix.flag }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: portugol-studio-${{ runner.os }}
+          if-no-files-found: error
+          path: |
+            release/*.exe
+            release/*.dmg
+            release/*.zip
+            release/*.AppImage
+            release/*.deb
+            release/*.tar.gz
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: release
+          merge-multiple: true
+      - name: Publicar release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" release/* --repo "$GITHUB_REPOSITORY" --title "Portugol Studio $GITHUB_REF_NAME" --generate-notes --draft

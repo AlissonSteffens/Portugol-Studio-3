@@ -1,7 +1,7 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures.js';
 
 test('exemplo da ajuda abre uma cópia editável sem modificar o documento', async ({ page, request }) => {
-  await page.goto('/');
+  await page.goto('/app/');
   await page.getByRole('button', { name: /Guia de Portugol/ }).click();
   await page.getByLabel('Buscar na ajuda').fill('buffer');
   await page.getByRole('button', { name: 'Buffer gráfico', exact: true }).click();
@@ -16,7 +16,7 @@ test('exemplo da ajuda abre uma cópia editável sem modificar o documento', asy
   const response = await request.get('/ajuda/topicos/graficos/buffer_grafico.html');
   expect(await response.text()).toContain(source.split('\n')[0]);
   expect(await response.text()).not.toContain('Minha cópia');
-  await page.getByRole('tab', { name: 'Início', exact: true }).click();
+  await page.getByRole('button', { name: 'Tela inicial', exact: true }).click();
   await page.getByRole('navigation', { name: 'Conteúdo da home' }).getByRole('button', { name: 'Ajuda', exact: true }).click();
   await page.getByLabel('Buscar na ajuda').fill('buffer');
   await page.getByRole('button', { name: 'Buffer gráfico', exact: true }).click();
@@ -24,7 +24,7 @@ test('exemplo da ajuda abre uma cópia editável sem modificar o documento', asy
 });
 
 test('guia de buffers é encontrado pela busca e pode ser lido no celular', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/app/');
   await page.getByRole('button', { name: /Guia de Portugol/ }).click();
   await page.getByLabel('Buscar na ajuda').fill('transparencia');
   await page.getByRole('button', { name: 'Buffer gráfico', exact: true }).click();
@@ -41,7 +41,7 @@ test('guia de buffers é encontrado pela busca e pode ser lido no celular', asyn
 });
 
 test('home abre ajuda, busca sem acentos e apresenta exemplos incorporados', async ({ page, request }) => {
-  await page.goto('/');
+  await page.goto('/app/');
   await page.getByRole('button', { name: /Guia de Portugol/ }).click();
   await expect(page.getByRole('heading', { name: 'Ajuda do Portugol' })).toBeVisible();
   await expect(page.frameLocator('.help-reader iframe').getByRole('heading', { name: 'Linguagem Portugol', exact: true })).toBeVisible();

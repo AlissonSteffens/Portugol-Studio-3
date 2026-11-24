@@ -1,11 +1,11 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures.js';
 import { setEditorCode } from './helpers/editor.js';
 import { pathToFileURL } from 'node:url';
 
 test.use({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
 
 async function openDemo(page) {
-  await page.goto('/');
+  await page.goto('/app/');
   await page.getByLabel('Buscar exemplos').fill('Missão Órbita');
   await page.locator('.welcome-example-list').getByRole('button', { name: /Missão Órbita/ }).click();
   await page.getByRole('button', { name: 'Executar programa', exact: true }).click();
@@ -45,7 +45,7 @@ async function renderedFrames(page, count = 6) {
 }
 
 for (const relative of [true, false]) test(`joystick direito mantém movimento XY ${relative ? 'relativo' : 'absoluto'}, simultâneo e cancela sem entrada presa`, async ({ page, context }) => {
-  await page.goto('/');
+  await page.goto('/app/');
   await page.getByRole('button', { name: 'Mostrar editor', exact: true }).click();
   await setEditorCode(page, `programa {
     inclua biblioteca Graficos --> g inclua biblioteca Teclado --> t inclua biblioteca Mouse --> m
@@ -101,13 +101,14 @@ for (const game of [
   { name: 'Arena Pulsar', stick: true },
   { name: 'Corte Tropical', stick: true },
 ]) test(`${game.name} executa em tela cheia e adapta o campo ao girar o celular`, async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/app/');
   await page.getByLabel('Buscar exemplos').fill(game.name);
   await page.locator('.welcome-example-list').getByRole('button', { name: new RegExp(game.name) }).click();
   await page.getByRole('button', { name: 'Executar programa', exact: true }).click();
   await expect(page.locator('canvas')).toHaveAttribute('data-fullscreen', 'true');
   await expect(page.getByRole('group', { name: 'Joystick do mouse', exact: true })).toHaveCount(game.stick ? 1 : 0);
   await exitFullscreen(page);
+  await page.locator('.mobile-tools').getByRole('button', { name: 'Ferramentas', exact: true }).click();
   await page.getByRole('button', { name: 'Mostrar árvore', exact: true }).click();
   await page.locator('.mobile-tools').getByRole('button', { name: 'Execução', exact: true }).click();
   await page.getByRole('button', { name: 'Tela cheia', exact: true }).click();
@@ -182,7 +183,7 @@ test('jogo para celular cabe em retrato e paisagem, com botões de tamanho confo
 });
 
 test('multitoque pressiona direção e ação, solta ao cancelar e traduz coordenadas do canvas', async ({ page, context }) => {
-  await page.goto('/');
+  await page.goto('/app/');
   await page.getByRole('button', { name: 'Mostrar editor', exact: true }).click();
   await setEditorCode(page, `programa {
     inclua biblioteca Graficos --> g
@@ -260,7 +261,7 @@ test('controles continuam funcionando na aba de execução e ao restaurar', asyn
 });
 
 test('joystick também pilota jogos com WASD sem criar botões duplicados', async ({ page, context }) => {
-  await page.goto('/');
+  await page.goto('/app/');
   await page.getByRole('button', { name: 'Mostrar editor', exact: true }).click();
   await setEditorCode(page, `programa {
     inclua biblioteca Graficos --> g inclua biblioteca Teclado --> t
@@ -295,6 +296,7 @@ test('joystick também pilota jogos com WASD sem criar botões duplicados', asyn
 test('Missão Órbita responde ao direcional com turbo e ao sinalizador de toque', async ({ page, context }) => {
   await openDemo(page);
   await exitFullscreen(page);
+  await page.locator('.mobile-tools').getByRole('button', { name: 'Ferramentas', exact: true }).click();
   await page.getByRole('button', { name: 'Mostrar árvore', exact: true }).click();
   await page.locator('.mobile-tools').getByRole('button', { name: 'Execução', exact: true }).click();
   const value = name => page.getByRole('treeitem', { name, exact: true, includeHidden: true }).locator(':scope > .tree-row .symbol-value').textContent();
@@ -320,7 +322,7 @@ test('Missão Órbita responde ao direcional com turbo e ao sinalizador de toque
 });
 
 test('exemplo de mouse não recebe direcional e programas sem entrada não recebem controles', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/app/');
   await page.getByRole('button', { name: 'Mostrar editor', exact: true }).click();
   await setEditorCode(page, `programa {
     inclua biblioteca Graficos --> g inclua biblioteca Mouse --> m
@@ -339,7 +341,7 @@ test('exemplo de mouse não recebe direcional e programas sem entrada não receb
 });
 
 test('arraste substitui mouse capturado e Enter virtual libera ler_tecla', async ({ page, context }) => {
-  await page.goto('/');
+  await page.goto('/app/');
   await page.getByRole('button', { name: 'Mostrar editor', exact: true }).click();
   await setEditorCode(page, `programa {
     inclua biblioteca Graficos --> g inclua biblioteca Mouse --> m
@@ -379,7 +381,8 @@ test('HTML exportado inclui os mesmos controles e pode jogar sem o editor', asyn
   await page.addInitScript(() => { window.showSaveFilePicker = undefined; });
   await openDemo(page);
   await stopGame(page);
-  await page.getByRole('button', { name: 'Exportar projeto', exact: true }).click();
+  await page.getByRole('navigation', { name: 'Menu principal' }).getByRole('button', { name: 'Arquivo', exact: true }).click();
+  await page.getByRole('menuitem', { name: /Exportar projeto/ }).click();
   const pending = page.waitForEvent('download');
   await page.getByRole('dialog', { name: 'Exportar projeto' }).getByRole('button', { name: 'Exportar projeto', exact: true }).click();
   const download = await pending;

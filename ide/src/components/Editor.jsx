@@ -11,7 +11,7 @@ import { indentWithTab, undo, redo, undoDepth, redoDepth } from '@codemirror/com
 import { autocompletion, acceptCompletion, startCompletion } from '@codemirror/autocomplete';
 import { portugolLanguage, portugolHighlight, portugolCompletions, portugolHover } from '../editor/portugol.js';
 import { tokenize } from '../../../core/lexical/tokenizer.js';
-import { Save, Sparkles, Play, Pause, ArrowDownToLine, CornerDownRight, ArrowUpFromLine, Square } from 'lucide-react';
+import { Play, Pause, ArrowDownToLine, CornerDownRight, ArrowUpFromLine, Square } from 'lucide-react';
 
 const theme = EditorView.theme({
   '&': { height: '100%', color: '#bcbec4', backgroundColor: 'var(--color-background)' },
@@ -49,7 +49,7 @@ const folds = foldService.of((state, from, to) => {
   return ranges.get(from) || null;
 });
 
-export default function Editor({ code, documentId, onChange, filename, onOpen, onSave, onRun, onStatus, inputRef, diagnostics = [], paused, busy, onDebugCommand, onBreakpoints }) {
+export default function Editor({ code, documentId, onChange, onOpen, onRun, onStatus, inputRef, diagnostics = [], paused, busy, onDebugCommand, onBreakpoints }) {
   const readonly = useRef(new Compartment());
   const host = useRef(), viewRef = useRef(), states = useRef(new Map()), activeId = useRef(documentId), syncing = useRef(false);
   const callbacks = useRef(); callbacks.current = { onChange, onOpen, onRun, onStatus, onBreakpoints };
@@ -111,7 +111,6 @@ export default function Editor({ code, documentId, onChange, filename, onOpen, o
   }, [diagnostics, code, documentId, busy]);
   useEffect(() => { const view = viewRef.current; if (view) view.dispatch({ effects: [readonly.current.reconfigure(EditorState.readOnly.of(!!busy)), executionPosition.of(paused?.from ?? null), ...(paused ? [EditorView.scrollIntoView(paused.from, { y: 'center' })] : [])] }); }, [busy, paused, documentId]);
   return <section className="editor-panel" onDragOver={event => { if (event.dataTransfer.types.includes('Files')) event.preventDefault(); }} onDrop={event => { if (event.dataTransfer.files[0]) { event.preventDefault(); onOpen(event.dataTransfer.files[0]); } }}>
-    <div className="editor-heading"><span className="truncate">{filename}</span><div className="flex items-center gap-2"><button className="editor-assist" onClick={() => { viewRef.current.focus(); startCompletion(viewRef.current); }} title="Completar código (Ctrl + Espaço)"><Sparkles size={13}/><span>Completar</span></button><button onClick={onSave} title="Salvar (Ctrl + S)"><Save size={13}/><span className="desktop-label">Salvar</span></button></div></div>
     {busy && <div className="debug-toolbar" role="toolbar" aria-label="Depuração">
       <button aria-label={paused ? 'Continuar' : 'Pausar'} title={paused ? 'Continuar execução' : 'Pausar execução'} onClick={() => onDebugCommand(paused ? 'continue' : 'pause')}>{paused ? <Play size={16} aria-hidden="true"/> : <Pause size={16} aria-hidden="true"/>}</button>
       <button aria-label="Entrar" title="Entrar na função · executar próximo comando" disabled={!paused} onClick={() => onDebugCommand('into')}><ArrowDownToLine size={16} aria-hidden="true"/></button>
@@ -122,6 +121,5 @@ export default function Editor({ code, documentId, onChange, filename, onOpen, o
       <small>{paused ? `Pausado · linha ${paused.line}` : 'Em execução'}</small>
     </div>}
     <div ref={host} className="codemirror-host"/>
-    <div className="editor-footer"><span>Portugol</span><span>{code.split('\n').length} linhas · UTF-8 · 4 espaços</span></div>
   </section>;
 }

@@ -1,9 +1,9 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures.js';
 import { pathToFileURL } from 'node:url';
 import { setEditorCode } from './helpers/editor.js';
 
 async function openExample(page) {
-  await page.goto('/');
+  await page.goto('/app/');
   await page.getByLabel('Buscar exemplos').fill('Conheça seu navegador');
   await page.locator('.welcome-example-list').getByRole('button', { name: /Conheça seu navegador/ }).click();
 }
@@ -25,7 +25,8 @@ test('exemplo consulta o ambiente real e a mesma biblioteca funciona no HTML exp
   await page.getByRole('button', { name: 'Executar programa', exact: true }).click();
   await expect(output).toContainText('Celular: falso');
   await expect(output).toContainText('Janela: 390 x 844');
-  await page.getByRole('button', { name: 'Exportar projeto', exact: true }).click();
+  await page.getByRole('navigation', { name: 'Menu principal' }).getByRole('button', { name: 'Arquivo', exact: true }).click();
+  await page.getByRole('menuitem', { name: /Exportar projeto/ }).click();
   const pending = page.waitForEvent('download');
   await page.getByRole('dialog', { name: 'Exportar projeto' }).getByRole('button', { name: 'Exportar projeto', exact: true }).click();
   const file = test.info().outputPath('navegador.html');
@@ -41,7 +42,7 @@ test('exemplo consulta o ambiente real e a mesma biblioteca funciona no HTML exp
 });
 
 test('documentação de funções é pesquisável e o guia abre um exemplo editável', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/app/');
   await page.getByRole('button', { name: /Guia de Portugol/ }).click();
   await page.getByLabel('Buscar na ajuda').fill('Navegador');
   await page.getByRole('button', { name: 'Navegador', exact: true }).click();
@@ -69,7 +70,7 @@ test('documentação de funções é pesquisável e o guia abre um exemplo edit�
 
 test('medidas acompanham a janela destacada e voltam à janela do editor', async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 800 });
-  await page.goto('/');
+  await page.goto('/app/');
   await page.getByRole('button', { name: 'Mostrar editor', exact: true }).click();
   await setEditorCode(page, `programa {
     inclua biblioteca Navegador --> nav inclua biblioteca Graficos --> g

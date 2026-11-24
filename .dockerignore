@@ -4,3 +4,4 @@ dist
 .git
 test-results
 playwright-report
+release
