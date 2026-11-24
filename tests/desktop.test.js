@@ -64,3 +64,32 @@ test('desktop menu builds native items that report their id without stealing sho
   assert.equal(view.submenu[0].type, 'checkbox');
   assert.equal(buildMenuTemplate([], () => {}, 'darwin')[0].role, 'appMenu');
 });
+
+const { compareVersions, updateMode, parseRelease, DOWNLOAD_PAGE } = require('../desktop/update-policy.cjs');
+
+test('desktop updater compares release versions', () => {
+  assert.equal(compareVersions('v3.1.0', '3.0.9'), 1);
+  assert.equal(compareVersions('3.0.0', 'v3.0.0'), 0);
+  assert.equal(compareVersions('3.0', '3.0.0'), 0);
+  assert.equal(compareVersions('3.0.10', '3.0.9'), 1);
+  assert.equal(compareVersions('2.9.9', '3.0.0'), -1);
+  assert.equal(compareVersions('3.1.0-beta.1', '3.1.0'), 0);
+});
+
+test('desktop updater installs only where the package can replace itself', () => {
+  const exe = path.join('C:', 'Programas', 'Portugol Studio', 'Portugol Studio.exe');
+  const uninstaller = path.join(path.dirname(exe), 'Uninstall Portugol Studio.exe');
+  const base = { packaged: true, execPath: exe, env: {}, exists: file => file === uninstaller };
+  assert.equal(updateMode({ ...base, packaged: false, platform: 'win32' }), 'off');
+  assert.equal(updateMode({ ...base, platform: 'win32' }), 'install');
+  assert.equal(updateMode({ ...base, platform: 'win32', exists: () => false }), 'notify');
+  assert.equal(updateMode({ ...base, platform: 'linux', env: { APPIMAGE: '/home/a/Portugol.AppImage' } }), 'install');
+  assert.equal(updateMode({ ...base, platform: 'linux' }), 'notify');
+  assert.equal(updateMode({ ...base, platform: 'darwin' }), 'notify');
+});
+
+test('desktop updater reads the latest GitHub release', () => {
+  assert.deepEqual(parseRelease({ tag_name: 'v3.2.0', html_url: 'https://github.com/AlissonSteffens/Portugol-Studio-3/releases/tag/v3.2.0' }), { version: '3.2.0', url: 'https://github.com/AlissonSteffens/Portugol-Studio-3/releases/tag/v3.2.0' });
+  assert.deepEqual(parseRelease({ tag_name: 'v3.2.0', html_url: 'javascript:alert(1)' }), { version: '3.2.0', url: DOWNLOAD_PAGE });
+  assert.equal(parseRelease({ message: 'Not Found' }), null);
+});

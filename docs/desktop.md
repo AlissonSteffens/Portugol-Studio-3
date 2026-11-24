@@ -11,6 +11,15 @@ O Portugol Studio também é distribuído como aplicativo para Windows, macOS e 
 - Programas gráficos rodam em uma janela própria, sem menu, com o terminal abaixo do jogo. Executar de novo reaproveita a janela, e fechá-la encerra o programa. No aplicativo, a depuração também usa essa janela.
 - Ao fechar com alterações não salvas, o aplicativo pede confirmação.
 
+## Versões e atualizações
+
+A versão do Portugol Studio é a do `package.json` (a primeira é a 3.0.0). Ela aparece no fim do menu Ajuda. A versão Web se atualiza sozinha a cada publicação no GitHub Pages; a de computador procura releases novos no GitHub.
+
+- `desktop/updater.cjs` consulta o último release publicado 8 segundos depois de abrir e quando o usuário escolhe **Ajuda → Verificar atualizações…**. A busca automática não mostra nada se não houver novidade, e **Agora não** pula aquela versão até a próxima, sem impedir a busca manual.
+- **Instalador do Windows e AppImage:** o [electron-updater](https://www.electron.build/auto-update) baixa a nova versão em segundo plano (com progresso na barra de tarefas) e pergunta se pode reiniciar. Antes de instalar, as janelas são fechadas uma a uma, então o aviso de alterações não salvas continua valendo; se o usuário cancelar, nada é instalado. Escolhendo **Depois**, a atualização é instalada ao fechar o programa. O build grava `app-update.yml` no aplicativo e `latest.yml`/`latest-linux.yml` ao lado dos instaladores; o workflow publica esses arquivos e os `.blockmap` no release.
+- **macOS, `.zip`, `.deb` e `.tar.gz`:** o aplicativo avisa sobre a nova versão e abre a página de downloads. No macOS a instalação automática exige uma assinatura Developer ID (veja [Assinatura de código](#assinatura-de-código)); com ela configurada, basta retornar `'install'` para `darwin` em `desktop/update-policy.cjs`.
+- As regras de versão e de qual pacote pode se atualizar ficam em `desktop/update-policy.cjs`, testadas em `tests/desktop.test.js`.
+
 ## Executar em desenvolvimento
 
 ```sh
@@ -35,9 +44,9 @@ Os arquivos têm nomes fixos, sem a versão, como `Portugol-Studio-windows-x64.e
 
 O workflow `.github/workflows/desktop.yml` gera os instaladores nos três sistemas. Para publicar:
 
-1. Atualize `version` no `package.json` e faça o commit.
-2. Crie e envie a tag correspondente, por exemplo `git tag v0.3.0 && git push origin v0.3.0`.
-3. O workflow cria um release em rascunho com os arquivos. Revise e publique em **Releases**. Os links de download da página inicial só funcionam depois que existir um release publicado (rascunhos não contam como `latest`).
+1. Atualize a versão com `npm version 3.0.1 --no-git-tag-version` (ou `minor`/`major`) e faça o commit. Os aplicativos instalados só oferecem a atualização se a versão for maior que a deles.
+2. Crie e envie a tag correspondente, por exemplo `git tag v3.0.1 && git push origin v3.0.1`.
+3. O workflow cria um release em rascunho com os arquivos. Revise e publique em **Releases**. Os aplicativos instalados só veem a nova versão depois da publicação. Os links de download da página inicial só funcionam depois que existir um release publicado (rascunhos não contam como `latest`).
 
 O workflow também pode ser iniciado manualmente em **Actions → Versões instaláveis**; nesse caso os arquivos ficam apenas nos artefatos da execução.
 

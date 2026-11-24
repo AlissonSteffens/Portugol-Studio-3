@@ -3,6 +3,7 @@ const { pathToFileURL } = require('node:url');
 const { app, BrowserWindow, Menu, dialog, ipcMain, net, protocol, session, shell } = require('electron');
 const { SCHEME, START_URL, resolveAppPath, isAppUrl, isExternalUrl } = require('./protocol.cjs');
 const { buildMenuTemplate } = require('./menu.cjs');
+const updates = require('./updater.cjs');
 
 // Packaged builds carry the site in app/dist; in development it comes from the repository build.
 const root = path.join(__dirname, '..', 'dist');
@@ -44,6 +45,7 @@ function createWindow() {
       title: 'Portugol Studio', message: 'Há alterações não salvas.', detail: 'Se sair agora, as alterações que não foram salvas em arquivo podem ser perdidas.',
     });
     if (choice === 0) event.preventDefault();
+    else updates.cancelRestart();
   });
   window.once('ready-to-show', () => window.show());
   window.loadURL(START_URL);
@@ -69,6 +71,8 @@ ipcMain.on('menu:set', (event, menus) => {
   else window?.setMenu(menu);
 });
 
+ipcMain.on('updates:check', event => { if (mainWindows.has(event.sender)) updates.check({ manual: true }); });
+
 app.on('second-instance', () => {
   const [window] = BrowserWindow.getAllWindows();
   if (window) { if (window.isMinimized()) window.restore(); window.focus(); }
@@ -84,7 +88,11 @@ app.whenReady().then(() => {
   session.defaultSession.setPermissionCheckHandler((_contents, permission) => allowedPermissions.has(permission));
   installMenu();
   createWindow();
+  updates.start();
   app.on('activate', () => { if (!BrowserWindow.getAllWindows().length) createWindow(); });
 });
 
-app.on('window-all-closed', () => { if (process.platform !== 'darwin') app.quit(); });
+app.on('window-all-closed', () => {
+  if (updates.finishRestart()) return;
+  if (process.platform !== 'darwin') app.quit();
+});

@@ -27,6 +27,8 @@ import FileRepository from './components/FileRepository.jsx';
 import { createRuntimeFiles, repository } from './services/repository.js';
 const EMPTY_FILES = {};
 const desktop = typeof window !== 'undefined' ? window.portugolDesktop : undefined;
+// Injected by vite.config.js from package.json.
+const APP_VERSION = typeof __APP_VERSION__ === 'string' ? __APP_VERSION__ : '';
 // Same breakpoint as the stylesheet: phones and tablets run graphics inline, full screen.
 const compactQuery = '(max-width: 760px), (max-width: 1024px) and (pointer: coarse)';
 const isCompact = () => typeof matchMedia === 'function' && matchMedia(compactQuery).matches;
@@ -326,6 +328,9 @@ export default function App() {
       { label: 'Exemplos', action: () => showHome('examples') },
       { separator: true },
       { label: 'Site do Portugol Studio', action: () => window.open(desktop ? 'https://alissonsteffens.github.io/Portugol-Studio-3/' : assetUrl(''), '_blank', 'noopener') },
+      ...(desktop?.checkForUpdates ? [{ label: 'Verificar atualizações…', action: () => desktop.checkForUpdates() }] : []),
+      { separator: true },
+      { label: `Portugol Studio ${APP_VERSION}`, disabled: true },
     ] },
   ];
   // On the desktop app the same menus become the window's native menu.

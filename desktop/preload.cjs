@@ -5,6 +5,7 @@ const { contextBridge, ipcRenderer } = require('electron');
 contextBridge.exposeInMainWorld('portugolDesktop', {
   platform: process.platform,
   setMenu: menus => ipcRenderer.send('menu:set', menus),
+  checkForUpdates: () => ipcRenderer.send('updates:check'),
   onMenuCommand: callback => {
     const listener = (_event, id) => callback(id);
     ipcRenderer.on('menu:command', listener);

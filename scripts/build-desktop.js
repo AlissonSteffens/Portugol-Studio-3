@@ -9,6 +9,8 @@ import builder from 'electron-builder';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const pkg = JSON.parse(readFileSync(path.join(root, 'package.json'), 'utf8'));
 const electronVersion = JSON.parse(readFileSync(path.join(root, 'node_modules/electron/package.json'), 'utf8')).version;
+// Pin the exact version tested in the repository.
+const updaterVersion = JSON.parse(readFileSync(path.join(root, 'node_modules/electron-updater/package.json'), 'utf8')).version;
 const output = path.join(root, 'release');
 const staging = path.join(output, 'app');
 const args = process.argv.slice(2);
@@ -20,17 +22,22 @@ const build = npmCli
   : spawnSync('npm', ['run', 'build'], { cwd: root, stdio: 'inherit', shell: true, env: { ...process.env, VITE_BASE_PATH: '/' } });
 if (build.status !== 0) { process.exitCode = 1; throw new Error('O build do site falhou.'); }
 
-// Vite already bundles every dependency, so the packaged app only needs the build and the main process.
+// Vite already bundles the site's dependencies; the main process only needs electron-updater.
 rmSync(output, { recursive: true, force: true });
 mkdirSync(path.join(staging, 'desktop'), { recursive: true });
-for (const file of ['main.cjs', 'menu.cjs', 'preload.cjs', 'protocol.cjs', 'icon.png']) cpSync(path.join(root, 'desktop', file), path.join(staging, 'desktop', file));
+for (const file of ['main.cjs', 'menu.cjs', 'preload.cjs', 'protocol.cjs', 'updater.cjs', 'update-policy.cjs', 'icon.png']) cpSync(path.join(root, 'desktop', file), path.join(staging, 'desktop', file));
 cpSync(path.join(root, 'dist'), path.join(staging, 'dist'), { recursive: true });
 writeFileSync(path.join(staging, 'package.json'), JSON.stringify({
   name: pkg.name, productName: 'Portugol Studio', version: pkg.version,
   description: 'Ambiente para aprender programação em Portugol.',
   author: 'Portugol Studio Web', homepage: 'https://github.com/AlissonSteffens/Portugol-Studio-3',
   main: 'desktop/main.cjs',
+  dependencies: { 'electron-updater': updaterVersion },
 }, null, 2));
+const install = npmCli
+  ? spawnSync(process.execPath, [npmCli, 'install', '--omit=dev', '--no-package-lock', '--no-audit', '--no-fund', '--ignore-scripts'], { cwd: staging, stdio: 'inherit' })
+  : spawnSync('npm', ['install', '--omit=dev', '--no-package-lock', '--no-audit', '--no-fund', '--ignore-scripts'], { cwd: staging, stdio: 'inherit', shell: true });
+if (install.status !== 0) { process.exitCode = 1; throw new Error('A instalação do electron-updater no pacote falhou.'); }
 
 const platforms = { '--win': 'win', '--mac': 'mac', '--linux': 'linux' };
 const archFlags = { '--x64': 'x64', '--arm64': 'arm64' };
@@ -65,6 +72,8 @@ await builder.build({
     asar: true,
     npmRebuild: false,
     compression: 'normal',
+    // Writes app-update.yml into the app and latest*.yml next to the installers; the workflow uploads them.
+    publish: [{ provider: 'github', owner: 'AlissonSteffens', repo: 'Portugol-Studio-3' }],
     win: { icon: 'icon.png', artifactName: 'Portugol-Studio-windows-${arch}.${ext}', target: target('win') },
     nsis: { oneClick: false, perMachine: false, allowToChangeInstallationDirectory: true, createDesktopShortcut: true, shortcutName: 'Portugol Studio' },
     mac: { icon: 'icon.png', artifactName: 'Portugol-Studio-macos-${arch}.${ext}', target: target('mac'), category: 'public.app-category.education', identity: '-', hardenedRuntime: false, gatekeeperAssess: false },

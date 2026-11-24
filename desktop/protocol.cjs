@@ -14,7 +14,9 @@ function resolveAppPath(root, requestUrl) {
   if (url.protocol !== `${SCHEME}:` || url.host !== HOST) return null;
   let pathname;
   try { pathname = decodeURIComponent(url.pathname); } catch { return null; }
-  if (pathname.includes('\0')) return null;
+  // Reject on every system what any system would read as a separator or a parent folder,
+  // so the same URL behaves alike on Windows, macOS and Linux.
+  if (/[\0\\]/.test(pathname) || pathname.split('/').includes('..')) return null;
   if (pathname === '') pathname = '/';
   if (pathname.endsWith('/')) pathname += 'index.html';
   const base = path.resolve(root);
